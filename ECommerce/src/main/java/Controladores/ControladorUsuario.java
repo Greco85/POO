@@ -1,25 +1,32 @@
-
 package Controladores;
+
 import Modelo.Usuario;
 
 public class ControladorUsuario {
+
     public static void registrarUsuario(String correo, String contraseña) {
-        // Aquí iría la lógica para registrar un nuevo usuario en la base de datos
-        // Por simplicidad, no se implementa en este ejemplo
+        // Lógica para registrar un nuevo usuario
     }
 
     public static void actualizarUsuario(String correo, String nuevaContraseña) {
-        // Aquí iría la lógica para actualizar la contraseña de un usuario en la base de datos
-        
+        // Lógica para actualizar la contraseña de un usuario
     }
 
     public static void eliminarUsuario(String correo) {
-        // Aquí iría la lógica para eliminar un usuario de la base de datos
-        
+        // Lógica para eliminar un usuario
     }
     
-    public static void guardarUsuario() {
+    public static boolean validarCredenciales(Usuario usuario) {
+        // Extraer el correo y la contraseña del objeto Usuario
+        String correo = usuario.getCorreo();
+        String contraseña = usuario.getContraseña();
         
+        // Lógica para validar las credenciales
+        // Por simplicidad, asumimos que el usuario es válido si el correo es "123" y la contraseña es "123"
+        return correo.equals("123") && contraseña.equals("123");
     }
 }
+
+
+
 

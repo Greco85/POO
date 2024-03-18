@@ -1,31 +1,35 @@
 package Controladores;
 
 import javax.swing.JOptionPane;
-import Modelo.Usuario;
-import Vista.Inicio;
 import Vista.GUI_MENU_P;
+import Vista.Inicio;
+import Modelo.Usuario;
 
 public class ControladorInicioSesion {
 
-    public static void validarCredenciales(GUI_MENU_P frame, String correo, String contraseña) {
+    public static void validarCredenciales(GUI_MENU_P frameInicioSesion, String correo, String contraseña) {
         if (correo.isEmpty() || contraseña.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese el correo electrónico y la contraseña",
+            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos",
                     "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (Usuario.validarCredenciales(correo, contraseña)) {
-            // Si las credenciales son válidas, mostramos la ventana de inicio
-            Usuario usuario = new Usuario(correo, contraseña);
-            Inicio inicio = new Inicio(usuario);
-            inicio.setVisible(true);
-            frame.dispose();
+        
+        Usuario usuario = new Usuario(correo, contraseña); // Crear una instancia de Usuario
+        if (ControladorUsuario.validarCredenciales(usuario)) { // Pasar el objeto Usuario
+            frameInicioSesion.setVisible(false);
+            Inicio ventanaInicio = new Inicio(usuario);
+            ventanaInicio.setVisible(true);
+            frameInicioSesion.dispose();
         } else {
-            // Si las credenciales son inválidas, mostramos un mensaje de error
             JOptionPane.showMessageDialog(null, "Correo electrónico o contraseña incorrectos",
                     "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
+
+
+
+
 
 
   

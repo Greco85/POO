@@ -6,7 +6,7 @@ public class Usuario {
     private String correo;
     private String contraseña;
 
-    public Usuario(String correo, String contraseña) {
+    public Usuario(String correo, String contraseña) {  //SOLO PARA PROBAR COSAS LUEGO MODIFICO
         this.correo = correo;
         this.contraseña = contraseña;
     }
@@ -27,14 +27,6 @@ public class Usuario {
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
-
-    // Método para validar credenciales
-    public static boolean validarCredenciales(String correo, String contraseña) {
-        // Aquí va la lógica para validar las credenciales
-        // Esto luego lo usaree para la db
-        return correo.equals("123") && contraseña.equals("123");
-    }
-
 }
 
     
