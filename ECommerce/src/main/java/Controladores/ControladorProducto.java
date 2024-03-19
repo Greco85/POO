@@ -13,7 +13,6 @@ public class ControladorProducto {
             new Producto("Pan", "imagen2.jpg", 20.49),
             new Producto("Gato", "imagen3.jpg", 15.79),
             new Producto("POR FINNN PAN", "imagen3.jpg", 14.2)
-            
         };
     }
 

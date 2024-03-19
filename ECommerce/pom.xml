@@ -11,4 +11,13 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>Vista.GUI_MENU_P</exec.mainClass>
     </properties>
+    
+    <dependencies>
+        <!-- Dependencia para Gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.8</version> <!-- La versión puede variar -->
+        </dependency>
+    </dependencies>
 </project>

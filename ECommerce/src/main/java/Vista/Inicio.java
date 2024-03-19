@@ -1,30 +1,20 @@
 package Vista;
 
 import Modelo.Usuario;
-import Modelo.Categoria;
 import Modelo.Producto;
 import Controladores.ControladorProducto;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 
 public class Inicio extends javax.swing.JFrame {
     
     private Usuario usuario;
     private ControladorProducto controladorProducto;
-    private String categoriaSeleccionada = "1"; //INICIAMOS CON EL ID 1 PERO QUIZA LO CAMBIE LUEGO
+    private String busqueda;
+    private int categoriaId;
 
     public Inicio(Usuario usuario) {
         initComponents();
-        initNavbar();
+        menubar.initMenuBar(this, usuario, busqueda, categoriaId);
         this.usuario = usuario;
         jLabel1.setText("Bienvenido, " + usuario.getCorreo());
         controladorProducto = new ControladorProducto();
@@ -93,88 +83,8 @@ public class Inicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
- 
     
- private void initNavbar() {
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Amazon");
-
-        // Barra de navegación
-        JComboBox<Categoria> navBar = new JComboBox<>();
-        navBar.addItem(new Categoria("Hogar", 1));
-        navBar.addItem(new Categoria("Limpieza", 2));
-        navBar.addItem(new Categoria("Videojuegos", 3)); //SOLO PARA PROBAR QUE FUNCUIONE
-
-        // Barra de búsqueda
-        JTextField searchBar = new JTextField();
-        searchBar.setToolTipText("Buscar productos");
-
-        // Botón de búsqueda
-        JButton searchButton = new JButton("Buscar");
-        searchButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String busqueda = searchBar.getText();
-                System.out.println("Búsqueda realizada: " + busqueda);
-                System.out.println("Categoría seleccionada: " + categoriaSeleccionada);
-
-              
-                Busqueda busquedaVentana = new Busqueda(busqueda, categoriaSeleccionada);
-                dispose();
-                busquedaVentana.setVisible(true);
-            }
-        });
-
-        // Botón de ir a la cuenta del usuario
-        JButton accountButton = new JButton("Cuenta");
-        accountButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            
-        
-        CuentaUsuario cuentaUsuario = new CuentaUsuario();
-        cuentaUsuario.setVisible(true);
-        dispose();
-    }
-});
-
-        // Pop-up con una categoría
-        JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem popupItem = new JMenuItem("Categoría");
-        popupMenu.add(popupItem);
-
-        // Botón del carrito
-        JButton botonCarrito = new JButton("Carrito");
-        botonCarrito.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) {
-        
-        Carrito carrito = new Carrito();
-        carrito.setVisible(true);
-        dispose();
-    }
-    });
-
-        // Agregar elementos a la barra de menú
-        menuBar.add(menu);
-        menuBar.add(navBar);
-        menuBar.add(searchBar);
-        menuBar.add(searchButton);
-        menuBar.add(accountButton);
-        menuBar.add(popupMenu);
-        menuBar.add(botonCarrito);
-
-        // ActionListener para la selección de la categoría
-        navBar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Categoria categoriaSeleccionada = (Categoria) navBar.getSelectedItem();
-                Inicio.this.categoriaSeleccionada = String.valueOf(categoriaSeleccionada.getId());
-                System.out.println("Categoría seleccionada: " + Inicio.this.categoriaSeleccionada);
-            }
-        });
-
-        // Establecer la barra de menú como la barra de menú de la ventana
-        setJMenuBar(menuBar);
-    }
-
-private void mostrarProductosEnLabels() {
+private void mostrarProductosEnLabels() { //tambien solo ver que se pasen valores
         Producto[] productos = controladorProducto.getProductos();
         int yPosition = 130; // Posición vertical inicial para el primer producto
 
@@ -187,26 +97,11 @@ private void mostrarProductosEnLabels() {
             yPosition += 30; // Incrementa la posición vertical para el próximo producto
         }
     }
-
-    public void mostrarPerfil() {
-        //luego veo
-    }
-    public void limpiarVista() {
-       //luego veo
-    }
-    
-    public void mostrarVentanaInicioSesion() {
-        //luego veo
-    }
     
     public static void main(String[] args) {
         //luego veo
     }
 
-
-
-        
- 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;

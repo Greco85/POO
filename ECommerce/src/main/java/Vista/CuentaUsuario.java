@@ -1,12 +1,62 @@
 
-package Vista;
+package Vista; //probando cosillas
+
+import Modelo.Usuario;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.GridLayout;
 
 
-public class CuentaUsuario extends javax.swing.JFrame {
+public class CuentaUsuario extends JFrame {
+
+    private Usuario usuario;
+    private String busqueda;
+    private int categoriaId;
+
+    public CuentaUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        initMyComponents();
+        menubar.initMenuBar(this, usuario, busqueda, categoriaId); 
+        setVisible(true);
+        
+    }
+
+    private void initMyComponents() {
+      
+        JPanel panel = new JPanel(new BorderLayout());
 
     
-    public CuentaUsuario() {
-        initComponents();
+        ImageIcon editarIcon = new ImageIcon("bmo.jpg");
+        JButton btnEditar = new JButton("Editar", editarIcon);
+        JButton btnVender = new JButton("Vender");
+        ImageIcon productosIcon = new ImageIcon("bmo.jpg"); 
+        JButton btnProductosActivos = new JButton("Productos Activos", productosIcon);
+        JButton btnProductosDeseados = new JButton("Productos Deseados");
+
+        JLabel lblProductos = new JLabel();
+
+ 
+        btnProductosActivos.addActionListener(evt -> lblProductos.setText("Hola, estos son tus productos activos."));
+        btnProductosDeseados.addActionListener(evt -> lblProductos.setText("Estos son tus productos deseados."));
+
+
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2 filas y 2 columnas
+        buttonPanel.add(btnEditar);
+        buttonPanel.add(btnVender);
+        buttonPanel.add(btnProductosActivos);
+        buttonPanel.add(btnProductosDeseados);
+
+        panel.add(buttonPanel, BorderLayout.NORTH); 
+
+        
+        getContentPane().add(panel);
+
+        pack();
     }
 
     
@@ -14,64 +64,23 @@ public class CuentaUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("ENTRASTE A TU PERFIL :P");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jLabel1)
-                .addContainerGap(138, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel1)
-                .addContainerGap(248, Short.MAX_VALUE))
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     
-    public static void main(String args[]) {
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CuentaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CuentaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CuentaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CuentaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CuentaUsuario().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

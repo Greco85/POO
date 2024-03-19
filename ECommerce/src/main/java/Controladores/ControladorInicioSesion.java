@@ -20,6 +20,7 @@ public class ControladorInicioSesion {
             Inicio ventanaInicio = new Inicio(usuario);
             ventanaInicio.setVisible(true);
             frameInicioSesion.dispose();
+            
         } else {
             JOptionPane.showMessageDialog(null, "Correo electrónico o contraseña incorrectos",
                     "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);

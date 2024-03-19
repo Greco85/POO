@@ -1,25 +1,38 @@
 
 package Vista;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import Controladores.ControladorProducto;
+import Modelo.Usuario;
+
 
 public class Busqueda extends javax.swing.JFrame {
     
-     private JLabel busquedaLabel;
+    private JLabel busquedaLabel;
     private JLabel categoriaLabel;
-
+    private String categoriaSeleccionada = "1"; //INICIAMOS CON EL ID 1 PERO QUIZA LO CAMBIE LUEGO
+    private ControladorProducto controladorProducto;
+    private Usuario usuario;
+    private String busqueda;
+    private int categoriaId;
     
-    public Busqueda(String busqueda, String categoriaSeleccionada) {
+
+     public Busqueda(String busqueda, int categoriaId, Usuario usuario) {
+       
+        super("Búsqueda de Productos");
         initComponents();
-        mostrarObjetos(busqueda, categoriaSeleccionada);
+        menubar.initMenuBar(this, usuario, busqueda, categoriaId);
+        controladorProducto = new ControladorProducto();
+        this.usuario = usuario;
+        this.busqueda = busqueda;
+        this.categoriaId = categoriaId;
+        mostrarObjetos(busqueda, categoriaId);
     }
     
-    private void mostrarObjetos(String busqueda, String categoriaSeleccionada) {
-
+    private void mostrarObjetos(String busqueda, int categoriaId) { //Esto solo es para comprobar que se pasan los valores
         busquedaLabel = new JLabel("Búsqueda: " + busqueda);
-        categoriaLabel = new JLabel("Categoría seleccionada: " + categoriaSeleccionada);
-
+        categoriaLabel = new JLabel("Categoría seleccionada: " + categoriaId);
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -27,8 +40,8 @@ public class Busqueda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(categoriaLabel)
-                    .addComponent(busquedaLabel))
+                    .addComponent(busquedaLabel)
+                    .addComponent(categoriaLabel))
                 .addContainerGap(253, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -42,8 +55,7 @@ public class Busqueda extends javax.swing.JFrame {
         );
 
         pack();
-    }
-    
+    }      
     
 
     

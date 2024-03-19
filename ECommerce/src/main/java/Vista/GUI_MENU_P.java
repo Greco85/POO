@@ -1,17 +1,22 @@
 
 package Vista;
 
+import javax.swing.JButton;
+import javax.swing.GroupLayout;
+
 import Controladores.ControladorInicioSesion;
 
 public class GUI_MENU_P extends javax.swing.JFrame {
     
+    private JButton jButtonRegistrarse; // Nuevo botón
+    
     public GUI_MENU_P() {
         initComponents();
+        initMyComponents(); // Inicializar los nuevos componentes
     }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    
     private void initComponents() {
 
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -111,7 +116,63 @@ public class GUI_MENU_P extends javax.swing.JFrame {
         String contraseña = new String(jPasswordField1.getPassword());
         ControladorInicioSesion.validarCredenciales(this, correo, contraseña); // Pasar el objeto Usuario
     }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void jButtonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    // Crear una instancia del frame de registro
+    Registrarse registroFrame = new Registrarse();
+    
+    // Hacer visible el frame de registro
+    registroFrame.setVisible(true);
+    
+    // Cerrar el frame actual si es necesario
+    this.dispose(); // Opcionalmente puedes cerrar el frame actual
 
+    } 
+    
+    private void initMyComponents() {
+        
+        jButtonRegistrarse = new JButton("Registrarse");
+        jButtonRegistrarse.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButtonRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRegistrarseActionPerformed(evt);
+            }
+        });
+        
+        // Obtener el GroupLayout del contenedor principal
+        GroupLayout layout = (GroupLayout) getContentPane().getLayout();
+        
+        // Agregar el botón al layout
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(202, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(jPasswordField1)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonRegistrarse, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)) // Añadir el nuevo botón al diseño
+                .addGap(201, 201, 201))
+        );
+        
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(89, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonRegistrarse) // Añadir el nuevo botón al diseño
+                .addGap(58, 58, 58))
+        );
+    }
+    
      public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
