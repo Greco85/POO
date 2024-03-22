@@ -83,8 +83,6 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
         navBar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Categoria categoriaSeleccionada = (Categoria) navBar.getSelectedItem();
-                // Aquí deberías manejar la categoría seleccionada
-                // Puedes acceder a categoriaSeleccionada.getId() para obtener el ID de la categoría seleccionada
             }
         });
 

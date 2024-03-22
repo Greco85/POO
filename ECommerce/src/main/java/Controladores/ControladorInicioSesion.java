@@ -14,24 +14,25 @@ public class ControladorInicioSesion {
             return;
         }
         
-        Usuario usuario = new Usuario(correo, contraseña); // Crear una instancia de Usuario
+        // Supongamos que inicialmente el usuario tiene 2.5 estrellas
+        double numEstrellas = 2.5; 
+        String nombre = "Greco Joseth"; 
+       
+    
+Usuario usuario = new Usuario(correo, contraseña, numEstrellas, nombre);
+
+        
         if (ControladorUsuario.validarCredenciales(usuario)) { // Pasar el objeto Usuario
             frameInicioSesion.setVisible(false);
             Inicio ventanaInicio = new Inicio(usuario);
             ventanaInicio.setVisible(true);
             frameInicioSesion.dispose();
-            
         } else {
             JOptionPane.showMessageDialog(null, "Correo electrónico o contraseña incorrectos",
                     "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
-
-
-
-
-
 
   
 
