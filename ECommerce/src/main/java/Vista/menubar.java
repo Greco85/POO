@@ -25,9 +25,9 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
         menu.add(amazonMenuItem);
 
         JComboBox<Categoria> navBar = new JComboBox<>();
-        navBar.addItem(new Categoria("Hogar", 1));
-        navBar.addItem(new Categoria("Limpieza", 2));
-        navBar.addItem(new Categoria("Videojuegos", 3)); //SOLO PARA PROBAR QUE FUNCIONE
+        navBar.addItem(new Categoria(1, "Hogar"));
+        navBar.addItem(new Categoria(2, "Limpieza"));
+        navBar.addItem(new Categoria(3, "Videojuegos")); // Solo para probar que funcione //SOLO PARA PROBAR QUE FUNCIONE
 
         JTextField searchBar = new JTextField();
         searchBar.setToolTipText("Buscar productos");
@@ -35,20 +35,24 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
 
         JButton searchButton = new JButton("Buscar");
         searchButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String busqueda = searchBar.getText();
-                System.out.println("Búsqueda realizada: " + busqueda);
-                Categoria categoriaSeleccionada = (Categoria) navBar.getSelectedItem();
+        public void actionPerformed(ActionEvent e) {
+            String busqueda = searchBar.getText();
+            System.out.println("Búsqueda realizada: " + busqueda);
+            Categoria categoriaSeleccionada = (Categoria) navBar.getSelectedItem();
+            if (categoriaSeleccionada != null) {
                 try {
-                    int categoriaId = categoriaSeleccionada.getId();
+                    int categoriaId = categoriaSeleccionada.getID_CategoriaProducto();
                     Busqueda busquedaVentana = new Busqueda(busqueda, categoriaId, usuario);
                     frame.dispose();
                     busquedaVentana.setVisible(true);
                 } catch (NumberFormatException ex) {
                     System.out.println("Error: El ID de la categoría no es un número válido.");
                 }
+            } else {
+                System.out.println("Error: No se ha seleccionado ninguna categoría.");
             }
-        });
+        }
+    });
 
         JButton accountButton = new JButton("Cuenta");
         accountButton.addActionListener(new ActionListener() {

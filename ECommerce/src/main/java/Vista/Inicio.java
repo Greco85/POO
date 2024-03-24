@@ -16,7 +16,7 @@ public class Inicio extends javax.swing.JFrame {
         initComponents();
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
         this.usuario = usuario;
-        jLabel1.setText("Bienvenido, " + usuario.getCorreo());
+        jLabel1.setText("Bienvenido, " + usuario.getCorreo_Electronico());
         controladorProducto = new ControladorProducto();
         mostrarProductosEnLabels();
     }

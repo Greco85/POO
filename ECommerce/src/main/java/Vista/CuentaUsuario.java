@@ -13,14 +13,10 @@ public class CuentaUsuario extends javax.swing.JFrame {
         this.usuario = usuario;
         initComponents();
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
-        actualizarEstrellas();
         mostrarNombre(); 
     }
 
-   
-    private void actualizarEstrellas() {
-        jLabel2.setText(obtenerTextoEstrellas(usuario.getNumEstrellas()));
-    }
+  
 
    
     private void mostrarNombre() {
@@ -28,20 +24,6 @@ public class CuentaUsuario extends javax.swing.JFrame {
     }
 
     
-    private String obtenerTextoEstrellas(double cantidad) {
-        int cantidadEntera = (int) cantidad;
-        boolean hayMediaEstrella = cantidad - cantidadEntera >= 0.5;
-
-        StringBuilder estrellas = new StringBuilder();
-        for (int i = 0; i < cantidadEntera; i++) {
-            estrellas.append("★ "); 
-        }
-        if (hayMediaEstrella) {
-            estrellas.append("½ "); 
-        }
-        return estrellas.toString();
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

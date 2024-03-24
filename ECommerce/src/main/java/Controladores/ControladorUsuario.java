@@ -4,21 +4,18 @@ import Modelo.Usuario;
 
 public class ControladorUsuario {
 
-    public static void registrarUsuario(String correo, String contraseña) {
-        // Lógica para registrar un nuevo usuario
-    }
-
-    public static void actualizarUsuario(String correo, String nuevaContraseña) {
-        // Lógica para actualizar la contraseña de un usuario
-    }
-
-    public static void eliminarUsuario(String correo) {
-        // Lógica para eliminar un usuario
-    }
+    //Registrar Usuario
+    
+    //Actualizar Usuario
+    
+    //Eliminar Usuario
+    
+    //Cerrar Sesión de Usuario 
+    
     
     public static boolean validarCredenciales(Usuario usuario) {
-        // Extraer el correo y la contraseña del objeto Usuario
-        String correo = usuario.getCorreo();
+        // Obtener el correo y la contraseña del objeto Usuario
+        String correo = usuario.getCorreo_Electronico();
         String contraseña = usuario.getContraseña();
         
         // Lógica para validar las credenciales
@@ -26,6 +23,8 @@ public class ControladorUsuario {
         return correo.equals("123") && contraseña.equals("123");
     }
 }
+
+
 
 
 

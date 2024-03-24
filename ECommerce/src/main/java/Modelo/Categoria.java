@@ -2,24 +2,34 @@
 package Modelo;
 
 public class Categoria {
-    private String nombre; //SOLO PARA PROBAR COSAS LUEGO MODIFICO
-    private int id;
+    private int ID_CategoriaProducto;
+    private String nombreCategoria;
 
-    public Categoria(String nombre, int id) {
-        this.nombre = nombre;
-        this.id = id;
+    // Constructor
+    public Categoria(int ID_CategoriaProducto, String nombreCategoria) {
+        this.ID_CategoriaProducto = ID_CategoriaProducto;
+        this.nombreCategoria = nombreCategoria;
     }
 
-    public String getNombre() {
-        return nombre;
+    // Getters y Setters
+    public int getID_CategoriaProducto() {
+        return ID_CategoriaProducto;
     }
 
-    public int getId() {
-        return id;
+    public void setID_CategoriaProducto(int ID_CategoriaProducto) {
+        this.ID_CategoriaProducto = ID_CategoriaProducto;
     }
 
+    public String getNombreCategoria() {
+        return nombreCategoria;
+    }
+
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
+    }
+    
     @Override
     public String toString() {
-        return nombre;
+        return nombreCategoria;
     }
 }

@@ -1,4 +1,5 @@
-package Controladores;
+
+package Controladores; //INICIO DE SESION
 
 import javax.swing.JOptionPane;
 import Vista.GUI_MENU_P;
@@ -6,20 +7,21 @@ import Vista.Inicio;
 import Modelo.Usuario;
 
 public class ControladorInicioSesion {
-
-    public static void validarCredenciales(GUI_MENU_P frameInicioSesion, String correo, String contraseña) {
-        if (correo.isEmpty() || contraseña.isEmpty()) {
+    
+    //Cerrar Sesión de Usuario
+    
+    public static void validarCredenciales(GUI_MENU_P frameInicioSesion, String Correo, String Contraseña) {
+        if (Correo.isEmpty() || Contraseña.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos",
                     "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        // Supongamos que inicialmente el usuario tiene 2.5 estrellas
-        double numEstrellas = 2.5; 
-        String nombre = "Greco Joseth"; 
+        
+        String Nombre = "Greco Joseth"; 
        
     
-Usuario usuario = new Usuario(correo, contraseña, numEstrellas, nombre);
+Usuario usuario = new Usuario(Correo, Contraseña, Nombre);
 
         
         if (ControladorUsuario.validarCredenciales(usuario)) { // Pasar el objeto Usuario
