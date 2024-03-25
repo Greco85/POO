@@ -1,4 +1,3 @@
-
 package Modelo;
 
 import java.util.Date;
@@ -12,10 +11,11 @@ public class Usuario {
     private String Direccion;
     private String Telefono;
     private Date Fecha_Registro;
+    private Date Fecha_Nacimiento;
     private String ImagenURL;
 
     // Constructor
-    public Usuario(int ID_Usuario, String Nombre, String Apellido, String Correo_Electronico, String Contraseña, String Direccion, String Telefono, Date Fecha_Registro, String ImagenURL) {
+    public Usuario(int ID_Usuario, String Nombre, String Apellido, String Correo_Electronico, String Contraseña, String Direccion, String Telefono, Date Fecha_Registro, Date Fecha_Nacimiento, String ImagenURL) {
         this.ID_Usuario = ID_Usuario;
         this.Nombre = Nombre;
         this.Apellido = Apellido;
@@ -24,16 +24,28 @@ public class Usuario {
         this.Direccion = Direccion;
         this.Telefono = Telefono;
         this.Fecha_Registro = Fecha_Registro;
+        this.Fecha_Nacimiento = Fecha_Nacimiento;
         this.ImagenURL = ImagenURL;
     }
     
-    // Constructor para utilizar en el controlador LO MANDAMOS AL CONTROLADOR DE INICIO DE SESION
+    // Constructor para utilizar en el controlador de inicio de sesión
     public Usuario(String Correo_Electronico, String Contraseña, String Nombre) {
         this.Correo_Electronico = Correo_Electronico;
         this.Contraseña = Contraseña;
         this.Nombre = Nombre;
     }
-
+    
+    // Constructor adicional para casos donde se registra un usuario sin todos los campos
+    public Usuario(String Correo_Electronico, String Contraseña, String Nombre, String Apellido, String Telefono, Date Fecha_Registro, Date Fecha_Nacimiento, String ImagenURL) {
+        this.Correo_Electronico = Correo_Electronico;
+        this.Contraseña = Contraseña;
+        this.Nombre = Nombre;
+        this.Apellido = Apellido;
+        this.Telefono = Telefono;
+        this.Fecha_Registro = Fecha_Registro;
+        this.Fecha_Nacimiento = Fecha_Nacimiento;
+        this.ImagenURL = ImagenURL;
+    }
 
     // Getters y Setters
     public int getID_Usuario() {
@@ -93,12 +105,20 @@ public class Usuario {
     }
 
     public Date getFecha_Registro() {
-        return Fecha_Registro;
-    }
+    return Fecha_Registro;
+}
 
-    public void setFecha_Registro(Date Fecha_Registro) {
-        this.Fecha_Registro = Fecha_Registro;
-    }
+public void setFecha_Registro(Date Fecha_Registro) {
+    this.Fecha_Registro = Fecha_Registro;
+}
+
+public Date getFecha_Nacimiento() {
+    return Fecha_Nacimiento;
+}
+
+public void setFecha_Nacimiento(Date Fecha_Nacimiento) {
+    this.Fecha_Nacimiento = Fecha_Nacimiento;
+}
 
     public String getImagenURL() {
         return ImagenURL;
@@ -108,6 +128,5 @@ public class Usuario {
         this.ImagenURL = ImagenURL;
     }
 }
-
 
    

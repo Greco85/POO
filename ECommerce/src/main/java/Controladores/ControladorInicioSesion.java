@@ -8,28 +8,24 @@ import Modelo.Usuario;
 
 public class ControladorInicioSesion {
     
-    //Cerrar Sesión de Usuario
-    
-    public static void validarCredenciales(GUI_MENU_P frameInicioSesion, String Correo, String Contraseña) {
+public static void validarCredenciales(GUI_MENU_P frameInicioSesion, String Correo, String Contraseña) {
         if (Correo.isEmpty() || Contraseña.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos",
                     "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        
-        String Nombre = "Greco Joseth"; 
-       
-    
-Usuario usuario = new Usuario(Correo, Contraseña, Nombre);
+        // Crea un objeto Usuario con el correo y la contraseña proporcionados
+        Usuario usuario = new Usuario(Correo, Contraseña, null);
 
-        
-        if (ControladorUsuario.validarCredenciales(usuario)) { // Pasar el objeto Usuario
+        // Verifica las credenciales en la DB
+        if (ControladorUsuario.validarCredenciales(usuario)) {
+            // Si las credenciales son correctas, accede al otro frame
             frameInicioSesion.setVisible(false);
             Inicio ventanaInicio = new Inicio(usuario);
             ventanaInicio.setVisible(true);
             frameInicioSesion.dispose();
         } else {
+            // Si las credenciales son incorrectas, muestra un mensaje de error
             JOptionPane.showMessageDialog(null, "Correo electrónico o contraseña incorrectos",
                     "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
         }

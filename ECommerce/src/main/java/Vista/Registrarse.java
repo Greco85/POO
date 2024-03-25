@@ -2,48 +2,57 @@
 package Vista;
 
 import javax.swing.*;
+import com.toedter.calendar.JDateChooser;
+import java.text.SimpleDateFormat;
 import java.awt.event.*;
+import Modelo.Usuario;
+import java.util.Date;
+import java.text.ParseException;
+import Controladores.ControladorUsuario;
+import SQL.Conexion;
+import java.sql.Connection;
 
-public class Registrarse extends javax.swing.JFrame { //SOLO PARA VER EL DISEÑOO LUEGO LE MUEVO COSILLAS
-    
-    private JLabel lblNombreCompleto;
+
+public class Registrarse extends javax.swing.JFrame {
+    private JDateChooser dateChooser;
+
+    private JLabel lblNombre;
+    private JLabel lblApellido;
     private JLabel lblCorreoElectronico;
     private JLabel lblContraseña;
-    private JLabel lblDireccionEnvio;
     private JLabel lblNumeroTelefono;
     private JLabel lblFechaNacimiento;
-    private JTextField txtNombreCompleto;
+    private JTextField txtNombre;
+    private JTextField txtApellido;
     private JTextField txtCorreoElectronico;
     private JTextField txtContraseña;
-    private JTextField txtDireccionEnvio;
     private JTextField txtNumeroTelefono;
-    private JTextField txtFechaNacimiento;
     private JButton btnRegistrarse;
     private JButton btnRegresar;
 
-    
     public Registrarse() {
         initComponents();
         initMyComponents();
     }
     
-  private void initMyComponents() {
+    private void initMyComponents() {
         setTitle("Registrarse");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        lblNombreCompleto = new JLabel("Nombre Completo:");
+        lblNombre = new JLabel("Nombre:");
+        lblApellido = new JLabel("Apellido:");
         lblCorreoElectronico = new JLabel("Correo Electrónico:");
         lblContraseña = new JLabel("Contraseña:");
-        lblDireccionEnvio = new JLabel("Dirección de Envío:");
-        lblNumeroTelefono = new JLabel("Número de Teléfono:");
+        lblNumeroTelefono = new JLabel("Teléfono:");
         lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
 
-        txtNombreCompleto = new JTextField(20);
+        txtNombre = new JTextField(20);
+        txtApellido = new JTextField(20);
         txtCorreoElectronico = new JTextField(20);
         txtContraseña = new JTextField(20);
-        txtDireccionEnvio = new JTextField(20);
         txtNumeroTelefono = new JTextField(20);
-        txtFechaNacimiento = new JTextField(20);
+        dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("yyyy-MM-dd");
 
         btnRegistrarse = new JButton("Registrarse");
         btnRegresar = new JButton("Regresar");
@@ -52,8 +61,8 @@ public class Registrarse extends javax.swing.JFrame { //SOLO PARA VER EL DISEÑO
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (todosCamposCompletos()) {
+                    Usuario nuevoUsuario = obtenerDatosUsuario();
                     mostrarMensaje("Registro exitoso");
-                    // Redirigir al nuevo frame
                     abrirNuevoFrame();
                 } else {
                     mostrarMensaje("Error: Por favor complete todos los campos");
@@ -64,9 +73,7 @@ public class Registrarse extends javax.swing.JFrame { //SOLO PARA VER EL DISEÑO
         btnRegresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Cerrar la ventana actual
                 dispose();
-                // Crear e inicializar el nuevo frame
                 GUI_MENU_P menuFrame = new GUI_MENU_P();
                 menuFrame.setVisible(true);
             }
@@ -79,20 +86,20 @@ public class Registrarse extends javax.swing.JFrame { //SOLO PARA VER EL DISEÑO
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNombreCompleto)
+                    .addComponent(lblNombre)
+                    .addComponent(lblApellido)
                     .addComponent(lblCorreoElectronico)
                     .addComponent(lblContraseña)
-                    .addComponent(lblDireccionEnvio)
                     .addComponent(lblNumeroTelefono)
                     .addComponent(lblFechaNacimiento))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombreCompleto)
+                    .addComponent(txtNombre)
+                    .addComponent(txtApellido)
                     .addComponent(txtCorreoElectronico)
                     .addComponent(txtContraseña)
-                    .addComponent(txtDireccionEnvio)
                     .addComponent(txtNumeroTelefono)
-                    .addComponent(txtFechaNacimiento)
+                    .addComponent(dateChooser)
                     .addComponent(btnRegistrarse, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRegresar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -102,8 +109,12 @@ public class Registrarse extends javax.swing.JFrame { //SOLO PARA VER EL DISEÑO
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNombreCompleto)
-                    .addComponent(txtNombreCompleto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNombre)
+                    .addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblApellido)
+                    .addComponent(txtApellido, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCorreoElectronico)
@@ -114,16 +125,12 @@ public class Registrarse extends javax.swing.JFrame { //SOLO PARA VER EL DISEÑO
                     .addComponent(txtContraseña, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDireccionEnvio)
-                    .addComponent(txtDireccionEnvio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNumeroTelefono)
                     .addComponent(txtNumeroTelefono, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(lblFechaNacimiento)
-                    .addComponent(txtFechaNacimiento, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRegistrarse)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -134,24 +141,86 @@ public class Registrarse extends javax.swing.JFrame { //SOLO PARA VER EL DISEÑO
         pack();
         setLocationRelativeTo(null);
     }
-
+ 
     private boolean todosCamposCompletos() {
-        return !txtNombreCompleto.getText().isEmpty()
-                && !txtCorreoElectronico.getText().isEmpty()
-                && !txtContraseña.getText().isEmpty()
-                && !txtDireccionEnvio.getText().isEmpty()
-                && !txtNumeroTelefono.getText().isEmpty()
-                && !txtFechaNacimiento.getText().isEmpty();
+    return !txtNombre.getText().isEmpty()
+            && !txtApellido.getText().isEmpty()
+            && !txtCorreoElectronico.getText().isEmpty()
+            && !txtContraseña.getText().isEmpty()
+            && !txtNumeroTelefono.getText().isEmpty()
+            && dateChooser.getDate() != null;
+}
+
+private Usuario obtenerDatosUsuario() {
+    String nombre = txtNombre.getText();
+    String apellido = txtApellido.getText();
+    String correo = txtCorreoElectronico.getText();
+    String contraseña = txtContraseña.getText();
+    String telefono = txtNumeroTelefono.getText();
+    java.util.Date fechaNacimiento = dateChooser.getDate();
+    
+    // Obtener la fecha actual y formatearla como "yyyy-MM-dd"
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String fechaRegistroFormateada = dateFormat.format(new java.util.Date());
+
+    // Formatear la fecha de nacimiento si está presente
+    String fechaNacimientoFormateada = null;
+    if (fechaNacimiento != null) {
+        fechaNacimientoFormateada = dateFormat.format(fechaNacimiento);
     }
 
-    private void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
+    // Establecer las fechas en los atributos de Usuario
+    Date fechaNacimientoDate = null;
+    Date fechaRegistroDate = null;
+
+    try {
+        fechaNacimientoDate = dateFormat.parse(fechaNacimientoFormateada);
+        fechaRegistroDate = dateFormat.parse(fechaRegistroFormateada);
+    } catch (ParseException e) {
+        e.printStackTrace(); // Manejo de errores de análisis de fechas
     }
+
+    // Establecer la URL de la imagen por defecto
+    String imagenURL = "img/ejemplo"; //Luego veo q pongo
+
+    Connection conexion = Conexion.getInstance().getConexion();
+    ControladorUsuario controladorUsuario = new ControladorUsuario(conexion);
+
+    
+    // Crear un nuevo usuario
+    Usuario nuevoUsuario = new Usuario(correo, contraseña, nombre);
+    nuevoUsuario.setApellido(apellido);
+    nuevoUsuario.setTelefono(telefono);
+    nuevoUsuario.setFecha_Nacimiento(fechaNacimientoDate);
+    nuevoUsuario.setFecha_Registro(fechaRegistroDate);
+    nuevoUsuario.setImagenURL(imagenURL);
+
+    // Guardar el usuario en la base de datos usando el controlador
+    controladorUsuario.RegistrarUsuario(nuevoUsuario);
+
+    // Imprimir los datos obtenidos
+    System.out.println("Datos del usuario:");
+    System.out.println("Nombre: " + nombre);
+    System.out.println("Apellido: " + apellido);
+    System.out.println("Correo electrónico: " + correo);
+    System.out.println("Contraseña: " + contraseña);
+    System.out.println("Teléfono: " + telefono);
+    System.out.println("Fecha de nacimiento: " + fechaNacimientoFormateada);
+    System.out.println("Fecha de registro: " + fechaRegistroFormateada);
+    System.out.println("URL de imagen: " + imagenURL);
+
+    return nuevoUsuario;
+}
+
+
+
+private void mostrarMensaje(String mensaje) {
+    JOptionPane.showMessageDialog(this, mensaje);
+}
+
     
     private void abrirNuevoFrame() {
-        // Cerrar la ventana actual
         dispose();
-        // Crear e inicializar el nuevo frame
         GUI_MENU_P menuFrame = new GUI_MENU_P();
         menuFrame.setVisible(true);
     }

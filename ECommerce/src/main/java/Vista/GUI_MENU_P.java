@@ -15,6 +15,8 @@ public class GUI_MENU_P extends javax.swing.JFrame {
         initMyComponents(); // Inicializar los nuevos componentes
     }
     
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -118,7 +120,6 @@ public class GUI_MENU_P extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void jButtonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {                                         
-    // Crear una instancia del frame de registro
     Registrarse registroFrame = new Registrarse();
     
     // Hacer visible el frame de registro
@@ -180,6 +181,8 @@ public class GUI_MENU_P extends javax.swing.JFrame {
             }
         });
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
