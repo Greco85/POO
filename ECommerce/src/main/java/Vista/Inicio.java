@@ -3,6 +3,7 @@ package Vista;
 import Modelo.Usuario;
 import Modelo.Producto;
 import Controladores.ControladorProducto;
+import Modelo.SesionActiva;
 import javax.swing.JLabel;
 
 public class Inicio extends javax.swing.JFrame {
@@ -13,15 +14,18 @@ public class Inicio extends javax.swing.JFrame {
     private int categoriaId;
 
     public Inicio(Usuario usuario) {
-        initComponents();
-        menubar.initMenuBar(this, usuario, busqueda, categoriaId);
-        this.usuario = usuario;
-        jLabel1.setText("Bienvenido, " + usuario.getCorreo_Electronico());
-        controladorProducto = new ControladorProducto();
-        mostrarProductosEnLabels();
-    }
-        
+    initComponents();
+    menubar.initMenuBar(this, usuario, busqueda, categoriaId);
+    this.usuario = usuario;
+    jLabel1.setText("Bienvenido, " + usuario.getCorreo_Electronico());
+    controladorProducto = new ControladorProducto();
+    mostrarProductosEnLabels();
     
+    // Obtén el ID del usuario desde SesionActiva
+    int ID_Usuario = SesionActiva.getID_Usuario();
+    System.out.println("Hola ya está en el inicio y el ID del usuario aquí es: " + ID_Usuario);
+}
+        
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

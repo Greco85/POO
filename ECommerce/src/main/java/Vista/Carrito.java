@@ -1,5 +1,6 @@
 package Vista;
 
+import Modelo.SesionActiva;
 import Modelo.Usuario; //EL CARRITO DESPUES DE HACER FUNCIONAR LO DE LOS PRODUCTOS
 
 public class Carrito extends javax.swing.JFrame {
@@ -11,6 +12,9 @@ public class Carrito extends javax.swing.JFrame {
         this.usuario = usuario;
         initComponents();
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
+        // Para ver si funciona en cualquier frame
+    int ID_Usuario = SesionActiva.getID_Usuario();
+    System.out.println("Hola ya esta en el inicio y el ID del usuario aquí es: " + ID_Usuario);
     }
 
     @SuppressWarnings("unchecked")

@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
+    
     private static Conexion instancia;
     private Connection conexion;
     
@@ -13,7 +14,7 @@ public class Conexion {
     private static final String USER = "greco";
     private static final String PASSWORD = "123";
 
-    private Conexion() {
+     private Conexion() {
         try {
             conexion = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Conexión exitosa a la base de datos");
@@ -22,8 +23,9 @@ public class Conexion {
         }
     }
 
-     public static Conexion getInstance() {
+    public static Conexion getInstance() {
         if (instancia == null) {
+            System.out.println("Creando nueva instancia de Conexion");
             instancia = new Conexion();
         }
         return instancia;
