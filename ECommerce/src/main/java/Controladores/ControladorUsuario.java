@@ -194,15 +194,20 @@ public void actualizarUsuario(Usuario usuario) {
     }
 }
 
-    
-    //Eliminar Usuario
+     // Eliminar Usuario
+    public boolean eliminarUsuario(int ID_Usuario) {
+        String sql = "DELETE FROM Usuario WHERE ID_Usuario = ?";
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, ID_Usuario);
+         
+            int filasAfectadas = pstmt.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar usuario: " + e.getMessage());
+            return false;
+        }
+    }
 
-//Este solo es eliminar facil, mañana lo hago
-    
-    //Cerrar Sesión de Usuario 
-
-//Mañana tambien
-    
     
 public static boolean validarCredenciales(Usuario usuario) {
     boolean credencialesCorrectas = false;
