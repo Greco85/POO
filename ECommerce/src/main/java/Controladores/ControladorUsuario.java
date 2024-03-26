@@ -86,8 +86,10 @@ public Usuario obtenerUsuarioPorId(int id) {
         System.err.println("La cadena de dirección no tiene suficientes componentes");
     }
 } else {
-                //Como acepta valores nulos pongo esto
-    System.err.println("La cadena de dirección está vacía");
+                //Como acepta valores nulos pongo esto AHORA SI
+        Direccion direccion = new Direccion("", "", "", "", "", "");
+        usuario.setDireccion(direccion);
+        System.err.println("La cadena de dirección está vacía");
 }
             usuario.setTelefono(resultado.getString("Telefono"));
             usuario.setFecha_Registro(resultado.getDate("Fecha_Registro"));
