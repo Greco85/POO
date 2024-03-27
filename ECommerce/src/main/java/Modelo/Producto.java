@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Producto {
     private int ID_Producto;
+    private int ID_Usuario; // Agregado ID_Usuario
     private String Nombre;
     private String Descripcion;
     private double Precio;
@@ -14,8 +15,9 @@ public class Producto {
     private String ImagenURL;
 
     // Constructor
-    public Producto(int ID_Producto, String Nombre, String Descripcion, double Precio, int Cantidad_Disponible, int ID_CategoriaProducto, Date Fecha_Creacion, int ID_EstadoProducto, String ImagenURL) {
+    public Producto(int ID_Producto, int ID_Usuario, String Nombre, String Descripcion, double Precio, int Cantidad_Disponible, int ID_CategoriaProducto, Date Fecha_Creacion, int ID_EstadoProducto, String ImagenURL) {
         this.ID_Producto = ID_Producto;
+        this.ID_Usuario = ID_Usuario;
         this.Nombre = Nombre;
         this.Descripcion = Descripcion;
         this.Precio = Precio;
@@ -33,6 +35,14 @@ public class Producto {
 
     public void setID_Producto(int ID_Producto) {
         this.ID_Producto = ID_Producto;
+    }
+    
+    public int getID_Usuario() {
+        return ID_Usuario;
+    }
+
+    public void setID_Usuario(int ID_Usuario) {
+        this.ID_Usuario = ID_Usuario;
     }
 
     public String getNombre() {
@@ -99,7 +109,6 @@ public class Producto {
         this.ImagenURL = ImagenURL;
     }
 }
-
 
 
 
