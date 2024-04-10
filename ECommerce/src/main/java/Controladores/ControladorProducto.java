@@ -72,7 +72,6 @@ public class ControladorProducto {
     //Actualizar Producto 
     //Eliminar Producto 
     
-    
     //Obtener Productos
     
     public List<Producto> obtenerTodosLosProductos(int idUsuario) {
