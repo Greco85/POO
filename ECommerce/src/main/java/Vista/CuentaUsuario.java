@@ -31,6 +31,7 @@ public class CuentaUsuario extends javax.swing.JFrame {
         EditarCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 abrirEditarDatosUsuario();
+                dispose();
             }
         });
         
@@ -38,6 +39,7 @@ public class CuentaUsuario extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent e) {
                 Publicaciones publicacionesFrame = new Publicaciones();
                 publicacionesFrame.setVisible(true);
+                dispose();
             }
         });
     
@@ -64,10 +66,12 @@ public class CuentaUsuario extends javax.swing.JFrame {
    
     }
      
-     private void abrirEditarDatosUsuario() {
-        EditarDatosUsuario editarDatosUsuario = new EditarDatosUsuario(usuario, conexion);
-        editarDatosUsuario.setVisible(true);
-    }
+    private void abrirEditarDatosUsuario() {
+    EditarDatosUsuario editarDatosUsuario = new EditarDatosUsuario(usuario, conexion);
+    editarDatosUsuario.setVisible(true);
+    dispose();
+}
+
      
      
 private void initmyComponents() {

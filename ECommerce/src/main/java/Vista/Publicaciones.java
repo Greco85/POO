@@ -55,6 +55,7 @@ public class Publicaciones extends javax.swing.JFrame {
         jButtonNuevaPublicacion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 jButtonNuevaPublicacionActionPerformed(evt);
+                dispose();
             }
         });
         panelPrincipal.add(jButtonNuevaPublicacion, BorderLayout.SOUTH);
@@ -79,35 +80,44 @@ public class Publicaciones extends javax.swing.JFrame {
         }
     }
 
-    private JPanel crearPanelProducto(Producto producto) {
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panel.setLayout(new BorderLayout());
-        JPanel panelImagen = new JPanel();
-        JLabel labelImagen = new JLabel(new ImageIcon(producto.getImagenURL())); // Suponiendo que la URL es para una imagen
-        panelImagen.add(labelImagen);
+ private JPanel crearPanelProducto(Producto producto) {
+    JPanel panel = new JPanel();
+    panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    panel.setLayout(new BorderLayout());
+    JPanel panelImagen = new JPanel();
+    JLabel labelImagen = new JLabel(new ImageIcon(producto.getImagenURL())); // Suponiendo que la URL es para una imagen
+    panelImagen.add(labelImagen);
 
-        // Panel para la información
-        JPanel panelInfo = new JPanel(new GridLayout(2, 1));
-        JLabel labelNombre = new JLabel(producto.getNombre());
-        labelNombre.setFont(new Font("Arial", Font.BOLD, 18));
-        JLabel labelPrecio = new JLabel("Precio: $" + producto.getPrecio());
-        labelPrecio.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelInfo.add(labelNombre);
-        panelInfo.add(labelPrecio);
+    // Panel para la información
+    JPanel panelInfo = new JPanel(new GridLayout(2, 1));
+    JLabel labelNombre = new JLabel(producto.getNombre());
+    labelNombre.setFont(new Font("Arial", Font.BOLD, 18));
+    JLabel labelPrecio = new JLabel("Precio: $" + producto.getPrecio());
+    labelPrecio.setFont(new Font("Arial", Font.PLAIN, 16));
+    panelInfo.add(labelNombre);
+    panelInfo.add(labelPrecio);
 
-        JPanel panelBotones = new JPanel(new GridLayout(1, 2));
-        JButton botonEditar = new JButton("EDITAR");
-        JButton botonBorrar = new JButton("BORRAR");
-        panelBotones.add(botonEditar);
-        panelBotones.add(botonBorrar);
-        panel.add(panelImagen, BorderLayout.WEST);
-        panel.add(panelInfo, BorderLayout.CENTER);
-        panel.add(panelBotones, BorderLayout.SOUTH);
+    JPanel panelBotones = new JPanel(new GridLayout(1, 2));
+    JButton botonEditar = new JButton("EDITAR");
+    JButton botonBorrar = new JButton("BORRAR");
+    panelBotones.add(botonEditar);
+    panelBotones.add(botonBorrar);
+    panel.add(panelImagen, BorderLayout.WEST);
+    panel.add(panelInfo, BorderLayout.CENTER);
+    panel.add(panelBotones, BorderLayout.SOUTH);
 
-        return panel;
-    }
+    botonEditar.addActionListener(evt -> {
+        EditarDatosPublicacion editarDatosPublicacion = new EditarDatosPublicacion();
+        editarDatosPublicacion.setVisible(true);
+        dispose();
+    });
     
+    botonBorrar.addActionListener(evt -> {
+        
+    });
+
+    return panel;
+} 
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

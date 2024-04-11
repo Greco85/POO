@@ -94,8 +94,13 @@ public class HacerPublicacion extends javax.swing.JFrame {
 
     // Botón Publicar
     JButton btnPublicar = new JButton("Publicar");
-    btnPublicar.addActionListener(evt -> btnPublicarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
-            txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText()));
+    btnPublicar.addActionListener(evt -> {
+        btnPublicarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
+  txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText());
+        Publicaciones publicaciones = new Publicaciones();
+        publicaciones.setVisible(true);
+        dispose();
+    });
     gbc.gridx = 1;
     gbc.gridy = 6;
     gbc.anchor = GridBagConstraints.CENTER;

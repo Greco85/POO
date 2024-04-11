@@ -143,6 +143,8 @@ private void initMyComponents() {
 
     btnCancelar.addActionListener(e -> {
         dispose();
+        CuentaUsuario cuentaUsuario = new CuentaUsuario(usuario);
+        cuentaUsuario.setVisible(true);
     });
 
     btnActualizar.addActionListener(new ActionListener() {
@@ -288,6 +290,9 @@ private void btnActualizarActionPerformed(ActionEvent evt) {
         controladorUsuario.actualizarUsuario(usuario);
         
         System.out.println("Usuario actualizado exitosamente.");
+        CuentaUsuario cuentaUsuario = new CuentaUsuario(usuario);
+        cuentaUsuario.setVisible(true);
+        dispose();
     } catch (Exception e) {
         System.out.println("Error al actualizar los datos del usuario: " + e.getMessage());
     }
@@ -315,8 +320,8 @@ private void btnActualizarActionPerformed(ActionEvent evt) {
     }// </editor-fold>//GEN-END:initComponents
 
    
+
 public static void main(String[] args) {
-   
     Conexion conexion = Conexion.getInstance();
     System.out.println("Instancia de Conexion obtenida.");
 
@@ -328,6 +333,8 @@ public static void main(String[] args) {
         System.out.println("No se pudo establecer la conexión a la base de datos.");
     }
 }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
