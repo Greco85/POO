@@ -8,14 +8,28 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import Modelo.Producto;
+
 
 
 
 public class EditarDatosPublicacion extends javax.swing.JFrame {
 
+    int ID_Producto;
+    JTextField txtNombre;
+    JTextField txtDescripcion;
+    JTextField txtPrecio;
+    JTextField txtCantidad;
+    JComboBox<String> cmbCategoria;
+    JTextField txtImagenURL;
     
-    public EditarDatosPublicacion() {
-        initmyComponents();
+    public EditarDatosPublicacion(int ID_Producto) {
+        this.ID_Producto = ID_Producto;
+         initmyComponents();
+         obtenerDatosProducto();
+       
+        
+
     }
     
     private void initmyComponents() {
@@ -36,7 +50,7 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(lblNombre, gbc);
-        JTextField txtNombre = new JTextField(20);
+        txtNombre = new JTextField(20);
         gbc.gridx = 1;
         panel.add(txtNombre, gbc);
 
@@ -45,7 +59,7 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(lblDescripcion, gbc);
-        JTextField txtDescripcion = new JTextField(20);
+        txtDescripcion = new JTextField(20);
         gbc.gridx = 1;
         panel.add(txtDescripcion, gbc);
 
@@ -54,7 +68,7 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         panel.add(lblPrecio, gbc);
-        JTextField txtPrecio = new JTextField(20);
+        txtPrecio = new JTextField(20);
         gbc.gridx = 1;
         panel.add(txtPrecio, gbc);
 
@@ -63,7 +77,7 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         gbc.gridx = 0;
         gbc.gridy = 3;
         panel.add(lblCantidad, gbc);
-        JTextField txtCantidad = new JTextField(20);
+        txtCantidad = new JTextField(20);
         gbc.gridx = 1;
         panel.add(txtCantidad, gbc);
 
@@ -73,7 +87,7 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         gbc.gridy = 4;
         panel.add(lblCategoria, gbc);
 
-        JComboBox<String> cmbCategoria = new JComboBox<>();
+        cmbCategoria = new JComboBox<>();
         gbc.gridx = 1;
         panel.add(cmbCategoria, gbc);
 
@@ -89,7 +103,7 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         gbc.gridx = 0;
         gbc.gridy = 5;
         panel.add(lblImagenURL, gbc);
-        JTextField txtImagenURL = new JTextField(20);
+        txtImagenURL = new JTextField(20);
         gbc.gridx = 1;
         panel.add(txtImagenURL, gbc);
 
@@ -99,6 +113,9 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
             btnActualizarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
                     txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText());
             dispose();
+            Publicaciones publicaciones = new Publicaciones();
+            publicaciones.setVisible(true);
+            
         });
         gbc.gridx = 1;
         gbc.gridy = 6;
@@ -109,27 +126,47 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
 
         getContentPane().add(panel);
     }
-
-    private void btnActualizarActionPerformed(String nombre, String descripcion,
-                                               String precio, String cantidad, int categoria, String imagenURL) {
-        int ID_Usuario = SesionActiva.getID_Usuario();
-        System.out.println("ID_Usuario: " + ID_Usuario);
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Descripción: " + descripcion);
-        System.out.println("Precio: " + precio);
-        System.out.println("Cantidad_Disponible: " + cantidad);
-        System.out.println("ID_CategoriaProducto: " + categoria);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String fechaCreacion = dateFormat.format(new Date());
-        System.out.println("Fecha_Creacion: " + fechaCreacion);
-
-        System.out.println("ID_EstadoProducto: " + 1);
-        System.out.println("URL de la Imagen: " + imagenURL);
-
+    
+        private void obtenerDatosProducto() {
         ControladorProducto controladorProducto = new ControladorProducto();
-        // Aquí deberías implementar la lógica para actualizar la publicación
+        Producto producto = controladorProducto.obtenerProductosporID(ID_Producto);
+
+        txtNombre.setText(producto.getNombre());
+        txtDescripcion.setText(producto.getDescripcion());
+        txtPrecio.setText(String.valueOf(producto.getPrecio()));
+        txtCantidad.setText(String.valueOf(producto.getCantidad_Disponible()));
+        txtImagenURL.setText(producto.getImagenURL());
+
+        int ID_CategoriaProducto = producto.getID_CategoriaProducto();
+        String nombreCategoria = controladorProducto.obtenerCategoriaPorID(ID_CategoriaProducto);
+        if (nombreCategoria != null) {
+            cmbCategoria.setSelectedItem(nombreCategoria);
+        }
     }
+
+
+ private void btnActualizarActionPerformed(String nombre, String descripcion,
+                                           String precio, String cantidad, int categoria, String imagenURL) {
+    int ID_Usuario = SesionActiva.getID_Usuario();
+    System.out.println("ID_Usuario: " + ID_Usuario);
+    System.out.println("Nombre: " + nombre);
+    System.out.println("Descripción: " + descripcion);
+    System.out.println("Precio: " + precio);
+    System.out.println("Cantidad_Disponible: " + cantidad);
+    System.out.println("ID_CategoriaProducto: " + categoria);
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String fechaCreacion = dateFormat.format(new Date());
+    System.out.println("Fecha_Creacion: " + fechaCreacion);
+
+    System.out.println("ID_EstadoProducto: " + 1);
+    System.out.println("URL de la Imagen: " + imagenURL);
+
+    ControladorProducto controladorProducto = new ControladorProducto();
+    controladorProducto.actualizarProducto(ID_Producto, nombre, descripcion,
+                                            Double.parseDouble(precio), Integer.parseInt(cantidad),
+                                            categoria, imagenURL);
+}
 
     
     @SuppressWarnings("unchecked")
@@ -179,7 +216,6 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditarDatosPublicacion().setVisible(true);
             }
         });
     }

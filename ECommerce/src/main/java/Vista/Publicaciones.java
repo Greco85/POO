@@ -106,15 +106,33 @@ public class Publicaciones extends javax.swing.JFrame {
     panel.add(panelInfo, BorderLayout.CENTER);
     panel.add(panelBotones, BorderLayout.SOUTH);
 
-    botonEditar.addActionListener(evt -> {
-        EditarDatosPublicacion editarDatosPublicacion = new EditarDatosPublicacion();
-        editarDatosPublicacion.setVisible(true);
-        dispose();
-    });
+  
+       
     
-    botonBorrar.addActionListener(evt -> {
-        
+    
+    botonEditar.addActionListener(evt -> {
+    int ID_Producto = producto.getID_Producto();
+    System.out.println("ID del Producto: " + ID_Producto);
+    EditarDatosPublicacion editarDatosPublicacion = new EditarDatosPublicacion(ID_Producto);
+    editarDatosPublicacion.setVisible(true);
+    dispose(); 
     });
+
+    
+   botonBorrar.addActionListener(evt -> {
+        int ID_Producto = producto.getID_Producto();
+        System.out.println("ID del Producto: " + ID_Producto);
+
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Estas seguro de borrar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
+            controladorProducto = new ControladorProducto();
+            controladorProducto.eliminarProducto(ID_Producto);
+            dispose();
+            Publicaciones publicaciones = new Publicaciones();
+            publicaciones.setVisible(true);
+        }
+    });
+
 
     return panel;
 } 

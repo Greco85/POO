@@ -69,10 +69,104 @@ public class ControladorProducto {
             }
         }
     }
-    //Actualizar Producto 
-    //Eliminar Producto 
     
-    //Obtener Productos
+    //Actualizar Producto 
+    
+     public void actualizarProducto(int ID_Producto, String nombre, String descripcion, double precio, int cantidad, int categoria, String imagenURL) {
+        Connection conexion = null;
+        PreparedStatement statement = null;
+
+        try {
+            conexion = Conexion.getInstance().getConexion();
+            String query = "UPDATE Producto SET Nombre = ?, Descripcion = ?, Precio = ?, Cantidad_Disponible = ?, ID_CategoriaProducto = ?, ImagenURL = ? WHERE ID_Producto = ?";
+            statement = conexion.prepareStatement(query);
+            statement.setString(1, nombre);
+            statement.setString(2, descripcion);
+            statement.setDouble(3, precio);
+            statement.setInt(4, cantidad);
+            statement.setInt(5, categoria);
+            statement.setString(6, imagenURL);
+            statement.setInt(7, ID_Producto);
+
+            int filasActualizadas = statement.executeUpdate();
+            if (filasActualizadas > 0) {
+                System.out.println("Producto actualizado correctamente.");
+            } else {
+                System.out.println("No se pudo actualizar el producto.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar el producto: " + e.getMessage());
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+     
+    //Eliminar Producto 
+     
+     public void eliminarProducto(int ID_Producto) {
+        Connection conexion = null;
+        PreparedStatement statement = null;
+
+        try {
+            conexion = Conexion.getInstance().getConexion();
+            String query = "DELETE FROM Producto WHERE ID_Producto = ?";
+            statement = conexion.prepareStatement(query);
+            statement.setInt(1, ID_Producto);
+
+            int filasEliminadas = statement.executeUpdate();
+            if (filasEliminadas > 0) {
+                System.out.println("Producto eliminado correctamente.");
+            } else {
+                System.out.println("No se pudo eliminar el producto.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar el producto: " + e.getMessage());
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+        //Obtener datos de un producto por su ID
+    
+    public Producto obtenerProductosporID(int ID_Producto) {
+    Producto producto = null;
+    String consulta = "SELECT Nombre, Descripcion, Precio, Cantidad_Disponible, ID_CategoriaProducto, ID_EstadoProducto, ImagenURL " +
+                      "FROM Producto WHERE ID_Producto = ?";
+
+        try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+            ps.setInt(1, ID_Producto);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String nombre = rs.getString("Nombre");
+                String descripcion = rs.getString("Descripcion");
+                double precio = rs.getDouble("Precio");
+                int cantidadDisponible = rs.getInt("Cantidad_Disponible");
+                int idCategoria = rs.getInt("ID_CategoriaProducto");
+                int idEstado = rs.getInt("ID_EstadoProducto");
+                String imagenURL = rs.getString("ImagenURL");
+
+                producto = new Producto(ID_Producto, 0, nombre, descripcion, precio, cantidadDisponible, idCategoria, null, idEstado, imagenURL);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener el producto por ID: " + e.getMessage());
+        }
+
+        return producto;
+    }
+
+    //Obtener Productos POR ID_Usuario
     
     public List<Producto> obtenerTodosLosProductos(int idUsuario) {
     List<Producto> productos = new ArrayList<>();
@@ -147,6 +241,47 @@ public class ControladorProducto {
         }
         return categorias;
     }
+        
+    //Obtener la categoria por ID
+        
+    public String obtenerCategoriaPorID(int ID_CategoriaProducto) {
+        
+    String nombreCategoria = null;
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT Categoria FROM CategoriaProducto WHERE ID_CategoriaProducto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_CategoriaProducto);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            nombreCategoria = resultSet.getString("Categoria");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener categoría por ID: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return nombreCategoria;
+}
+
     
     //EstadoProducto
     
