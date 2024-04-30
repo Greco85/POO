@@ -18,20 +18,56 @@ public class ControladorProducto {
 
     public ControladorProducto() {
         this.conexion = Conexion.getInstance().getConexion();
-        productos = new Producto[]{
-            new Producto(1,1 , "Prueba 1", "imagen1.jpg", 10.99, 10, 1, new Date(), 1, "imagen1.jpg"),
-            new Producto(2,1 , "Pan", "imagen2.jpg", 20.49, 20, 2, new Date(), 1, "imagen2.jpg"),
-            new Producto(3,1 , "Gato", "imagen3.jpg", 15.79, 15, 3, new Date(), 1, "imagen3.jpg"),
-            new Producto(4,1 , "POR FINNN PAN", "imagen3.jpg", 14.2, 12, 2, new Date(), 1, "imagen3.jpg")
-        };
+        
     }
     
-    private Producto[] productos; // Arreglo de productos
+    public List<Producto> obtenerTodosLosProductos() {
+    List<Producto> productos = new ArrayList<>();
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
 
-    public Producto[] getProductos() {
-        return productos;
+    try {
+        String query = "SELECT * FROM Producto";
+        statement = conexion.prepareStatement(query);
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            int ID_Producto = resultSet.getInt("ID_Producto");
+            int ID_Usuario = resultSet.getInt("ID_Usuario");
+            String nombre = resultSet.getString("Nombre");
+            String descripcion = resultSet.getString("Descripcion");
+            double precio = resultSet.getDouble("Precio");
+            int cantidad = resultSet.getInt("Cantidad_Disponible");
+            int categoria = resultSet.getInt("ID_CategoriaProducto");
+            Date fechaCreacion = resultSet.getDate("Fecha_Creacion");
+            int estadoProducto = resultSet.getInt("ID_EstadoProducto");
+            String imagenURL = resultSet.getString("ImagenURL");
+
+            Producto producto = new Producto(ID_Producto, ID_Usuario, nombre, descripcion, precio, cantidad,
+                    categoria, fechaCreacion, estadoProducto, imagenURL);
+            productos.add(producto);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener los productos: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
-    
+    return productos;
+}
+
     //Producto
     
     //Crear Producto 

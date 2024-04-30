@@ -4,7 +4,19 @@ import Modelo.Usuario;
 import Modelo.Producto;
 import Controladores.ControladorProducto;
 import Modelo.SesionActiva;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 public class Inicio extends javax.swing.JFrame {
     
@@ -17,15 +29,27 @@ public class Inicio extends javax.swing.JFrame {
     initComponents();
     menubar.initMenuBar(this, usuario, busqueda, categoriaId);
     this.usuario = usuario;
-    jLabel1.setText("Bienvenido, " + usuario.getCorreo_Electronico());
     controladorProducto = new ControladorProducto();
-    mostrarProductosEnLabels();
     
-    // Obtén el ID del usuario desde SesionActiva
+    JLabel bienvenidaLabel = new JLabel("Bienvenido, " + usuario.getCorreo_Electronico());
+    bienvenidaLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); 
+    bienvenidaLabel.setHorizontalAlignment(SwingConstants.CENTER); // Centrar el texto
+    
+    // Obtener el ID del usuario desde SesionActiva
     int ID_Usuario = SesionActiva.getID_Usuario();
     System.out.println("Hola ya está en el inicio y el ID del usuario aquí es: " + ID_Usuario);
+    
+    // Crear un panel para contener el label de bienvenida
+    JPanel bienvenidaPanel = new JPanel(new BorderLayout());
+    bienvenidaPanel.add(bienvenidaLabel, BorderLayout.CENTER);
+    
+    getContentPane().setLayout(new BorderLayout());
+    getContentPane().add(bienvenidaPanel, BorderLayout.NORTH);
+    getContentPane().add(mostrarProductosEnLabels(), BorderLayout.CENTER);
+    
+    setExtendedState(JFrame.MAXIMIZED_BOTH);
 }
-        
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -88,19 +112,69 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     
-private void mostrarProductosEnLabels() { //tambien solo ver que se pasen valores
-        Producto[] productos = controladorProducto.getProductos();
-        int yPosition = 130; // Posición vertical inicial para el primer producto
+  private JScrollPane mostrarProductosEnLabels() {
+    List<Producto> productos = controladorProducto.obtenerTodosLosProductos();
+    int alturaPanel = 200; 
+    int espacioPanel = 10;
+    int espacioLateral = 20; 
+    
+    // Creamos el panel que contendrá todos los paneles de productos
+    JPanel panelProductos = new JPanel();
+    panelProductos.setLayout(new BoxLayout(panelProductos, BoxLayout.Y_AXIS));
+    panelProductos.setBorder(BorderFactory.createEmptyBorder(10, espacioLateral, 10, espacioLateral)); // Borde con espaciado
 
-        for (int i = 0; i < productos.length; i++) {
-            Producto producto = productos[i];
-            JLabel productoLabel = new JLabel();
-            productoLabel.setText(producto.getNombre() + " - Precio: $" + producto.getPrecio());
-            productoLabel.setBounds(50, yPosition, 300, 20); // Establece posicion y tamaño del JLabel
-            getContentPane().add(productoLabel); // Agrega el JLabel al contenedor principal
-            yPosition += 30; // Incrementa la posición vertical para el próximo producto
-        }
+    JPanel panelSuperior = new JPanel();
+    panelSuperior.setPreferredSize(new Dimension(1, espacioPanel));
+    panelProductos.add(panelSuperior);
+
+    for (Producto producto : productos) {
+        JPanel panelProducto = new JPanel();
+        panelProducto.setLayout(null);
+        panelProducto.setPreferredSize(new Dimension(getContentPane().getWidth() - (2 * espacioLateral), alturaPanel));
+        panelProducto.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        JLabel nombreLabel = new JLabel("Nombre: " + producto.getNombre());
+        nombreLabel.setBounds(10, 10, 400, 20);
+        panelProducto.add(nombreLabel);
+
+        JLabel descripcionLabel = new JLabel("Descripción: " + producto.getDescripcion());
+        descripcionLabel.setBounds(10, 40, 400, 20);
+        panelProducto.add(descripcionLabel);
+
+        JLabel precioLabel = new JLabel("Precio: $" + producto.getPrecio());
+        precioLabel.setBounds(10, 70, 100, 20);
+        panelProducto.add(precioLabel);
+
+        JLabel cantidadLabel = new JLabel("Cantidad Disponible: " + producto.getCantidad_Disponible());
+        cantidadLabel.setBounds(10, 100, 200, 20);
+        panelProducto.add(cantidadLabel);
+
+        JLabel categoriaLabel = new JLabel("Categoría: " + producto.getID_CategoriaProducto());
+        categoriaLabel.setBounds(10, 130, 200, 20);
+        panelProducto.add(categoriaLabel);
+
+        JLabel fechaCreacionLabel = new JLabel("Fecha de Creación: " + producto.getFecha_Creacion());
+        fechaCreacionLabel.setBounds(10, 160, 200, 20);
+        panelProducto.add(fechaCreacionLabel);
+
+        panelProducto.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Has hecho clic en el producto: " + producto.getNombre());
+            }
+        });
+
+        panelProductos.add(panelProducto);
     }
+
+    JScrollPane scrollPane = new JScrollPane(panelProductos);
+    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+    return scrollPane;
+}
+
+
+
     
     public static void main(String[] args) {
         //luego veo
