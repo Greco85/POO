@@ -15,6 +15,7 @@ public class HacerPublicacion extends javax.swing.JFrame {
     
     public HacerPublicacion() {
         initmyComponents();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
      private void initmyComponents() {

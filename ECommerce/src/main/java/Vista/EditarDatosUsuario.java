@@ -63,6 +63,7 @@ public class EditarDatosUsuario extends javax.swing.JFrame {
          cargarDatosUsuario();
         initComponents();
         initMyComponents();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     private void cargarDatosUsuario() {

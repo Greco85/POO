@@ -1,11 +1,14 @@
 
 package Vista;
 
+import javax.swing.JFrame;
+
 
 public class Mensajes extends javax.swing.JFrame {
 
     public Mensajes() {
         initComponents();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
    

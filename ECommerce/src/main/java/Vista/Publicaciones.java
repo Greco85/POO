@@ -25,6 +25,7 @@ public class Publicaciones extends javax.swing.JFrame {
         initmyComponents();
         cargarProductosDesdeBaseDeDatos();
         mostrarProductos();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void initmyComponents() {

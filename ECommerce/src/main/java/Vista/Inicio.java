@@ -65,7 +65,6 @@ public class Inicio extends javax.swing.JFrame {
         popupMenu2 = new java.awt.PopupMenu();
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jMenu5 = new javax.swing.JMenu();
-        jLabel1 = new javax.swing.JLabel();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -89,23 +88,15 @@ public class Inicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabelBienvenida");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(171, 171, 171)
-                .addComponent(jLabel1)
-                .addContainerGap(180, Short.MAX_VALUE))
+            .addGap(0, 440, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(jLabel1)
-                .addContainerGap(342, Short.MAX_VALUE))
+            .addGap(0, 427, Short.MAX_VALUE)
         );
 
         pack();
@@ -133,8 +124,12 @@ public class Inicio extends javax.swing.JFrame {
         panelProducto.setPreferredSize(new Dimension(getContentPane().getWidth() - (2 * espacioLateral), alturaPanel));
         panelProducto.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
+        JLabel idLabel = new JLabel("ID: " + producto.getID_Producto());
+        idLabel.setBounds(10, 10, 100, 20); 
+        panelProducto.add(idLabel);
+        
         JLabel nombreLabel = new JLabel("Nombre: " + producto.getNombre());
-        nombreLabel.setBounds(10, 10, 400, 20);
+        nombreLabel.setBounds(120, 10, 400, 20);
         panelProducto.add(nombreLabel);
 
         JLabel descripcionLabel = new JLabel("Descripción: " + producto.getDescripcion());
@@ -160,7 +155,14 @@ public class Inicio extends javax.swing.JFrame {
         panelProducto.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("Has hecho clic en el producto: " + producto.getNombre());
+                // Guardar el ID del producto en la sesión activa
+                SesionActiva.setID_Producto(producto.getID_Producto());
+                System.out.println("El id es: " + SesionActiva.getID_Producto());
+                
+                // Abrir la vista "VerProducto"
+                VerProducto verProducto = new VerProducto(usuario);
+                verProducto.setVisible(true);
+                dispose();
             }
         });
 
@@ -181,7 +183,6 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu5;

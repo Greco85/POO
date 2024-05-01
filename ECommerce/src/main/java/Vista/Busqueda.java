@@ -4,6 +4,7 @@ package Vista;
 import javax.swing.JLabel;
 import Controladores.ControladorProducto;
 import Modelo.Usuario;
+import javax.swing.JFrame;
 
 
 public class Busqueda extends javax.swing.JFrame {
@@ -27,6 +28,7 @@ public class Busqueda extends javax.swing.JFrame {
         this.busqueda = busqueda;
         this.categoriaId = categoriaId;
         mostrarObjetos(busqueda, categoriaId);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void mostrarObjetos(String busqueda, int categoriaId) { //Esto solo es para comprobar que se pasan los valores

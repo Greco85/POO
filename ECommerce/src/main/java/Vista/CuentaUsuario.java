@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
+import javax.swing.JFrame;
 
 
 public class CuentaUsuario extends javax.swing.JFrame {
@@ -24,7 +25,7 @@ public class CuentaUsuario extends javax.swing.JFrame {
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
         mostrarNombre(); 
         configurarEventos();
-
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void configurarEventos() {

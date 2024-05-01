@@ -27,9 +27,8 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         this.ID_Producto = ID_Producto;
          initmyComponents();
          obtenerDatosProducto();
+       setExtendedState(JFrame.MAXIMIZED_BOTH);
        
-        
-
     }
     
     private void initmyComponents() {
