@@ -38,7 +38,7 @@ public class CuentaUsuario extends javax.swing.JFrame {
         
         jButton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Publicaciones publicacionesFrame = new Publicaciones();
+                Publicaciones publicacionesFrame = new Publicaciones(usuario);
                 publicacionesFrame.setVisible(true);
                 dispose();
             }

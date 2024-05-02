@@ -4,6 +4,7 @@ package Vista;
 import Controladores.ControladorProducto;
 import Modelo.Producto;
 import Modelo.SesionActiva;
+import Modelo.Usuario;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,53 +18,77 @@ public class Publicaciones extends javax.swing.JFrame {
     private JButton jButtonNuevaPublicacion;
     private ControladorProducto controladorProducto;
     private List<Producto> productos;
+    private Usuario usuario;
     int ID_Usuario = SesionActiva.getID_Usuario();
 
 
 
-    public Publicaciones() {
+    public Publicaciones(Usuario usuario) {
+        this.usuario = usuario;
         initmyComponents();
         cargarProductosDesdeBaseDeDatos();
         mostrarProductos();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
-    private void initmyComponents() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Mis Publicaciones");
-        setSize(800, 600);
-        setLocationRelativeTo(null);
-        
-        // Panel principal
-        JPanel panelPrincipal = new JPanel(new BorderLayout());
-        getContentPane().add(panelPrincipal);
-        
-        // Título
-        jLabel1 = new JLabel("MIS PUBLICACIONES");
-        jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-        jLabel1.setFont(new Font("Arial", Font.BOLD, 24));
-        panelPrincipal.add(jLabel1, BorderLayout.NORTH);
-        
-        // Panel para mostrar productos
-        jPanel1 = new JPanel();
-        jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
-        JScrollPane scrollPane = new JScrollPane(jPanel1);
-        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
+   private void initmyComponents() {
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setTitle("Mis Publicaciones");
+    setSize(800, 600);
+    setLocationRelativeTo(null);
+    
+    // Panel principal
+    JPanel panelPrincipal = new JPanel(new BorderLayout());
+    getContentPane().add(panelPrincipal);
+    
+    // Título
+    JLabel jLabel1 = new JLabel("MIS PUBLICACIONES");
+    jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+    jLabel1.setFont(new Font("Arial", Font.BOLD, 24));
+    panelPrincipal.add(jLabel1, BorderLayout.NORTH);
+    
+    // Panel para mostrar productos
+    jPanel1 = new JPanel();
+    jPanel1.setLayout(new BoxLayout(jPanel1, BoxLayout.Y_AXIS));
+    JScrollPane scrollPane = new JScrollPane(jPanel1);
+    panelPrincipal.add(scrollPane, BorderLayout.CENTER);
 
-        // Botón para nueva publicación
-        jButtonNuevaPublicacion = new JButton("Nueva Publicación");
-        jButtonNuevaPublicacion.setFont(new Font("Arial", Font.PLAIN, 18));
-        jButtonNuevaPublicacion.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jButtonNuevaPublicacionActionPerformed(evt);
-                dispose();
-            }
-        });
-        panelPrincipal.add(jButtonNuevaPublicacion, BorderLayout.SOUTH);
-    }
+    JPanel panelBotones = new JPanel(new GridLayout(2, 1));
+
+    // Botón para nueva publicación
+    jButtonNuevaPublicacion = new JButton("Nueva Publicación");
+    jButtonNuevaPublicacion.setFont(new Font("Arial", Font.PLAIN, 18));
+    jButtonNuevaPublicacion.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+            jButtonNuevaPublicacionActionPerformed(evt);
+            dispose();
+        }
+    });
+    panelBotones.add(jButtonNuevaPublicacion);
+
+    // Botón para regresar
+    JButton jButtonRegresar = new JButton("Regresar");
+    jButtonRegresar.setFont(new Font("Arial", Font.PLAIN, 18));
+    jButtonRegresar.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent evt) {
+            jButtonRegresarActionPerformed(evt);
+        }
+    });
+    panelBotones.add(jButtonRegresar);
+
+    // Agregar panel de botones al panel principal
+    panelPrincipal.add(panelBotones, BorderLayout.WEST);
+}
+
+private void jButtonRegresarActionPerformed(ActionEvent evt) {
+    CuentaUsuario cuentaUsuario = new CuentaUsuario(usuario);
+    cuentaUsuario.setVisible(true);
+    dispose();
+}
+
 
     private void jButtonNuevaPublicacionActionPerformed(ActionEvent evt) {
-        HacerPublicacion hacerPublicacionFrame = new HacerPublicacion();
+        HacerPublicacion hacerPublicacionFrame = new HacerPublicacion(usuario);
         hacerPublicacionFrame.setVisible(true);
     }
 
@@ -81,8 +106,9 @@ public class Publicaciones extends javax.swing.JFrame {
         }
     }
 
- private JPanel crearPanelProducto(Producto producto) {
+private JPanel crearPanelProducto(Producto producto) {
     JPanel panel = new JPanel();
+    panel.setPreferredSize(new Dimension(600, 150)); // Establecer el tamaño prefijado del panel de producto
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     panel.setLayout(new BorderLayout());
     JPanel panelImagen = new JPanel();
@@ -107,36 +133,31 @@ public class Publicaciones extends javax.swing.JFrame {
     panel.add(panelInfo, BorderLayout.CENTER);
     panel.add(panelBotones, BorderLayout.SOUTH);
 
-  
-       
-    
-    
     botonEditar.addActionListener(evt -> {
-    int ID_Producto = producto.getID_Producto();
-    System.out.println("ID del Producto: " + ID_Producto);
-    EditarDatosPublicacion editarDatosPublicacion = new EditarDatosPublicacion(ID_Producto);
-    editarDatosPublicacion.setVisible(true);
-    dispose(); 
+        int ID_Producto = producto.getID_Producto();
+        System.out.println("ID del Producto: " + ID_Producto);
+        EditarDatosPublicacion editarDatosPublicacion = new EditarDatosPublicacion(ID_Producto, usuario);
+        editarDatosPublicacion.setVisible(true);
+        dispose(); 
     });
 
-    
-   botonBorrar.addActionListener(evt -> {
+    botonBorrar.addActionListener(evt -> {
         int ID_Producto = producto.getID_Producto();
         System.out.println("ID del Producto: " + ID_Producto);
 
-        int opcion = JOptionPane.showConfirmDialog(null, "¿Estas seguro de borrar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de borrar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
             controladorProducto = new ControladorProducto();
             controladorProducto.eliminarProducto(ID_Producto);
             dispose();
-            Publicaciones publicaciones = new Publicaciones();
+            Publicaciones publicaciones = new Publicaciones(usuario);
             publicaciones.setVisible(true);
         }
     });
 
-
     return panel;
-} 
+}
+
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -280,7 +301,8 @@ public class Publicaciones extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Publicaciones().setVisible(true);
+                Usuario usuario = new Usuario();
+                new Publicaciones(usuario).setVisible(true);
             }
         });
     }

@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import Modelo.Producto;
+import Modelo.Usuario;
 
 
 
@@ -22,109 +23,122 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
     JTextField txtCantidad;
     JComboBox<String> cmbCategoria;
     JTextField txtImagenURL;
+    private Usuario usuario;
     
-    public EditarDatosPublicacion(int ID_Producto) {
+    public EditarDatosPublicacion(int ID_Producto, Usuario usuario) {
         this.ID_Producto = ID_Producto;
+        this.usuario = usuario;
          initmyComponents();
          obtenerDatosProducto();
-       setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
        
     }
     
     private void initmyComponents() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Editar Publicación");
-        setSize(400, 300);
-        setLocationRelativeTo(null);
+    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    setTitle("Editar Publicación");
+    setSize(400, 300);
+    setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
+    JPanel panel = new JPanel();
+    panel.setLayout(new GridBagLayout());
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(5, 5, 5, 5);
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Nombre
-        JLabel lblNombre = new JLabel("Nombre:");
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(lblNombre, gbc);
-        txtNombre = new JTextField(20);
-        gbc.gridx = 1;
-        panel.add(txtNombre, gbc);
+    // Nombre
+    JLabel lblNombre = new JLabel("Nombre:");
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    panel.add(lblNombre, gbc);
+    txtNombre = new JTextField(20);
+    gbc.gridx = 1;
+    panel.add(txtNombre, gbc);
 
-        // Descripción
-        JLabel lblDescripcion = new JLabel("Descripción:");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(lblDescripcion, gbc);
-        txtDescripcion = new JTextField(20);
-        gbc.gridx = 1;
-        panel.add(txtDescripcion, gbc);
+    // Descripción
+    JLabel lblDescripcion = new JLabel("Descripción:");
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    panel.add(lblDescripcion, gbc);
+    txtDescripcion = new JTextField(20);
+    gbc.gridx = 1;
+    panel.add(txtDescripcion, gbc);
 
-        // Precio
-        JLabel lblPrecio = new JLabel("Precio:");
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(lblPrecio, gbc);
-        txtPrecio = new JTextField(20);
-        gbc.gridx = 1;
-        panel.add(txtPrecio, gbc);
+    // Precio
+    JLabel lblPrecio = new JLabel("Precio:");
+    gbc.gridx = 0;
+    gbc.gridy = 2;
+    panel.add(lblPrecio, gbc);
+    txtPrecio = new JTextField(20);
+    gbc.gridx = 1;
+    panel.add(txtPrecio, gbc);
 
-        // Cantidad Disponible
-        JLabel lblCantidad = new JLabel("Cantidad Disponible:");
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        panel.add(lblCantidad, gbc);
-        txtCantidad = new JTextField(20);
-        gbc.gridx = 1;
-        panel.add(txtCantidad, gbc);
+    // Cantidad Disponible
+    JLabel lblCantidad = new JLabel("Cantidad Disponible:");
+    gbc.gridx = 0;
+    gbc.gridy = 3;
+    panel.add(lblCantidad, gbc);
+    txtCantidad = new JTextField(20);
+    gbc.gridx = 1;
+    panel.add(txtCantidad, gbc);
 
-        // Categoría
-        JLabel lblCategoria = new JLabel("Categoría:");
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        panel.add(lblCategoria, gbc);
+    // Categoría
+    JLabel lblCategoria = new JLabel("Categoría:");
+    gbc.gridx = 0;
+    gbc.gridy = 4;
+    panel.add(lblCategoria, gbc);
 
-        cmbCategoria = new JComboBox<>();
-        gbc.gridx = 1;
-        panel.add(cmbCategoria, gbc);
+    cmbCategoria = new JComboBox<>();
+    gbc.gridx = 1;
+    panel.add(cmbCategoria, gbc);
 
-        ControladorProducto controladorCategoria = new ControladorProducto();
-        List<String> categorias = controladorCategoria.obtenerCategorias();
+    ControladorProducto controladorCategoria = new ControladorProducto();
+    List<String> categorias = controladorCategoria.obtenerCategorias();
 
-        for (String categoria : categorias) {
-            cmbCategoria.addItem(categoria);
-        }
-
-        // URL de la Imagen
-        JLabel lblImagenURL = new JLabel("URL de la Imagen:");
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        panel.add(lblImagenURL, gbc);
-        txtImagenURL = new JTextField(20);
-        gbc.gridx = 1;
-        panel.add(txtImagenURL, gbc);
-
-        // Botón Actualizar
-        JButton btnActualizar = new JButton("Actualizar");
-        btnActualizar.addActionListener(evt -> {
-            btnActualizarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
-                    txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText());
-            dispose();
-            Publicaciones publicaciones = new Publicaciones();
-            publicaciones.setVisible(true);
-            
-        });
-        gbc.gridx = 1;
-        gbc.gridy = 6;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 2;
-        panel.add(btnActualizar, gbc);
-
-        getContentPane().add(panel);
+    for (String categoria : categorias) {
+        cmbCategoria.addItem(categoria);
     }
+
+    // URL de la Imagen
+    JLabel lblImagenURL = new JLabel("URL de la Imagen:");
+    gbc.gridx = 0;
+    gbc.gridy = 5;
+    panel.add(lblImagenURL, gbc);
+    txtImagenURL = new JTextField(20);
+    gbc.gridx = 1;
+    panel.add(txtImagenURL, gbc);
+
+    // Botón Actualizar
+    JButton btnActualizar = new JButton("Actualizar");
+    btnActualizar.addActionListener(evt -> {
+        btnActualizarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
+                txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText());
+        dispose();
+        Publicaciones publicaciones = new Publicaciones(usuario);
+        publicaciones.setVisible(true);
+        
+    });
+    gbc.gridx = 1;
+    gbc.gridy = 6;
+    gbc.anchor = GridBagConstraints.CENTER;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridwidth = 2;
+    panel.add(btnActualizar, gbc);
+
+    // Botón Regresar
+    JButton btnRegresar = new JButton("Regresar");
+    btnRegresar.addActionListener(evt -> {
+        dispose();
+        Publicaciones publicaciones = new Publicaciones(usuario);
+        publicaciones.setVisible(true);
+    });
+    gbc.gridy = 7;
+    panel.add(btnRegresar, gbc);
+
+    getContentPane().add(panel);
+}
+
     
         private void obtenerDatosProducto() {
         ControladorProducto controladorProducto = new ControladorProducto();
@@ -215,6 +229,7 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+               
             }
         });
     }

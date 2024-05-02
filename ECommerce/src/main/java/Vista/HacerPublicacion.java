@@ -3,6 +3,7 @@ package Vista;
 
 import Controladores.ControladorProducto;
 import Modelo.SesionActiva;
+import Modelo.Usuario;
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -12,8 +13,10 @@ import java.util.List;
 
 public class HacerPublicacion extends javax.swing.JFrame {
 
-    
-    public HacerPublicacion() {
+      private Usuario usuario;
+      
+    public HacerPublicacion(Usuario usuario) {
+        this.usuario = usuario;
         initmyComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
@@ -98,7 +101,7 @@ public class HacerPublicacion extends javax.swing.JFrame {
     btnPublicar.addActionListener(evt -> {
         btnPublicarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
   txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText());
-        Publicaciones publicaciones = new Publicaciones();
+        Publicaciones publicaciones = new Publicaciones(usuario);
         publicaciones.setVisible(true);
         dispose();
     });
@@ -183,7 +186,8 @@ public class HacerPublicacion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HacerPublicacion().setVisible(true);
+               Usuario usuario = new Usuario();
+               new HacerPublicacion(usuario).setVisible(true);
             }
         });
     }
