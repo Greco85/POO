@@ -1,7 +1,9 @@
 
 package Vista;
 
+import Controladores.ControladorComentario;
 import Controladores.ControladorProducto;
+import Modelo.Comentario;
 import Modelo.Producto;
 import Modelo.SesionActiva;
 import Modelo.Usuario;
@@ -13,13 +15,19 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 
 public class VerProducto extends javax.swing.JFrame {
@@ -27,7 +35,7 @@ public class VerProducto extends javax.swing.JFrame {
     private Usuario usuario;
     private String busqueda;
     private int categoriaId;
-    private Connection conexion;
+    private JPanel detallesProductoPanel;
     
     public VerProducto(Usuario usuario) {
         this.usuario = usuario;
@@ -56,14 +64,17 @@ public class VerProducto extends javax.swing.JFrame {
         System.out.println("El producto con ID " + SesionActiva.getID_Producto() + " no fue encontrado.");
     }
 }
+   
     private void initmyComponents() {
-        
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int screenWidth = (int) screenSize.getWidth();
     int screenHeight = (int) screenSize.getHeight();
 
-    JPanel detallesProductoPanel = new JPanel(new GridBagLayout()); 
-    detallesProductoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK)); 
+    JPanel detallesProductoPanel = new JPanel(new GridBagLayout());
+    detallesProductoPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+    JPanel comentariosPanel = new JPanel(new GridBagLayout());
+    comentariosPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
     ControladorProducto controlador = new ControladorProducto();
     Producto producto = controlador.obtenerProductosporID(SesionActiva.getID_Producto());
@@ -103,33 +114,173 @@ public class VerProducto extends javax.swing.JFrame {
         detallesProductoPanel.add(categoriaLabel, gbc);
         detallesProductoPanel.add(categoriaValorLabel, gbc);
 
-        gbc.gridwidth = 2; 
-        gbc.gridy = 6;
-        gbc.insets = new Insets(20, 5, 5, 5); 
         ImageIcon imagenIcono = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg");
         Image imagenOriginal = imagenIcono.getImage();
         Image imagenEscalada = imagenOriginal.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon imagenEscaladaIcono = new ImageIcon(imagenEscalada);
+
         JLabel imagenLabel = new JLabel();
         imagenLabel.setIcon(imagenEscaladaIcono);
+
+        gbc.gridwidth = 2;
+        gbc.gridy = 0; 
+        gbc.insets = new Insets(20, 5, 5, 5);
         detallesProductoPanel.add(imagenLabel, gbc);
+
+        gbc.gridy++;
+
+        gbc.insets = new Insets(10, 5, 5, 5);
+
+        // Botón para Comprar Producto
+        JButton comprarButton = new JButton("Comprar Producto");
+        comprarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        detallesProductoPanel.add(comprarButton, gbc);
+
+        // Botón para Agregar al Carrito
+        JButton agregarCarritoButton = new JButton("Agregar al Carrito");
+        agregarCarritoButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        detallesProductoPanel.add(agregarCarritoButton, gbc);
+
+       // Botón para Hacer Comentario
+       JButton hacerComentarioButton = new JButton("Hacer Comentario");
+        hacerComentarioButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                HacerComentario hacerComentario = new HacerComentario();
+                hacerComentario.setVisible(true);
+            }
+        });
+        detallesProductoPanel.add(hacerComentarioButton, gbc);
+
     } else {
         JLabel errorLabel = new JLabel("El producto no fue encontrado.");
         detallesProductoPanel.add(errorLabel);
     }
-
-    JScrollPane scrollPane = new JScrollPane(detallesProductoPanel);
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    
     getContentPane().setLayout(new BorderLayout());
-    getContentPane().add(scrollPane, BorderLayout.EAST);
+    getContentPane().add(detallesProductoPanel, BorderLayout.NORTH); 
+
+    GridBagConstraints gbcComentarios = new GridBagConstraints();
+    gbcComentarios.anchor = GridBagConstraints.WEST;
+    gbcComentarios.insets = new Insets(5, 5, 5, 5);
+
+    mostrarComentarios(comentariosPanel);
+    JScrollPane comentariosScrollPane = new JScrollPane(comentariosPanel);
+    comentariosScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+    getContentPane().add(comentariosScrollPane, BorderLayout.CENTER); 
 
     int margin = 0;
     int panelWidth = screenWidth - (2 * margin);
-    int panelHeight = screenHeight - (2 * margin);
+    int panelHeight = 400;
     detallesProductoPanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
 
     pack();
 }
+    
+private void mostrarComentarios(JPanel comentariosPanel) {
+    ControladorComentario controladorComentario = new ControladorComentario(); 
+    
+    List<Comentario> comentarios = controladorComentario.obtenerComentariosPorIDProducto(SesionActiva.getID_Producto());
+    
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.insets = new Insets(5, 5, 5, 5);
+    
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int comentarioWidth = (int) screenSize.getWidth();
+    
+    int gridy = 0;
+    
+    for (Comentario comentario : comentarios) {
+        JPanel comentarioPanel = new JPanel(new GridBagLayout());
+        comentarioPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        
+        JLabel idComentarioLabel = new JLabel("ID Comentario: " + comentario.getID_Comentario());
+        JLabel idUsuarioLabel = new JLabel("ID Usuario: " + comentario.getID_Usuario());
+        
+        JLabel comentarioTextLabel = new JLabel("Comentario:");
+        comentarioTextLabel.setForeground(Color.WHITE);
+        
+        JTextArea contenidoTextArea = new JTextArea(comentario.getComentario());
+        contenidoTextArea.setLineWrap(true); 
+        contenidoTextArea.setWrapStyleWord(true); 
+        contenidoTextArea.setEditable(false);
+        
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        
+        JLabel fechaLabel = new JLabel("Fecha Comentario: " + comentario.getFecha_Comentario().toString()); // Puedes darle el formato que desees
+        
+        // Si el ID de usuario del comentario coincide con el ID de usuario activo pasa:
+        if (comentario.getID_Usuario() == SesionActiva.getID_Usuario()) {
+            comentarioPanel.setBackground(Color.BLUE);
+            contenidoTextArea.setBackground(Color.BLUE);
+            idComentarioLabel.setForeground(Color.WHITE);
+            idUsuarioLabel.setForeground(Color.WHITE);
+            fechaLabel.setForeground(Color.WHITE);
+            contenidoTextArea.setForeground(Color.WHITE);
+            
+            JButton editarButton = new JButton("Editar");
+            JButton borrarButton = new JButton("Borrar");
+            
+            editarButton.addActionListener(e -> {
+               
+            });
+            
+            borrarButton.addActionListener(e -> {
+               
+            });
+            
+            // Agregar los botones al panel
+            gbc.gridy = gridy;
+            gbc.gridx = 0;
+            comentarioPanel.add(idComentarioLabel, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(idUsuarioLabel, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(comentarioTextLabel, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(contenidoTextArea, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(fechaLabel, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(editarButton, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(borrarButton, gbc);
+        } else {
+            gbc.gridy = gridy;
+            gbc.gridx = 0;
+            comentarioPanel.add(idComentarioLabel, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(idUsuarioLabel, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(comentarioTextLabel, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(contenidoTextArea, gbc);
+            gbc.gridy++;
+            comentarioPanel.add(fechaLabel, gbc);
+        }
+        
+        gridy++; 
+        
+        comentariosPanel.add(comentarioPanel, gbc);
+    }
+    
+    comentariosPanel.revalidate();
+    comentariosPanel.repaint();
+}
+
+
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

@@ -11,7 +11,7 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
 
      public static void initMenuBar(JFrame frame, Usuario usuario, String busqueda, int categoriaId) {
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Amazon");
+        JMenu menu = new JMenu("Fimecommerce");
 
         JMenuItem amazonMenuItem = new JMenuItem("Ir a Inicio");
         amazonMenuItem.addActionListener(new ActionListener() {
