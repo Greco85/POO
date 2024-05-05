@@ -1,21 +1,36 @@
 package Vista;
 
+import Controladores.ControladorCarrito;
+import Controladores.ControladorProducto;
+import Modelo.Carrito;
+import Modelo.Producto;
 import Modelo.SesionActiva;
 import Modelo.Usuario; //EL CARRITO DESPUES DE HACER FUNCIONAR LO DE LOS PRODUCTOS
+import java.util.List;
 import javax.swing.JFrame;
 
-public class Carrito extends javax.swing.JFrame {
+public class CarritoPantalla extends javax.swing.JFrame {
     private Usuario usuario;
     private String busqueda;
     private int categoriaId;
     
-    public Carrito(Usuario usuario) {
+    public CarritoPantalla(Usuario usuario) {
         this.usuario = usuario;
         initComponents();
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
         // Para ver si funciona en cualquier frame
     int ID_Usuario = SesionActiva.getID_Usuario();
-    System.out.println("Hola ya esta en el inicio y el ID del usuario aquí es: " + ID_Usuario);
+    
+    ControladorCarrito controladorCarrito = new ControladorCarrito();
+    List<Carrito> productosEnCarrito = controladorCarrito.obtenerTodoElCarrito(ID_Usuario);
+    
+        ControladorProducto controladorProducto = new ControladorProducto();
+        for (Carrito carrito : productosEnCarrito) {
+            int ID_Producto = carrito.getID_Producto();
+            Producto producto = controladorProducto.obtenerProductosporID(ID_Producto);
+            // Aquí puedes hacer lo que necesites con el producto obtenido
+        }
+    
     setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 

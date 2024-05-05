@@ -67,7 +67,6 @@ public class HacerComentario extends javax.swing.JFrame {
         int ID_Producto = SesionActiva.getID_Producto();
         Date fechaComentario = new Date(); 
         
-        // Llamar al controlador para hacer el comentario
         ControladorComentario controladorComentario = new ControladorComentario();
         boolean comentarioHecho = controladorComentario.hacerComentario(ID_Usuario, ID_Producto, comentario, fechaComentario);
         

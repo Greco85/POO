@@ -68,7 +68,166 @@ public class ControladorProducto {
     return productos;
 }
 
-    //Producto
+    //Producto 
+    
+   public List<Producto> obtenerProductosPorNombreYCategoria(String nombre, int categoriaId) {
+    List<Producto> productos = new ArrayList<>();
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String query = "SELECT * FROM Producto WHERE Nombre = ? AND ID_CategoriaProducto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setString(1, nombre); 
+        statement.setInt(2, categoriaId); 
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            int ID_Producto = resultSet.getInt("ID_Producto");
+            int ID_Usuario = resultSet.getInt("ID_Usuario");
+            String nombreProducto = resultSet.getString("Nombre");
+            String descripcion = resultSet.getString("Descripcion");
+            double precio = resultSet.getDouble("Precio");
+            int cantidad = resultSet.getInt("Cantidad_Disponible");
+            int categoria = resultSet.getInt("ID_CategoriaProducto");
+            Date fechaCreacion = resultSet.getDate("Fecha_Creacion");
+            int estadoProducto = resultSet.getInt("ID_EstadoProducto");
+            String imagenURL = resultSet.getString("ImagenURL");
+
+            Producto producto = new Producto(ID_Producto, ID_Usuario, nombreProducto, descripcion, precio, cantidad,
+                    categoria, fechaCreacion, estadoProducto, imagenURL);
+            productos.add(producto);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener los productos por nombre y categoría: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    
+    // Imprimir los productos encontrados
+    System.out.println("Productos encontrados:");
+    for (Producto producto : productos) {
+        System.out.println(producto);
+    }
+    
+    return productos;
+}
+   
+   
+   public List<Producto> obtenerProductosPorNombre(String nombre) {
+    List<Producto> productos = new ArrayList<>();
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String query = "SELECT * FROM Producto WHERE Nombre = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setString(1, nombre); 
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            int ID_Producto = resultSet.getInt("ID_Producto");
+            int ID_Usuario = resultSet.getInt("ID_Usuario");
+            String nombreProducto = resultSet.getString("Nombre");
+            String descripcion = resultSet.getString("Descripcion");
+            double precio = resultSet.getDouble("Precio");
+            int cantidad = resultSet.getInt("Cantidad_Disponible");
+            int categoria = resultSet.getInt("ID_CategoriaProducto");
+            Date fechaCreacion = resultSet.getDate("Fecha_Creacion");
+            int estadoProducto = resultSet.getInt("ID_EstadoProducto");
+            String imagenURL = resultSet.getString("ImagenURL");
+
+            Producto producto = new Producto(ID_Producto, ID_Usuario, nombreProducto, descripcion, precio, cantidad,
+                    categoria, fechaCreacion, estadoProducto, imagenURL);
+            productos.add(producto);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener los productos por nombre: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return productos;
+}
+
+   
+   public List<Producto> obtenerProductosPorIdCategoria(int categoriaId) {
+    List<Producto> productos = new ArrayList<>();
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String query = "SELECT * FROM Producto WHERE ID_CategoriaProducto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, categoriaId); 
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            int ID_Producto = resultSet.getInt("ID_Producto");
+            int ID_Usuario = resultSet.getInt("ID_Usuario");
+            String nombreProducto = resultSet.getString("Nombre");
+            String descripcion = resultSet.getString("Descripcion");
+            double precio = resultSet.getDouble("Precio");
+            int cantidad = resultSet.getInt("Cantidad_Disponible");
+            int categoria = resultSet.getInt("ID_CategoriaProducto");
+            Date fechaCreacion = resultSet.getDate("Fecha_Creacion");
+            int estadoProducto = resultSet.getInt("ID_EstadoProducto");
+            String imagenURL = resultSet.getString("ImagenURL");
+
+            Producto producto = new Producto(ID_Producto, ID_Usuario, nombreProducto, descripcion, precio, cantidad,
+                    categoria, fechaCreacion, estadoProducto, imagenURL);
+            productos.add(producto);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener los productos por ID de categoría: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return productos;
+}
+
+
     
     //Crear Producto 
     public void agregarProducto(int ID_Usuario, String nombre, String descripcion,
@@ -317,6 +476,44 @@ public class ControladorProducto {
     }
     return nombreCategoria;
 }
+    
+    public int obtenerIDporNombreCategoria(String nombreCategoria) {
+    int idCategoria = -1;
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT ID_CategoriaProducto FROM CategoriaProducto WHERE Categoria = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setString(1, nombreCategoria);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            idCategoria = resultSet.getInt("ID_CategoriaProducto");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener ID por nombre de categoría: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return idCategoria;
+}
+
 
     
     //EstadoProducto

@@ -1,6 +1,7 @@
 
 package Vista;
 
+import Controladores.ControladorCarrito;
 import Controladores.ControladorComentario;
 import Controladores.ControladorProducto;
 import Modelo.Comentario;
@@ -24,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -131,11 +133,11 @@ public class VerProducto extends javax.swing.JFrame {
 
         gbc.insets = new Insets(10, 5, 5, 5);
 
-        // Botón para Comprar Producto
         JButton comprarButton = new JButton("Comprar Producto");
         comprarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+                // Crea una instancia de PantallaDeCompra
+                PantallaDeCompra pantallaDeCompra = new PantallaDeCompra();
             }
         });
         detallesProductoPanel.add(comprarButton, gbc);
@@ -144,9 +146,43 @@ public class VerProducto extends javax.swing.JFrame {
         JButton agregarCarritoButton = new JButton("Agregar al Carrito");
         agregarCarritoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+                int ID_Producto = producto.getID_Producto();
+                String cantidad = JOptionPane.showInputDialog(null, "Ingrese la cantidad que desea agregar al carrito:", "Cantidad", JOptionPane.QUESTION_MESSAGE);
+
+                try {
+                    int cantidadParaElCarro = Integer.parseInt(cantidad);
+
+                    if (cantidadParaElCarro <= 0) {
+                        JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    int cantidadDisponible = producto.getCantidad_Disponible();
+
+                    if (cantidadParaElCarro > cantidadDisponible) {
+                        JOptionPane.showMessageDialog(null, "No hay suficiente cantidad disponible en el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    double total = cantidadParaElCarro * producto.getPrecio();
+
+                    ControladorCarrito controladorCarrito = new ControladorCarrito();
+
+                    // Verificar si el producto ya está en el carrito y actuar en consecuencia
+                    boolean agregado = controladorCarrito.agregarOActualizarCarrito(SesionActiva.getID_Usuario(), ID_Producto, cantidadParaElCarro, total);
+
+                    if (agregado) {
+                        JOptionPane.showMessageDialog(null, "Producto agregado al carrito exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al agregar el producto al carrito.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Ingrese un número válido para la cantidad.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
+
+
         detallesProductoPanel.add(agregarCarritoButton, gbc);
 
        // Botón para Hacer Comentario
@@ -233,12 +269,41 @@ private void mostrarComentarios(JPanel comentariosPanel) {
             JButton borrarButton = new JButton("Borrar");
             
             editarButton.addActionListener(e -> {
-               
-            });
+            int ID_Comentario = comentario.getID_Comentario();
+
+            // Llamar al método ObtenerComentarioPorID en la instancia de ControladorComentario
+            Comentario comentarioEditar = controladorComentario.ObtenerComentarioPorID(ID_Comentario);
+
+            // Verificar si se pudo obtener el comentario
+            if (comentarioEditar != null) {
+                EditarComentario editarComentario = new EditarComentario(comentarioEditar);
+                editarComentario.setVisible(true);
+                System.out.println(comentarioEditar);
+            } else {
+                // Manejar el caso en el que no se pueda obtener el comentario
+                JOptionPane.showMessageDialog(null, "No se pudo obtener el comentario para editar.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
             
-            borrarButton.addActionListener(e -> {
-               
-            });
+           borrarButton.addActionListener(e -> {
+            int ID_Comentario = comentario.getID_Comentario();
+
+            int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres borrar este comentario?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                boolean borrado = controladorComentario.borrarComentario(ID_Comentario);
+
+                if (borrado) {
+                    // Elimina el panel de comentario de la interfaz de usuario
+                    comentariosPanel.remove(comentarioPanel);
+                    comentariosPanel.revalidate();
+                    comentariosPanel.repaint();
+                }
+            }
+        });
+
+
             
             // Agregar los botones al panel
             gbc.gridy = gridy;

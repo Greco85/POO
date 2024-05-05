@@ -4,32 +4,24 @@ package Modelo;
 import java.util.Date;
 
 public class Carrito {
-    private int ID_Carrito;
+   
     private int ID_Usuario;
-    private Date Fecha_Agregado;
     private int ID_Producto;
+    private Date Fecha_Agregado;
     private int Cantidad;
     private double Total;
 
     // Constructor
-    public Carrito(int ID_Carrito, int ID_Usuario, Date Fecha_Agregado, int ID_Producto, int Cantidad, double Total) {
-        this.ID_Carrito = ID_Carrito;
+    public Carrito(int ID_Usuario, int ID_Producto, Date Fecha_Agregado, int Cantidad, double Total) {
         this.ID_Usuario = ID_Usuario;
-        this.Fecha_Agregado = Fecha_Agregado;
         this.ID_Producto = ID_Producto;
+        this.Fecha_Agregado = Fecha_Agregado;
         this.Cantidad = Cantidad;
         this.Total = Total;
     }
 
     // Getters y Setters
-    public int getID_Carrito() {
-        return ID_Carrito;
-    }
-
-    public void setID_Carrito(int ID_Carrito) {
-        this.ID_Carrito = ID_Carrito;
-    }
-
+    
     public int getID_Usuario() {
         return ID_Usuario;
     }

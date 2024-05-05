@@ -51,8 +51,81 @@ public class ControladorComentario {
     }
      
     //Eliminar Comentario
+        public boolean borrarComentario(int ID_Comentario) {
+        // Lógica para borrar el comentario en la base de datos
+        PreparedStatement statement = null;
+        try {
+            String query = "DELETE FROM Comentario WHERE ID_Comentario = ?";
+            statement = conexion.prepareStatement(query);
+            statement.setInt(1, ID_Comentario);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException ex) {
+            System.err.println("Error al borrar el comentario: " + ex.getMessage());
+            return false;
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    System.err.println("Error al cerrar la declaración: " + ex.getMessage());
+                }
+            }
+        }
+    }
     
+    //Obtener Comentario Por ID   
+    public Comentario ObtenerComentarioPorID(int ID_Comentario) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            String query = "SELECT * FROM Comentario WHERE ID_Comentario = ?";
+            statement = conexion.prepareStatement(query);
+            statement.setInt(1, ID_Comentario);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Comentario comentario = new Comentario(
+                    resultSet.getInt("ID_Comentario"),
+                    resultSet.getInt("ID_Usuario"),
+                    resultSet.getInt("ID_Producto"),
+                    resultSet.getString("Comentario"),
+                    resultSet.getDate("Fecha_Comentario")
+                );
+                return comentario;
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error al obtener el comentario: " + ex.getMessage());
+            return null;
+        } finally {
+        }
+    }
+        
     //Actualizar Comentario
+public boolean actualizarComentario(int ID_Comentario, String nuevoComentario) {
+    PreparedStatement statement = null;
+    try {
+        String query = "UPDATE Comentario SET Comentario = ? WHERE ID_Comentario = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setString(1, nuevoComentario);
+        statement.setInt(2, ID_Comentario);
+        int rowsUpdated = statement.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (SQLException ex) {
+        System.err.println("Error al actualizar el comentario: " + ex.getMessage());
+        return false;
+    } finally {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException ex) {
+                System.err.println("Error al cerrar el statement: " + ex.getMessage());
+            }
+        }
+    }
+}
+
     
     //Obtener Comentarios por Producto
       public List<Comentario> obtenerComentariosPorIDProducto(int ID_Producto) {

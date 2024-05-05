@@ -1,15 +1,17 @@
 package Vista;
 
+import Controladores.ControladorProducto;
 import Modelo.Categoria;
 import Modelo.Usuario;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
-public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL) ASI Q PUEDE QUE LO MODIFIQUE DESPUES
+public class menubar {
 
-     public static void initMenuBar(JFrame frame, Usuario usuario, String busqueda, int categoriaId) {
+    public static void initMenuBar(JFrame frame, Usuario usuario, String busqueda, int categoriaId) {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Fimecommerce");
 
@@ -24,11 +26,15 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
 
         menu.add(amazonMenuItem);
 
-        JComboBox<Categoria> navBar = new JComboBox<>();
-        navBar.addItem(new Categoria(1, "Hogar"));
-        navBar.addItem(new Categoria(2, "Limpieza"));
-        navBar.addItem(new Categoria(3, "Videojuegos")); // Solo para probar que funcione //SOLO PARA PROBAR QUE FUNCIONE
+        JComboBox<String> navBar = new JComboBox<>(); 
+        navBar.addItem("Todos");
+        ControladorProducto controladorCategoria = new ControladorProducto();
+        List<String> categorias = controladorCategoria.obtenerCategorias();
 
+        for (String categoria : categorias) {
+            navBar.addItem(categoria); 
+        }
+        
         JTextField searchBar = new JTextField();
         searchBar.setToolTipText("Buscar productos");
         searchBar.setText(busqueda);
@@ -36,12 +42,18 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
         JButton searchButton = new JButton("Buscar");
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
                 String busqueda = searchBar.getText();
                 System.out.println("Búsqueda realizada: " + busqueda);
-                Categoria categoriaSeleccionada = (Categoria) navBar.getSelectedItem();
-                if (categoriaSeleccionada != null) {
+                
+               ControladorProducto controladorProducto = new ControladorProducto();
+                String categoriaSeleccionada = (String) navBar.getSelectedItem();
+                
+               if (categoriaSeleccionada != null) {
                     try {
-                        int categoriaId = categoriaSeleccionada.getID_CategoriaProducto();
+                        
+                       int categoriaId = controladorProducto.obtenerIDporNombreCategoria(categoriaSeleccionada);
+                        System.out.println("Búsqueda realizada: " + categoriaId);
                         Busqueda busquedaVentana = new Busqueda(busqueda, categoriaId, usuario);
                         frame.dispose();
                         busquedaVentana.setVisible(true);
@@ -70,7 +82,7 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
         JButton botonCarrito = new JButton("Carrito");
         botonCarrito.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Carrito carrito = new Carrito(usuario);
+                CarritoPantalla carrito = new CarritoPantalla(usuario);
                 carrito.setVisible(true);
                 frame.dispose();
             }
@@ -79,14 +91,15 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
         JButton logoutButton = new JButton("Cerrar Sesión");
         logoutButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               
-                GUI_MENU_P inicioFrame = new GUI_MENU_P(); 
+
+                GUI_MENU_P inicioFrame = new GUI_MENU_P();
                 inicioFrame.setVisible(true);
-                frame.dispose(); 
+                frame.dispose();
             }
         });
 
         menuBar.add(menu);
+        // Agregar el panel que contiene el JComboBox al menú
         menuBar.add(navBar);
         menuBar.add(searchBar);
         menuBar.add(searchButton);
@@ -95,14 +108,13 @@ public class menubar { //TAMBIEN ANDO HACIENDO TODO SIN PENSARLO TANTO (MUY MAL)
         menuBar.add(botonCarrito);
         menuBar.add(logoutButton);
 
-        navBar.addActionListener(new ActionListener() {
+       navBar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Categoria categoriaSeleccionada = (Categoria) navBar.getSelectedItem();
+                String categoriaSeleccionada = (String) navBar.getSelectedItem();
+                // Aquí puedes realizar cualquier acción que necesites con la categoría seleccionada
+                System.out.println("Categoría seleccionada: " + categoriaSeleccionada);
             }
         });
-
         frame.setJMenuBar(menuBar);
     }
-   
-    
 }
