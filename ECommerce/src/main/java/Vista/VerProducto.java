@@ -137,7 +137,7 @@ public class VerProducto extends javax.swing.JFrame {
         comprarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Crea una instancia de PantallaDeCompra
-                PantallaDeCompra pantallaDeCompra = new PantallaDeCompra();
+                // PantallaDeCompra pantallaDeCompra = new PantallaDeCompra();
             }
         });
         detallesProductoPanel.add(comprarButton, gbc);

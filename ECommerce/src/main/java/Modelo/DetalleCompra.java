@@ -1,20 +1,23 @@
-
 package Modelo;
+
+import java.util.Date;
 
 public class DetalleCompra {
     private int ID_DetalleCompra;
-    private int ID_Compra;
     private int ID_Producto;
     private int Cantidad;
     private double Total;
+    private int ID_Pedido;
+    private Date Fecha_Compra;
 
     // Constructor
-    public DetalleCompra(int ID_DetalleCompra, int ID_Compra, int ID_Producto, int Cantidad, double Total) {
+    public DetalleCompra(int ID_DetalleCompra, int ID_Producto, int Cantidad, double Total, int ID_Pedido, Date Fecha_Compra) {
         this.ID_DetalleCompra = ID_DetalleCompra;
-        this.ID_Compra = ID_Compra;
         this.ID_Producto = ID_Producto;
         this.Cantidad = Cantidad;
         this.Total = Total;
+        this.ID_Pedido = ID_Pedido;
+        this.Fecha_Compra = Fecha_Compra;
     }
 
     // Getters y Setters
@@ -24,14 +27,6 @@ public class DetalleCompra {
 
     public void setID_DetalleCompra(int ID_DetalleCompra) {
         this.ID_DetalleCompra = ID_DetalleCompra;
-    }
-
-    public int getID_Compra() {
-        return ID_Compra;
-    }
-
-    public void setID_Compra(int ID_Compra) {
-        this.ID_Compra = ID_Compra;
     }
 
     public int getID_Producto() {
@@ -57,5 +52,20 @@ public class DetalleCompra {
     public void setTotal(double Total) {
         this.Total = Total;
     }
-}
 
+    public int getID_Pedido() {
+        return ID_Pedido;
+    }
+
+    public void setID_Pedido(int ID_Pedido) {
+        this.ID_Pedido = ID_Pedido;
+    }
+
+    public Date getFecha_Compra() {
+        return Fecha_Compra;
+    }
+
+    public void setFecha_Compra(Date Fecha_Compra) {
+        this.Fecha_Compra = Fecha_Compra;
+    }
+}

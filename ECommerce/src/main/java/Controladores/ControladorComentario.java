@@ -52,7 +52,6 @@ public class ControladorComentario {
      
     //Eliminar Comentario
         public boolean borrarComentario(int ID_Comentario) {
-        // Lógica para borrar el comentario en la base de datos
         PreparedStatement statement = null;
         try {
             String query = "DELETE FROM Comentario WHERE ID_Comentario = ?";

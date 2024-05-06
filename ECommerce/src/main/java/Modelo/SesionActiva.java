@@ -5,6 +5,7 @@ public class SesionActiva { //Aqui podemos obtener el ID del usuario activo para
     
     private static int ID_Usuario;
     private static int ID_Producto;
+    private static double totalAPagar;
 
     public static void setID_Usuario(int ID_Usuario) {
         SesionActiva.ID_Usuario = ID_Usuario;
@@ -21,5 +22,14 @@ public class SesionActiva { //Aqui podemos obtener el ID del usuario activo para
     public static int getID_Producto() {
         return ID_Producto;
     }
-}
+
+
+    public static void setTotalAPagar(double totalAPagar) {
+            SesionActiva.totalAPagar = totalAPagar;
+        }
+
+        public static double getTotalAPagar() {
+            return totalAPagar;
+        }
+ }
 

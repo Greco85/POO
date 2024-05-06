@@ -49,6 +49,32 @@ public class ControladorCarrito {
     }
 }
     
+    //Eliminar producto del carrito
+     public boolean eliminarDelCarrito(int ID_Usuario, int ID_Producto) {
+        PreparedStatement statement = null;
+
+        try {
+            String query = "DELETE FROM Carrito WHERE ID_Usuario = ? AND ID_Producto = ?";
+            statement = conexion.prepareStatement(query);
+            statement.setInt(1, ID_Usuario);
+            statement.setInt(2, ID_Producto);
+
+            int filasEliminadas = statement.executeUpdate();
+            return filasEliminadas > 0; 
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar producto del carrito: " + e.getMessage());
+            return false;
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
     
     public List<Carrito> obtenerTodoElCarrito(int ID_Usuario) {
     List<Carrito> productosCarrito = new ArrayList<>();
