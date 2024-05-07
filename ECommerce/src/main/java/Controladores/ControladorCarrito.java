@@ -75,52 +75,47 @@ public class ControladorCarrito {
         }
     }
     
+   
     
     public List<Carrito> obtenerTodoElCarrito(int ID_Usuario) {
-    List<Carrito> productosCarrito = new ArrayList<>();
-    PreparedStatement statement = null;
-    ResultSet resultSet = null;
+        List<Carrito> productosCarrito = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
-    try {
-        
-        String query = "SELECT * FROM Carrito WHERE ID_Usuario = ?";
-        statement = conexion.prepareStatement(query);
-        statement.setInt(1, ID_Usuario);
-        resultSet = statement.executeQuery();
+        try {
+            String sql = "SELECT * FROM Carrito WHERE ID_Usuario = ?";
+            statement = conexion.prepareStatement(sql);
+            statement.setInt(1, ID_Usuario);
+            resultSet = statement.executeQuery();
 
-       while (resultSet.next()) {
-            int ID_Producto = resultSet.getInt("ID_Producto");
-            int cantidad = resultSet.getInt("Cantidad");
-            double total = resultSet.getDouble("Total");
-            Date fechaAgregado = resultSet.getDate("FechaAgregado");
-            Carrito productoCarrito = new Carrito(ID_Usuario, ID_Producto, fechaAgregado, cantidad, total);
-            productosCarrito.add(productoCarrito);
-        }
-
-    } catch (SQLException e) {
-        System.err.println("Error al obtener los productos del carrito: " + e.getMessage());
-    } finally {
-        if (resultSet != null) {
+            while (resultSet.next()) {
+                int ID_Producto = resultSet.getInt("ID_Producto");
+                int cantidad = resultSet.getInt("Cantidad");
+                double total = resultSet.getDouble("Total");
+                Date fechaAgregado = resultSet.getDate("FechaAgregado");
+                Carrito productoCarrito = new Carrito(ID_Usuario, ID_Producto, fechaAgregado, cantidad, total);
+                productosCarrito.add(productoCarrito);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
             try {
-                resultSet.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        if (statement != null) {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+
+        return productosCarrito;
     }
-
-    return productosCarrito;
-}
-
     
     
+
     
     
     public boolean productoEnCarrito(int ID_Usuario, int ID_Producto) {

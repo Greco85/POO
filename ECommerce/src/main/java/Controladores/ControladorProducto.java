@@ -128,6 +128,52 @@ public class ControladorProducto {
 }
    
    
+   public void ActualizarCantidad(int ID_Producto, int Cantidad) {
+        PreparedStatement statement = null;
+
+        try {
+            String consultaActualizarCantidad = "UPDATE Producto SET Cantidad_Disponible = Cantidad_Disponible - ? WHERE ID_Producto = ?";
+            statement = conexion.prepareStatement(consultaActualizarCantidad);
+            statement.setInt(1, Cantidad);
+            statement.setInt(2, ID_Producto);
+            statement.executeUpdate();
+
+            // Verificar si la cantidad disponible es igual a 0
+            if (CantidadDisponible(ID_Producto) == 0) {
+                String consultaCambiarEstado = "UPDATE Producto SET ID_EstadoProducto = ? WHERE ID_Producto = ?";
+                statement = conexion.prepareStatement(consultaCambiarEstado);
+                statement.setInt(1, 2); // LUEGO CAMBIAR AUN NO LO TENEMOS "Agotado"
+                statement.setInt(2, ID_Producto);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private int CantidadDisponible(int ID_Producto) throws SQLException {
+        String consultaCantidadDisponible = "SELECT Cantidad_Disponible FROM Producto WHERE ID_Producto = ?";
+        try (PreparedStatement statement = conexion.prepareStatement(consultaCantidadDisponible)) {
+            statement.setInt(1, ID_Producto);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("Cantidad_Disponible");
+                }
+            }
+        }
+        return 0; 
+    }
+   
+   
    public List<Producto> obtenerProductosPorNombre(String nombre) {
     List<Producto> productos = new ArrayList<>();
     PreparedStatement statement = null;

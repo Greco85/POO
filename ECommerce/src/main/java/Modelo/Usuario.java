@@ -15,9 +15,11 @@ public class Usuario {
     private Date Fecha_Registro;
     private Date Fecha_Nacimiento;
     private String ImagenURL;
+    private float DineroFalso;
+
    
     // Constructor
-    public Usuario(int ID_Usuario, String Nombre, String Apellido, String Correo_Electronico, String Contraseña, Direccion direccion, String Telefono, Date Fecha_Registro, Date Fecha_Nacimiento, String ImagenURL) {
+    public Usuario(int ID_Usuario, String Nombre, String Apellido, String Correo_Electronico, String Contraseña, Direccion direccion, String Telefono, Date Fecha_Registro, Date Fecha_Nacimiento, String ImagenURL, float DineroFalso) {
         this.ID_Usuario = ID_Usuario;
         this.Nombre = Nombre;
         this.Apellido = Apellido;
@@ -28,6 +30,7 @@ public class Usuario {
         this.Fecha_Registro = Fecha_Registro;
         this.Fecha_Nacimiento = Fecha_Nacimiento;
         this.ImagenURL = ImagenURL;
+        this.DineroFalso = DineroFalso;
     }
   
     public Usuario(String Correo_Electronico, String Contraseña, String Nombre, String Apellido, String Telefono, Date Fecha_Registro, Date Fecha_Nacimiento, String ImagenURL) {
@@ -132,5 +135,13 @@ public class Usuario {
 
     public void setImagenURL(String ImagenURL) {
         this.ImagenURL = ImagenURL;
+    }
+    
+    public float getDineroFalso() {
+        return DineroFalso;
+    }
+
+    public void setDineroFalso(float DineroFalso) {
+        this.DineroFalso = DineroFalso;
     }
 }

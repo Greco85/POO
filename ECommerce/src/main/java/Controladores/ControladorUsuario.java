@@ -241,6 +241,59 @@ public static boolean validarCredenciales(Usuario usuario) {
     return credencialesCorrectas;
 }
 
+    public static void verificarYActualizarDineroFalso(Usuario usuario) {
+        Float dineroFalsoActual = obtenerDineroFalso(usuario.getID_Usuario());
+        if (dineroFalsoActual == null || dineroFalsoActual == 0) {
+            usuario.setDineroFalso(10000);
+            actualizarDineroFalso(usuario);
+        }
+    }
+
+    private static Float obtenerDineroFalso(int ID_Usuario) {
+        Float dineroFalso = null;
+        String consulta = "SELECT DineroFalso FROM Usuario WHERE ID_Usuario = ?";
+
+        try {
+            Connection conexion = Conexion.getInstance().getConexion();
+            PreparedStatement statement = conexion.prepareStatement(consulta);
+            statement.setInt(1, ID_Usuario);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                dineroFalso = resultSet.getFloat("DineroFalso");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error al obtener DineroFalso del usuario: " + e.getMessage());
+        }
+
+        return dineroFalso;
+    }
+
+    private static void actualizarDineroFalso(Usuario usuario) {
+    String consulta = "UPDATE Usuario SET DineroFalso = ? WHERE ID_Usuario = ?";
+    
+    try {
+        Connection conexion = Conexion.getInstance().getConexion();
+        PreparedStatement statement = conexion.prepareStatement(consulta);
+        statement.setFloat(1, usuario.getDineroFalso());
+        statement.setInt(2, usuario.getID_Usuario());
+        
+        int filasActualizadas = statement.executeUpdate();
+        
+        if (filasActualizadas > 0) {
+            System.out.println("DineroFalso actualizado correctamente.");
+        } else {
+            System.err.println("No se pudo actualizar DineroFalso.");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al actualizar DineroFalso: " + e.getMessage());
+    }
+}
+
+
 
 
 

@@ -4,20 +4,20 @@ import java.util.Date;
 
 public class DetalleCompra {
     private int ID_DetalleCompra;
+    private int ID_Usuario;
     private int ID_Producto;
-    private int Cantidad;
     private double Total;
-    private int ID_Pedido;
-    private Date Fecha_Compra;
+    private Date Fecha_Entregado;
+    private int Cantidad;
 
     // Constructor
-    public DetalleCompra(int ID_DetalleCompra, int ID_Producto, int Cantidad, double Total, int ID_Pedido, Date Fecha_Compra) {
+    public DetalleCompra(int ID_DetalleCompra, int ID_Usuario, int ID_Producto, double Total, Date Fecha_Entregado, int Cantidad) {
         this.ID_DetalleCompra = ID_DetalleCompra;
+        this.ID_Usuario = ID_Usuario;
         this.ID_Producto = ID_Producto;
-        this.Cantidad = Cantidad;
         this.Total = Total;
-        this.ID_Pedido = ID_Pedido;
-        this.Fecha_Compra = Fecha_Compra;
+        this.Fecha_Entregado = Fecha_Entregado;
+        this.Cantidad = Cantidad;
     }
 
     // Getters y Setters
@@ -29,20 +29,20 @@ public class DetalleCompra {
         this.ID_DetalleCompra = ID_DetalleCompra;
     }
 
+    public int getID_Usuario() {
+        return ID_Usuario;
+    }
+
+    public void setID_Usuario(int ID_Usuario) {
+        this.ID_Usuario = ID_Usuario;
+    }
+
     public int getID_Producto() {
         return ID_Producto;
     }
 
     public void setID_Producto(int ID_Producto) {
         this.ID_Producto = ID_Producto;
-    }
-
-    public int getCantidad() {
-        return Cantidad;
-    }
-
-    public void setCantidad(int Cantidad) {
-        this.Cantidad = Cantidad;
     }
 
     public double getTotal() {
@@ -53,19 +53,19 @@ public class DetalleCompra {
         this.Total = Total;
     }
 
-    public int getID_Pedido() {
-        return ID_Pedido;
+    public Date getFecha_Entregado() {
+        return Fecha_Entregado;
     }
 
-    public void setID_Pedido(int ID_Pedido) {
-        this.ID_Pedido = ID_Pedido;
+    public void setFecha_Entregado(Date Fecha_Entregado) {
+        this.Fecha_Entregado = Fecha_Entregado;
     }
 
-    public Date getFecha_Compra() {
-        return Fecha_Compra;
+    public int getCantidad() {
+        return Cantidad;
     }
 
-    public void setFecha_Compra(Date Fecha_Compra) {
-        this.Fecha_Compra = Fecha_Compra;
+    public void setCantidad(int Cantidad) {
+        this.Cantidad = Cantidad;
     }
 }

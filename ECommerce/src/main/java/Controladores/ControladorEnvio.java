@@ -22,19 +22,40 @@ public class ControladorEnvio {
         
     }
     
-    //Envio
-    
-    //Crear Envío
-    //Actualizar Envío
-    //Eliminar Envío
-    
-    //EstadoEnvio
-    
-    //Crear Estado de Envío
-    //Actualizar Estado de Envío
-    //Eliminar Estado de Envío
     
     //MetodoEnvio
+    public int obtenerIdMetodoEnvioPorNombre(String nombreMetodoEnvio) {
+            int ID_MetodoEnvio = -1;
+            PreparedStatement statement = null;
+            ResultSet resultSet = null;
+
+            try {
+                String consulta = "SELECT ID_MetodoEnvio FROM MetodoEnvio WHERE MetodoEnvio = ?";
+                statement = conexion.prepareStatement(consulta);
+                statement.setString(1, nombreMetodoEnvio);
+                resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    ID_MetodoEnvio = resultSet.getInt("ID_MetodoEnvio");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (resultSet != null) {
+                        resultSet.close();
+                    }
+                    if (statement != null) {
+                        statement.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return ID_MetodoEnvio;
+        }
+
     
     //Traer Metodos de envio
     
@@ -75,6 +96,7 @@ public class ControladorEnvio {
             }
             return tiposEnvio;
         }
+    
     
     
     //Crear Metodo de Envio

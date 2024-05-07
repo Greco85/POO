@@ -1,14 +1,21 @@
 
 package Vista;
 
+import Controladores.ControladorCarrito;
 import Controladores.ControladorEnvio;
+
+import Controladores.ControladorPedido;
+import Controladores.ControladorProducto;
 import Controladores.ControladorUsuario;
+import Modelo.Carrito;
 import Modelo.Direccion;
 import Modelo.SesionActiva;
 import Modelo.Usuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -61,7 +68,7 @@ public class PantallaDeCompra extends javax.swing.JFrame {
     
     private Usuario usuario;
     private Connection conexion;
-        private ControladorUsuario controladorUsuario;
+    private ControladorUsuario controladorUsuario;
 
   
     public PantallaDeCompra(Usuario usuario, Connection conexion) {
@@ -291,10 +298,146 @@ private void initmyComponents() {
     );
 }
 
-
     private void realizarCompra() {
+    if (txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty() ||
+        txtCorreoElectronico.getText().isEmpty() || txtTelefono.getText().isEmpty() ||
+        txtCalle.getText().isEmpty() || txtNumeroCasa.getText().isEmpty() ||
+        txtColonia.getText().isEmpty() || txtCodigoPostal.getText().isEmpty() ||
+        txtCiudad.getText().isEmpty() || txtPais.getText().isEmpty() ||
+        txtTotal.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Campos Incompletos", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    
+    String metodoPago = (String) cbMetodoPago.getSelectedItem();
+        if (metodoPago.equals("Tarjeta de Crédito") || metodoPago.equals("Tarjeta de Débito")) {
+            // Validar campos de tarjeta de crédito/debito
+            if (txtNumeroTarjeta.getText().isEmpty() || txtFechaVencimiento.getText().isEmpty() || txtCVV.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, complete los campos de la tarjeta.", "Campos Incompletos", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
+        //Solo es para darle dinero de prueba NO ES UNA BUENA PRACTICA PERO SOY ESTUDIANTE
+    
+        ControladorUsuario.verificarYActualizarDineroFalso(usuario);
+        String tipoEnvioSeleccionado = (String) cbTipoEnvio.getSelectedItem(); // Obtener el tipo de envío seleccionado
+        
+        
+        int ID_Usuario = SesionActiva.getID_Usuario();
+        Date fechaActual = new Date();
+        Timestamp fechaYHoraActual = new Timestamp(fechaActual.getTime());
+        
+        String EstadoEnvio = "Pendiente";
+        
+        ControladorPedido controladorPedido = new ControladorPedido();
+        int ID_EstadoPedido = controladorPedido.obtenerIdEstadoPedido(EstadoEnvio);
+        
+        Direccion direccionUsuario = usuario.getDireccion();
+
+        String calle = txtCalle.getText();
+        String numeroCasa = txtNumeroCasa.getText();
+        String colonia = txtColonia.getText();
+        String codigoPostal = txtCodigoPostal.getText();
+        String ciudad = txtCiudad.getText();
+        String pais = txtPais.getText();
+        
+        String direccion = "";
+        
+        double DineroTotalCompra = 0;
+
+        direccion = calle + ", " + numeroCasa + ", " + colonia + ", " + codigoPostal + ", " + ciudad + ", " + pais;
+
+
+        // Obtener todos los productos en el carrito para el usuario dado
+        ControladorCarrito controladorCarrito = new ControladorCarrito();
+        List<Carrito> productosEnCarrito = controladorCarrito.obtenerTodoElCarrito(ID_Usuario);
+
+        ControladorEnvio controladorEnvio = new ControladorEnvio();
+        
+        ControladorProducto controladorProducto = new ControladorProducto();
+
+        int ID_MetodoEnvio = controladorEnvio.obtenerIdMetodoEnvioPorNombre(tipoEnvioSeleccionado);
+
+        if (ID_MetodoEnvio != -1) {
+            System.out.println("ID del método de envío seleccionado: " + ID_MetodoEnvio);
+        } else {
+            System.out.println("No se pudo obtener el ID del método de envío seleccionado.");
+        }
+        
+        for (Carrito carrito : productosEnCarrito) {
+
+            int ID_Producto = carrito.getID_Producto();
+            int Cantidad = carrito.getCantidad(); 
+            double Total = carrito.getTotal(); 
+            
+            DineroTotalCompra = DineroTotalCompra + Total;
+            // Realizar la inserción del pedido con los valores obtenidos
+        boolean insercionExitosa = controladorPedido.insertarPedido(
+                ID_Usuario,
+                ID_EstadoPedido,
+                ID_MetodoEnvio,
+                direccion,
+                ID_Producto,
+                Cantidad,
+                Total,
+                fechaYHoraActual
+        );
+
+    if (insercionExitosa) {
+        System.out.println("Pedido insertado correctamente.");
+        // BAJAR LA CANTIDAD DEL PRODUCTO ORIGINAL CON OTRA CONSULTA A LA DB
+        controladorProducto.ActualizarCantidad(ID_Producto, Cantidad);
+        
+        //Para que se quite del carrito
+        controladorCarrito.eliminarDelCarrito(ID_Usuario, ID_Producto);
+
+        //PRIMER HACER UNA FUNCION PARA QUE LAS PERSOANS METAN DINERO?? CURIOSO PERO BUENO
+        
+        // HACER TAMBIEN LA FUNCION PARA DARLE EL DINERO AL OTRO USUARIO AUNQEU LUEGO VAMOS A MOVER ESTO CUANDO LO RECIBA?
+        
+        //Restarle el dinero total que pago al usuario
+
+        
+        
+        
+        
+    } else {
+        System.out.println("Error al insertar el pedido.");
+    }
+        }
+        
+        
+        //Restarle el dinero total que pago al usuario
+        
+        DineroTotalCompra = DineroTotalCompra - 1; 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //MAÑANA PANTALLAS CURIOSAS PARA VER EL SEGUIMIENTO DE LOS PEDIDOS
+
+        
+        // HACER LO MISMO PERO COMPRAR SOLO CON UN PRODUCTO
+        
+        // Pantalla Comprador , Pantalla de Pedido Envio  , Pantalla Vendedor
+        
+        // DSPS DE ACABAR EL PROCESO ESTE AHORA SI EN EL DETALLE DE COMPRA Y ESAS COSAS
+        
+        
+        
+        
+
         JOptionPane.showMessageDialog(this, "Compra realizada con éxito", "Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
     }
+
     
     private void cargarDatosUsuario() {
         int ID_Usuario = SesionActiva.getID_Usuario();
