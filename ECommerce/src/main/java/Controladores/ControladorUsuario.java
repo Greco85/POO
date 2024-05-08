@@ -11,6 +11,7 @@ import java.sql.Connection;
 public class ControladorUsuario {
     
     private final Connection conexion;
+    private Usuario usuario;
 
     public ControladorUsuario(Connection conexion) {
         this.conexion = conexion;
@@ -241,15 +242,16 @@ public static boolean validarCredenciales(Usuario usuario) {
     return credencialesCorrectas;
 }
 
-    public static void verificarYActualizarDineroFalso(Usuario usuario) {
-        Float dineroFalsoActual = obtenerDineroFalso(usuario.getID_Usuario());
-        if (dineroFalsoActual == null || dineroFalsoActual == 0) {
-            usuario.setDineroFalso(10000);
-            actualizarDineroFalso(usuario);
-        }
+    public static void verificarYActualizarDineroFalso(Usuario usuario, int ID_Usuario, double dineroMetido) {
+       
+        double dineroFalsoActual = obtenerDineroFalso(ID_Usuario);
+        
+        double dineroFalsoNuevo = dineroMetido + dineroFalsoActual;
+            actualizarDineroFalso(dineroFalsoNuevo, ID_Usuario);
+        
     }
 
-    private static Float obtenerDineroFalso(int ID_Usuario) {
+    public static double obtenerDineroFalso(int ID_Usuario) {
         Float dineroFalso = null;
         String consulta = "SELECT DineroFalso FROM Usuario WHERE ID_Usuario = ?";
 
@@ -272,14 +274,14 @@ public static boolean validarCredenciales(Usuario usuario) {
         return dineroFalso;
     }
 
-    private static void actualizarDineroFalso(Usuario usuario) {
+    private static void actualizarDineroFalso(double dineroNuevo , int ID_Usuario) {
     String consulta = "UPDATE Usuario SET DineroFalso = ? WHERE ID_Usuario = ?";
     
     try {
         Connection conexion = Conexion.getInstance().getConexion();
         PreparedStatement statement = conexion.prepareStatement(consulta);
-        statement.setFloat(1, usuario.getDineroFalso());
-        statement.setInt(2, usuario.getID_Usuario());
+        statement.setDouble(1, dineroNuevo);
+        statement.setInt(2, ID_Usuario);
         
         int filasActualizadas = statement.executeUpdate();
         
@@ -294,7 +296,16 @@ public static boolean validarCredenciales(Usuario usuario) {
 }
 
 
+public static void transferirDinero(int ID_UsuarioComprador, int ID_UsuarioVendedor, double cantidad) {
+    ActualizarDineroFalsoparaCompradoryVendedor(ID_UsuarioVendedor, cantidad);
+    ActualizarDineroFalsoparaCompradoryVendedor(ID_UsuarioComprador, -cantidad);
+}
 
+public static void ActualizarDineroFalsoparaCompradoryVendedor(int ID_Usuario, double cantidad) {
+    double dineroFalsoActual = obtenerDineroFalso(ID_Usuario);
+    double dineroFalsoNuevo = dineroFalsoActual + cantidad;
+    actualizarDineroFalso(dineroFalsoNuevo, ID_Usuario);
+}
 
 
     

@@ -67,6 +67,46 @@ public class ControladorProducto {
     }
     return productos;
 }
+    
+    
+    
+    public int obtenerID_UsuarioPorID_Producto(int ID_Producto) {
+    int ID_Usuario = -1; 
+
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String query = "SELECT ID_Usuario FROM Producto WHERE ID_Producto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_Producto);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            ID_Usuario = resultSet.getInt("ID_Usuario");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener el ID del usuario por ID_Producto: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return ID_Usuario;
+}
+
 
     //Producto 
     
@@ -412,10 +452,17 @@ public class ControladorProducto {
     public List<Producto> obtenerTodosLosProductos(int idUsuario) {
     List<Producto> productos = new ArrayList<>();
     String consulta = "SELECT * FROM Producto WHERE ID_Usuario = ?";
-
-    try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
+    
+    Connection conexion = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        ps = conexion.prepareStatement(consulta);
         ps.setInt(1, idUsuario); 
-        ResultSet rs = ps.executeQuery();
+        rs = ps.executeQuery();
+        
         while (rs.next()) {
             int idProducto = rs.getInt("ID_Producto");
             String nombre = rs.getString("Nombre");
@@ -426,18 +473,86 @@ public class ControladorProducto {
             Date fechaCreacion = rs.getDate("Fecha_Creacion");
             int idEstado = rs.getInt("ID_EstadoProducto");
             String imagenURL = rs.getString("ImagenURL");
-            int idUsuarioProducto = rs.getInt("ID_Usuario"); // Obtener ID_Usuario
-
-            Producto producto = new Producto(idProducto,idUsuario, nombre, descripcion, precio, cantidadDisponible, idCategoria, fechaCreacion, idEstado, imagenURL);
+            int idUsuarioProducto = rs.getInt("ID_Usuario");
+            
+            // Crear el objeto Producto y agregarlo a la lista
+            Producto producto = new Producto(idProducto, idUsuario, nombre, descripcion, precio, cantidadDisponible, idCategoria, fechaCreacion, idEstado, imagenURL);
             productos.add(producto);
         }
     } catch (SQLException e) {
         System.err.println("Error al obtener los productos: " + e.getMessage());
+    } finally {
+        // Cerrar los recursos
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (conexion != null) {
+            try {
+                conexion.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
-
+    
     return productos;
 }
+
     
+ public List<Integer> obtenerID_ProductosPorID_Usuario(int ID_Usuario) {
+    List<Integer> idsProductos = new ArrayList<>();
+    Connection conexion = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String consulta = "SELECT ID_Producto FROM Producto WHERE ID_Usuario = ?";
+        ps = conexion.prepareStatement(consulta);
+        ps.setInt(1, ID_Usuario);
+        rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            int idProducto = rs.getInt("ID_Producto");
+            idsProductos.add(idProducto);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener los IDs de productos por ID_Usuario: " + e.getMessage());
+    } finally {
+        // No cerrar la conexión aquí
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    return idsProductos;
+}
+
+    
+    
+   
     //CategoriaProducto
     
     //Crear CategoriaProducto

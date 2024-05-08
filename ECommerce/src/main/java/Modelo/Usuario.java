@@ -15,7 +15,7 @@ public class Usuario {
     private Date Fecha_Registro;
     private Date Fecha_Nacimiento;
     private String ImagenURL;
-    private float DineroFalso;
+    private double DineroFalso;
 
    
     // Constructor
@@ -137,11 +137,11 @@ public class Usuario {
         this.ImagenURL = ImagenURL;
     }
     
-    public float getDineroFalso() {
+    public double getDineroFalso() {
         return DineroFalso;
     }
 
-    public void setDineroFalso(float DineroFalso) {
+    public void setDineroFalso(double DineroFalso) {
         this.DineroFalso = DineroFalso;
     }
 }

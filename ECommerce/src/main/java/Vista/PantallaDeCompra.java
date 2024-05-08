@@ -311,21 +311,34 @@ private void initmyComponents() {
     
     
     String metodoPago = (String) cbMetodoPago.getSelectedItem();
-        if (metodoPago.equals("Tarjeta de Crédito") || metodoPago.equals("Tarjeta de Débito")) {
+        
+    if (metodoPago.equals("Tarjeta de Crédito") || metodoPago.equals("Tarjeta de Débito")) {
             // Validar campos de tarjeta de crédito/debito
             if (txtNumeroTarjeta.getText().isEmpty() || txtFechaVencimiento.getText().isEmpty() || txtCVV.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor, complete los campos de la tarjeta.", "Campos Incompletos", JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
-        
-        //Solo es para darle dinero de prueba NO ES UNA BUENA PRACTICA PERO SOY ESTUDIANTE
     
-        ControladorUsuario.verificarYActualizarDineroFalso(usuario);
+            int ID_Usuario = SesionActiva.getID_Usuario();
+        //dinero a pagar por ese carrito
+    
+        double totalAPagar = SesionActiva.getTotalAPagar();
+        double dineroUsuario = controladorUsuario.obtenerDineroFalso(ID_Usuario);
+        
+        
+        if (dineroUsuario < totalAPagar) {
+            // Si el usuario no tiene suficiente dinero, mostrar una alerta
+            double dineroDisponible = dineroUsuario;
+            JOptionPane.showMessageDialog(this, "No tiene suficiente dinero para pagar. Dinero disponible: $" + dineroDisponible, "Alerta", JOptionPane.WARNING_MESSAGE);
+        } else {
+            
+            
+            //Solo es para darle dinero de prueba NO ES UNA BUENA PRACTICA PERO SOY ESTUDIANTE
+    
         String tipoEnvioSeleccionado = (String) cbTipoEnvio.getSelectedItem(); // Obtener el tipo de envío seleccionado
         
         
-        int ID_Usuario = SesionActiva.getID_Usuario();
         Date fechaActual = new Date();
         Timestamp fechaYHoraActual = new Timestamp(fechaActual.getTime());
         
@@ -350,6 +363,10 @@ private void initmyComponents() {
         direccion = calle + ", " + numeroCasa + ", " + colonia + ", " + codigoPostal + ", " + ciudad + ", " + pais;
 
 
+        
+        
+        
+        
         // Obtener todos los productos en el carrito para el usuario dado
         ControladorCarrito controladorCarrito = new ControladorCarrito();
         List<Carrito> productosEnCarrito = controladorCarrito.obtenerTodoElCarrito(ID_Usuario);
@@ -392,35 +409,28 @@ private void initmyComponents() {
         
         //Para que se quite del carrito
         controladorCarrito.eliminarDelCarrito(ID_Usuario, ID_Producto);
+        
+        
+        int ID_UsuarioVendedor = controladorProducto.obtenerID_UsuarioPorID_Producto(ID_Producto);
+        
+        controladorUsuario.transferirDinero( ID_Usuario,  ID_UsuarioVendedor, Total);
+        
+        
+        System.out.println("hola papu");
+        
+        //Sale varias veces lo d abajo quitarlo o moverlo para q solo salga 1 vez
+        
+        JOptionPane.showMessageDialog(this, "Compra realizada con éxito", "Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
 
-        //PRIMER HACER UNA FUNCION PARA QUE LAS PERSOANS METAN DINERO?? CURIOSO PERO BUENO
-        
-        // HACER TAMBIEN LA FUNCION PARA DARLE EL DINERO AL OTRO USUARIO AUNQEU LUEGO VAMOS A MOVER ESTO CUANDO LO RECIBA?
-        
-        //Restarle el dinero total que pago al usuario
 
-        
-        
-        
-        
     } else {
         System.out.println("Error al insertar el pedido.");
     }
         }
-        
-        
-        //Restarle el dinero total que pago al usuario
-        
-        DineroTotalCompra = DineroTotalCompra - 1; 
-        
-        
-        
-        
-        
-        
-        
-        
-        
+            
+        }
+
+     
         
         //MAÑANA PANTALLAS CURIOSAS PARA VER EL SEGUIMIENTO DE LOS PEDIDOS
 
@@ -432,10 +442,9 @@ private void initmyComponents() {
         // DSPS DE ACABAR EL PROCESO ESTE AHORA SI EN EL DETALLE DE COMPRA Y ESAS COSAS
         
         
-        
+        //falta
         
 
-        JOptionPane.showMessageDialog(this, "Compra realizada con éxito", "Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
     }
 
     

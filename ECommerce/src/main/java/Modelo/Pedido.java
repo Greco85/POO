@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Pedido {
@@ -24,6 +25,19 @@ public class Pedido {
         this.Total = Total;
         this.FechaPedido = FechaPedido;
     }
+      
+      public Pedido(int ID_Pedido, int ID_Usuario, int ID_EstadoPedido, int ID_MetodoEnvio, String Direccion, int ID_Producto, int Cantidad, double Total, Timestamp FechaPedido) {
+    this.ID_Pedido = ID_Pedido;
+    this.ID_Usuario = ID_Usuario;
+    this.ID_EstadoPedido = ID_EstadoPedido;
+    this.ID_MetodoEnvio = ID_MetodoEnvio;
+    this.Direccion = Direccion;
+    this.ID_Producto = ID_Producto;
+    this.Cantidad = Cantidad;
+    this.Total = Total;
+    this.FechaPedido = FechaPedido;
+}
+
 
     // Getters y Setters para todos los campos
     public int getID_Pedido() {

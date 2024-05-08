@@ -43,98 +43,131 @@ public class CuentaUsuario extends javax.swing.JFrame {
                 dispose();
             }
         });
-    
+        
+        jButton2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                MeterDinero meterDinero = new MeterDinero(usuario);
+                meterDinero.setVisible(true);
+            }
+        });
         
         eliminarCuentaButton.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-        SesionActiva sesionActiva = new SesionActiva();
-        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar tu cuenta?", "Confirmar eliminación de cuenta", JOptionPane.YES_NO_OPTION);
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            Conexion conexion = Conexion.getInstance();
-            ControladorUsuario controladorUsuario = new ControladorUsuario(conexion.getConexion());
-            if (controladorUsuario.eliminarUsuario(sesionActiva.getID_Usuario())) {
-                JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente");
-                GUI_MENU_P inicioFrame = new GUI_MENU_P();
-                inicioFrame.setVisible(true);
-                dispose(); 
-            } else {
-                JOptionPane.showMessageDialog(null, "Error al eliminar usuario");
+            public void actionPerformed(ActionEvent e) {
+                SesionActiva sesionActiva = new SesionActiva();
+                int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar tu cuenta?", "Confirmar eliminación de cuenta", JOptionPane.YES_NO_OPTION);
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    Conexion conexion = Conexion.getInstance();
+                    ControladorUsuario controladorUsuario = new ControladorUsuario(conexion.getConexion());
+                    if (controladorUsuario.eliminarUsuario(sesionActiva.getID_Usuario())) {
+                        JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente");
+                        GUI_MENU_P inicioFrame = new GUI_MENU_P();
+                        inicioFrame.setVisible(true);
+                        dispose(); 
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al eliminar usuario");
+                    }
+                }
             }
-            
-        }
-    }
-});
-   
+        });
+        
+        // Productos vendidos
+        jButtonProductosVendidos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VistaVendedor vistaVendedor = new VistaVendedor(usuario);
+                vistaVendedor.setVisible(true);
+                dispose();
+            }
+        });
+
+        // Pedidos Hechos
+        jButtonPedidosHechos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VistaComprador vistaComprador = new VistaComprador(usuario);
+                vistaComprador.setVisible(true);
+                dispose();
+            }
+        });
+
+
     }
      
     private void abrirEditarDatosUsuario() {
-    EditarDatosUsuario editarDatosUsuario = new EditarDatosUsuario(usuario, conexion);
-    editarDatosUsuario.setVisible(true);
-    dispose();
-}
+        EditarDatosUsuario editarDatosUsuario = new EditarDatosUsuario(usuario, conexion);
+        editarDatosUsuario.setVisible(true);
+        dispose();
+    }
 
-     
-     
-private void initmyComponents() {
+    private void initmyComponents() {
+        jLabel1 = new javax.swing.JLabel();
+        EditarCuenta = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        eliminarCuentaButton = new javax.swing.JButton();
+        jButtonProductosVendidos = new javax.swing.JButton();
+        jButtonPedidosHechos = new javax.swing.JButton();
 
-    jLabel1 = new javax.swing.JLabel();
-    EditarCuenta = new javax.swing.JButton();
-    jButton1 = new javax.swing.JButton();
-    jButton2 = new javax.swing.JButton();
-    eliminarCuentaButton = new javax.swing.JButton();
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel1.setText("Nombre del Usuario");
 
-    jLabel1.setText("Nombre del Usuario");
+        EditarCuenta.setText("EDITAR CUENTA");
 
-    EditarCuenta.setText("EDITAR CUENTA");
+        jButton1.setText("PUBLICACIONES");
 
-    jButton1.setText("PUBLICACIONES");
+        jButton2.setText("METER DINERO");
 
-    jButton2.setText("GUARDADOS");
+        eliminarCuentaButton.setText("Eliminar Cuenta");
 
-    eliminarCuentaButton.setText("Eliminar Cuenta");
+        jButtonProductosVendidos.setText("Productos Vendidos");
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(150, 150, 150)
-                    .addComponent(jLabel1))
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(98, 98, 98)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(EditarCuenta)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(132, 132, 132)
-                    .addComponent(eliminarCuentaButton)))
-            .addContainerGap(97, Short.MAX_VALUE))
-    );
-    layout.setVerticalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addGap(65, 65, 65)
-            .addComponent(jLabel1)
-            .addGap(18, 18, 18)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(EditarCuenta)
-                .addComponent(jButton2))
-            .addGap(18, 18, 18)
-            .addComponent(jButton1)
-            .addGap(18, 18, 18)
-            .addComponent(eliminarCuentaButton)
-            .addContainerGap(73, Short.MAX_VALUE))
-    );
+        jButtonPedidosHechos.setText("Pedidos Hechos");
 
-    pack();
-}
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(EditarCuenta)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButtonProductosVendidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonPedidosHechos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addComponent(eliminarCuentaButton)))
+                .addContainerGap(97, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EditarCuenta)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonProductosVendidos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonPedidosHechos)
+                .addGap(18, 18, 18)
+                .addComponent(eliminarCuentaButton)
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
+
+        pack();
+    }
 
 
     private void mostrarNombre() {
@@ -207,7 +240,10 @@ private void initmyComponents() {
     private void EditarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarCuentaActionPerformed
         
     }//GEN-LAST:event_EditarCuentaActionPerformed
-
+    
+    
+    private javax.swing.JButton jButtonPedidosHechos;
+    private javax.swing.JButton jButtonProductosVendidos;
     private javax.swing.JButton eliminarCuentaButton;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EditarCuenta;

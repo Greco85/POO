@@ -81,6 +81,9 @@ public CarritoPantalla(Usuario usuario) {
         JLabel imagenLabel = new JLabel("Imagen: " + producto.getImagenURL());
         imagenLabel.setBounds(10, 130, 400, 20);
         panelProducto.add(imagenLabel);
+        
+        
+        
 
         // Botón Eliminar
         JButton eliminarButton = new JButton("Eliminar");
@@ -154,13 +157,14 @@ public CarritoPantalla(Usuario usuario) {
           
             
             JLabel comprarLabel = new JLabel("El total de este carrito es: " + totalCarrito);
+            SesionActiva.setTotalAPagar(totalCarrito); 
+
             JButton comprarButton = new JButton("Comprar");
             comprarButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     
                     
-                    SesionActiva.setTotalAPagar(totalCarrito); 
                     PantallaDeCompra pantallaDeCompra = new PantallaDeCompra(usuario, conexion);
                     pantallaDeCompra.setVisible(true);
                     
