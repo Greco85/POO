@@ -18,7 +18,6 @@ public class ControladorPedido {
 
     public ControladorPedido() {
         this.conexion = Conexion.getInstance().getConexion();
-        
     }
     
     //Pedido
@@ -132,6 +131,38 @@ public class ControladorPedido {
     
     return actualizacionExitosa;
 }
+    
+    
+    public boolean borrarPedido(int ID_Pedido) {
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    boolean borradoExitoso = false;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "DELETE FROM Pedido WHERE ID_Pedido = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_Pedido);
+        int filasAfectadas = statement.executeUpdate();
+
+        if (filasAfectadas > 0) {
+            borradoExitoso = true;
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al borrar el pedido: " + e.getMessage());
+    } finally {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return borradoExitoso;
+}
+
      
      
     public List<Pedido> obtenerPedidosPorIDProducto(int ID_Producto) {

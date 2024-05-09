@@ -38,6 +38,8 @@ public class VerProducto extends javax.swing.JFrame {
     private String busqueda;
     private int categoriaId;
     private JPanel detallesProductoPanel;
+    private Connection conexion;
+
     
     public VerProducto(Usuario usuario) {
         this.usuario = usuario;
@@ -133,13 +135,31 @@ public class VerProducto extends javax.swing.JFrame {
 
         gbc.insets = new Insets(10, 5, 5, 5);
 
+
+        
         JButton comprarButton = new JButton("Comprar Producto");
         comprarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Crea una instancia de PantallaDeCompra
-                // PantallaDeCompra pantallaDeCompra = new PantallaDeCompra();
+                
+                String cantidadStr = JOptionPane.showInputDialog(null, "Ingrese la cantidad de productos que desea comprar:");
+                int cantidad = Integer.parseInt(cantidadStr);
+
+                if (producto != null && cantidad > 0 && cantidad <= producto.getCantidad_Disponible()) {
+                    
+                    double TotalApagar = producto.getPrecio() * cantidad; 
+                    
+                    SesionActiva.setTotalAPagar(TotalApagar); 
+
+                    PantallaCompraProducto pantallaDeCompra = new PantallaCompraProducto(usuario, conexion, SesionActiva.getID_Producto(), TotalApagar, cantidad);
+                    pantallaDeCompra.setVisible(true);
+                    
+                } else {
+                    JOptionPane.showMessageDialog(null, "La cantidad solicitada no está disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                   
             }
         });
+        
         detallesProductoPanel.add(comprarButton, gbc);
 
         // Botón para Agregar al Carrito

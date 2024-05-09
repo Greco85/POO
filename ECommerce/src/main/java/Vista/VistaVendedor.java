@@ -56,7 +56,7 @@ public class VistaVendedor extends javax.swing.JFrame {
     bienvenidaPanel.add(bienvenidaLabel, BorderLayout.CENTER);
 
     JPanel contenidoPanel = new JPanel();
-    contenidoPanel.setLayout(new BoxLayout(contenidoPanel, BoxLayout.Y_AXIS)); // Usamos BoxLayout en eje Y
+    contenidoPanel.setLayout(new BoxLayout(contenidoPanel, BoxLayout.Y_AXIS)); 
 
    for (Integer idProducto : idsProductos) {
     System.out.println("ID de Producto: " + idProducto);
@@ -67,7 +67,7 @@ public class VistaVendedor extends javax.swing.JFrame {
         if (pedido.getID_EstadoPedido() == 1) {
             JPanel panelPedido = new JPanel();
             panelPedido.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            panelPedido.setPreferredSize(new Dimension(400, 250)); // Establecemos un tamaño fijo
+            panelPedido.setPreferredSize(new Dimension(400, 250)); 
 
             JLabel idPedidoLabel = new JLabel("ID del Pedido: " + pedido.getID_Pedido());
             panelPedido.add(idPedidoLabel);
@@ -126,7 +126,7 @@ public class VistaVendedor extends javax.swing.JFrame {
 }
 
 
-    JScrollPane scrollPane = new JScrollPane(contenidoPanel); // Añadimos un JScrollPane para desplazamiento
+    JScrollPane scrollPane = new JScrollPane(contenidoPanel); 
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
     getContentPane().add(bienvenidaPanel, BorderLayout.NORTH);

@@ -3,12 +3,12 @@ package Vista;
 
 import Controladores.ControladorCarrito;
 import Controladores.ControladorEnvio;
-
 import Controladores.ControladorPedido;
 import Controladores.ControladorProducto;
 import Controladores.ControladorUsuario;
 import Modelo.Carrito;
 import Modelo.Direccion;
+import Modelo.Producto;
 import Modelo.SesionActiva;
 import Modelo.Usuario;
 import java.awt.event.ActionEvent;
@@ -26,10 +26,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 
-public class PantallaDeCompra extends javax.swing.JFrame {
-    
-    
-     private JLabel lblNombre;
+public class PantallaCompraProducto extends javax.swing.JFrame {
+
+    private JLabel lblNombre;
     private JLabel lblApellido;
     private JLabel lblCorreoElectronico;
     private JLabel lblTelefono;
@@ -69,21 +68,21 @@ public class PantallaDeCompra extends javax.swing.JFrame {
     private Usuario usuario;
     private Connection conexion;
     private ControladorUsuario controladorUsuario;
-
-  
-    public PantallaDeCompra(Usuario usuario, Connection conexion) {
+    
+    
+    public PantallaCompraProducto(Usuario usuario, Connection conexion, int ID_Producto, double TotalaPagar, int Cantidad) {
         this.usuario = usuario;
         this.conexion = conexion;
         this.controladorUsuario = new ControladorUsuario(conexion);
-         cargarDatosUsuario();
-        initmyComponents();
+        cargarDatosUsuario();
+        initmyComponents(ID_Producto,TotalaPagar,Cantidad);
         setTitle("Realizar Compra");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 500);
         setLocationRelativeTo(null);
     }
     
-private void initmyComponents() {
+    private void initmyComponents(int ID_Producto, double TotalaPagar, int Cantidad) {
     lblNombre = new JLabel("Nombre:");
     lblApellido = new JLabel("Apellido:");
     lblCorreoElectronico = new JLabel("Correo Electrónico:");
@@ -176,7 +175,7 @@ private void initmyComponents() {
     btnRealizarCompra.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            realizarCompra();
+            realizarCompra( ID_Producto,  TotalaPagar,  Cantidad);
         }
     });
     
@@ -298,7 +297,7 @@ private void initmyComponents() {
     );
 }
 
-    private void realizarCompra() {
+    private void realizarCompra(int ID_Producto, double TotalaPagar, int Cantidad) {
     if (txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty() ||
         txtCorreoElectronico.getText().isEmpty() || txtTelefono.getText().isEmpty() ||
         txtCalle.getText().isEmpty() || txtNumeroCasa.getText().isEmpty() ||
@@ -363,10 +362,6 @@ private void initmyComponents() {
         direccion = calle + ", " + numeroCasa + ", " + colonia + ", " + codigoPostal + ", " + ciudad + ", " + pais;
 
 
-        // Obtener todos los productos en el carrito para el usuario dado
-        ControladorCarrito controladorCarrito = new ControladorCarrito();
-        List<Carrito> productosEnCarrito = controladorCarrito.obtenerTodoElCarrito(ID_Usuario);
-
         ControladorEnvio controladorEnvio = new ControladorEnvio();
         
         ControladorProducto controladorProducto = new ControladorProducto();
@@ -379,13 +374,8 @@ private void initmyComponents() {
             System.out.println("No se pudo obtener el ID del método de envío seleccionado.");
         }
         
-        for (Carrito carrito : productosEnCarrito) {
-
-            int ID_Producto = carrito.getID_Producto();
-            int Cantidad = carrito.getCantidad(); 
-            double Total = carrito.getTotal(); 
-            
-            DineroTotalCompra = DineroTotalCompra + Total;
+       
+            DineroTotalCompra = DineroTotalCompra + TotalaPagar;
             // Realizar la inserción del pedido con los valores obtenidos
         boolean insercionExitosa = controladorPedido.insertarPedido(
                 ID_Usuario,
@@ -394,7 +384,7 @@ private void initmyComponents() {
                 direccion,
                 ID_Producto,
                 Cantidad,
-                Total,
+                TotalaPagar,
                 fechaYHoraActual
         );
 
@@ -403,18 +393,13 @@ private void initmyComponents() {
         // BAJAR LA CANTIDAD DEL PRODUCTO ORIGINAL CON OTRA CONSULTA A LA DB
         controladorProducto.ActualizarCantidad(ID_Producto, Cantidad);
         
-        //Para que se quite del carrito
-        controladorCarrito.eliminarDelCarrito(ID_Usuario, ID_Producto);
-        
         
         int ID_UsuarioVendedor = controladorProducto.obtenerID_UsuarioPorID_Producto(ID_Producto);
         
-        controladorUsuario.transferirDinero( ID_Usuario,  ID_UsuarioVendedor, Total);
+        controladorUsuario.transferirDinero( ID_Usuario,  ID_UsuarioVendedor, TotalaPagar);
         
         
         System.out.println("hola papu");
-        
-        //Sale varias veces lo d abajo quitarlo o moverlo para q solo salga 1 vez
         
         JOptionPane.showMessageDialog(this, "Compra realizada con éxito", "Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
 
@@ -424,9 +409,6 @@ private void initmyComponents() {
     }
         }
             
-        }
-
-     
         
         // HACER LO MISMO PERO COMPRAR SOLO CON UN PRODUCTO
         
@@ -461,6 +443,8 @@ private void initmyComponents() {
     }// </editor-fold>//GEN-END:initComponents
 
     
+    
+    
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -474,16 +458,17 @@ private void initmyComponents() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaDeCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaCompraProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaDeCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaCompraProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaDeCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaCompraProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaDeCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PantallaCompraProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
             }

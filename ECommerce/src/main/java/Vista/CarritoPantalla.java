@@ -83,8 +83,6 @@ public CarritoPantalla(Usuario usuario) {
         panelProducto.add(imagenLabel);
         
         
-        
-
         // Botón Eliminar
         JButton eliminarButton = new JButton("Eliminar");
         eliminarButton.setBounds(10, 160, 80, 30);
@@ -163,7 +161,6 @@ public CarritoPantalla(Usuario usuario) {
             comprarButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    
                     
                     PantallaDeCompra pantallaDeCompra = new PantallaDeCompra(usuario, conexion);
                     pantallaDeCompra.setVisible(true);

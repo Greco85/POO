@@ -31,7 +31,6 @@ public class VistaComprador extends javax.swing.JFrame {
     private int categoriaId;
     
     public VistaComprador(Usuario usuario) {
-        
         this.usuario = usuario;
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
 
@@ -61,7 +60,6 @@ public class VistaComprador extends javax.swing.JFrame {
     List<Pedido> pedidos = controladorPedido.obtenerPedidosPorIDUsuario(ID_Usuario);
 
     for (Pedido pedido : pedidos) {
-        if (pedido.getID_EstadoPedido() == 4) {
             JPanel panelPedido = new JPanel();
             panelPedido.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             panelPedido.setPreferredSize(new Dimension(400, 250)); 
@@ -93,16 +91,20 @@ public class VistaComprador extends javax.swing.JFrame {
             JLabel fechaPedidoLabel = new JLabel("Fecha del Pedido: " + pedido.getFechaPedido());
             panelPedido.add(fechaPedidoLabel);
             
-            JButton entregadoButton = new JButton("¿Recibiste el pedido?");
+            String estadoEnvio = "Entregado";
+            int nuevoID_EstadoPedido = controladorPedido.obtenerIdEstadoPedido(estadoEnvio);
+
+            
+            if (nuevoID_EstadoPedido == pedido.getID_EstadoPedido()){
+                
+                 JButton entregadoButton = new JButton("¿Deseas Borrarlo?");
             entregadoButton.addActionListener(e -> {
-                int confirmacion = JOptionPane.showConfirmDialog(null, "¿Ya ha sido entregado el pedido a la paquetería?", "Confirmación", JOptionPane.YES_NO_OPTION);
+                int confirmacion = JOptionPane.showConfirmDialog(null, "¿Deseas borrar esta informacion de esta pantalla?", "Confirmación", JOptionPane.YES_NO_OPTION);
                 if (confirmacion == JOptionPane.YES_OPTION) {
-                    String estadoEnvio = "Entregado";
-                    int nuevoID_EstadoPedido = controladorPedido.obtenerIdEstadoPedido(estadoEnvio);
+                    
+                    boolean borradoExitoso = controladorPedido.borrarPedido(pedido.getID_Pedido());
 
-                    boolean actualizacionExitosa = controladorPedido.actualizarEstadoPedido(pedido.getID_Pedido(), nuevoID_EstadoPedido);
-
-                    if (actualizacionExitosa) {
+                    if (borradoExitoso) {
                         dispose(); 
                         VistaComprador vistaComprador = new VistaComprador(usuario);
                         vistaComprador.setVisible(true);
@@ -112,19 +114,35 @@ public class VistaComprador extends javax.swing.JFrame {
                 }
             });
             panelPedido.add(entregadoButton);
+            
+            }
+            
+            
+           
 
-            panelPedido.setBackground(new Color(100, 192, 100)); // Rosa
-
+        switch (pedido.getID_EstadoPedido()) {
+            case 1:
+                panelPedido.setBackground(Color.RED);
+                break;
+            case 2:
+                panelPedido.setBackground(Color.BLUE);
+                break;
+            case 3:
+                panelPedido.setBackground(Color.ORANGE);
+                break;
+            case 4:
+                panelPedido.setBackground(Color.GREEN);
+                break;
+            default:
+                panelPedido.setBackground(Color.WHITE);
+                break;
+        }
 
             contenidoPanel.add(panelPedido);
-        }
+        
     
 }
     
-    
-    //FALTA LO DE LA CONVERSACIONNNNN
-
-
     JScrollPane scrollPane = new JScrollPane(contenidoPanel); 
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 

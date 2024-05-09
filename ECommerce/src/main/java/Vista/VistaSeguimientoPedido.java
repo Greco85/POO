@@ -1,6 +1,7 @@
 
 package Vista;
 
+import Controladores.ControladorCompra;
 import Controladores.ControladorPedido;
 import Controladores.ControladorProducto;
 import Modelo.Pedido;
@@ -8,6 +9,8 @@ import Modelo.SesionActiva;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -23,11 +26,15 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
 
     private ControladorProducto controladorProducto;
     private ControladorPedido controladorPedido;
+    private ControladorCompra controladorCompra;
+
     
     public VistaSeguimientoPedido() {
         
         controladorProducto = new ControladorProducto(); 
         controladorPedido = new ControladorPedido();
+        controladorCompra = new ControladorCompra();
+
         initmyComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -100,8 +107,15 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
                 int nuevoID_EstadoPedido = controladorPedido.obtenerIdEstadoPedido(estadoEnvio);
 
                 boolean actualizacionExitosa = controladorPedido.actualizarEstadoPedido(pedido.getID_Pedido(), nuevoID_EstadoPedido);
+                
+                LocalDateTime fechaHoraActual = LocalDateTime.now();
+                
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                
+                String fechaentregado = fechaHoraActual.format(formatter);
+                boolean actualizacionExitosaDetalleCompra = controladorCompra.insertarDetalleCompra( pedido.getID_Usuario(), pedido.getID_Producto(), pedido.getTotal(),fechaentregado, pedido.getCantidad() );
 
-                if (actualizacionExitosa) {
+                if (actualizacionExitosa && actualizacionExitosaDetalleCompra) {
                     dispose(); 
                     VistaSeguimientoPedido vistaSeguimientoPedido = new VistaSeguimientoPedido();
                     vistaSeguimientoPedido.setVisible(true);
