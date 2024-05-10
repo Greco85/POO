@@ -82,7 +82,9 @@ public class VerProducto extends javax.swing.JFrame {
 
     ControladorProducto controlador = new ControladorProducto();
     Producto producto = controlador.obtenerProductosporID(SesionActiva.getID_Producto());
-
+    
+    int ID_Vendedor = producto.getID_Usuario();
+    
     if (producto != null) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
@@ -161,6 +163,21 @@ public class VerProducto extends javax.swing.JFrame {
         });
         
         detallesProductoPanel.add(comprarButton, gbc);
+        
+        JButton mandarMensajeButton = new JButton("Mandar Mensaje");
+            mandarMensajeButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    
+                    int ID_Comprador = SesionActiva.getID_Usuario();
+                            
+                    ConversacionesVista conversacionesVista = new ConversacionesVista(usuario, ID_Vendedor , ID_Comprador);
+                    conversacionesVista.setVisible(true);
+                    dispose();
+                    
+                }
+            });
+            detallesProductoPanel.add(mandarMensajeButton, gbc);
+
 
         // Botón para Agregar al Carrito
         JButton agregarCarritoButton = new JButton("Agregar al Carrito");

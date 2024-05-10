@@ -410,9 +410,6 @@ public class PantallaCompraProducto extends javax.swing.JFrame {
         }
             
         
-        // HACER LO MISMO PERO COMPRAR SOLO CON UN PRODUCTO
-        
-        
     }
 
     

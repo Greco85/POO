@@ -423,13 +423,14 @@ public class ControladorProducto {
     
     public Producto obtenerProductosporID(int ID_Producto) {
     Producto producto = null;
-    String consulta = "SELECT Nombre, Descripcion, Precio, Cantidad_Disponible, ID_CategoriaProducto, ID_EstadoProducto, ImagenURL " +
+    String consulta = "SELECT ID_Usuario, Nombre, Descripcion, Precio, Cantidad_Disponible, ID_CategoriaProducto, ID_EstadoProducto, ImagenURL " +
                       "FROM Producto WHERE ID_Producto = ?";
 
         try (PreparedStatement ps = conexion.prepareStatement(consulta)) {
             ps.setInt(1, ID_Producto);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                int ID_Usaurio = rs.getInt("ID_Usuario");
                 String nombre = rs.getString("Nombre");
                 String descripcion = rs.getString("Descripcion");
                 double precio = rs.getDouble("Precio");
@@ -438,7 +439,7 @@ public class ControladorProducto {
                 int idEstado = rs.getInt("ID_EstadoProducto");
                 String imagenURL = rs.getString("ImagenURL");
 
-                producto = new Producto(ID_Producto, 0, nombre, descripcion, precio, cantidadDisponible, idCategoria, null, idEstado, imagenURL);
+                producto = new Producto(ID_Producto, ID_Usaurio, nombre, descripcion, precio, cantidadDisponible, idCategoria, null, idEstado, imagenURL);
             }
         } catch (SQLException e) {
             System.err.println("Error al obtener el producto por ID: " + e.getMessage());
