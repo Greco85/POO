@@ -52,6 +52,52 @@ public class ControladorConversacion {
     }
     
     
+    public Mensaje obtenerUltimoMensaje(int ID_Conversacion) {
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+    Mensaje ultimoMensaje = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT TOP 1 * FROM Mensaje WHERE ID_Conversacion = ? ORDER BY Fecha_Envio DESC";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_Conversacion);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            int ID_Mensaje = resultSet.getInt("ID_Mensaje");
+            int ID_Usuario_Emisor = resultSet.getInt("ID_Usuario_Emisor");
+            String mensaje = resultSet.getString("Mensaje");
+            Timestamp fechaEnvio = resultSet.getTimestamp("Fecha_Envio");
+            boolean leido = resultSet.getBoolean("Leido");
+
+            ultimoMensaje = new Mensaje(ID_Mensaje, ID_Usuario_Emisor, mensaje, fechaEnvio, leido, ID_Conversacion);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener el último mensaje de la conversación: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return ultimoMensaje;
+}
+
+    
+    
     // Función para verificar si ya existe una conversación entre un vendedor y un comprador
     public boolean verificarExistenciaConversacion(int ID_Vendedor, int ID_Comprador) {
         Connection conexion = null;
@@ -304,6 +350,33 @@ public class ControladorConversacion {
     }
 
     return mensajes;
+}
+
+    
+    
+    public void marcarComoVisto(int ID_Mensaje) {
+    Connection conexion = null;
+    PreparedStatement statement = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "UPDATE Mensaje SET Leido = ? WHERE ID_Mensaje = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setBoolean(1, true); // Establecer Leido como true
+        statement.setInt(2, ID_Mensaje);
+        statement.executeUpdate();
+        System.out.println("Mensaje marcado como visto correctamente.");
+    } catch (SQLException e) {
+        System.err.println("Error al marcar el mensaje como visto: " + e.getMessage());
+    } finally {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
 
 

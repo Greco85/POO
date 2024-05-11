@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 
@@ -87,6 +88,18 @@ public class CuentaUsuario extends javax.swing.JFrame {
                 dispose();
             }
         });
+        
+        // Pedidos Hechos
+        jButtonConversaciones.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+                int ID_Vendedor = 0;
+                int ID_Comprador = 0;
+                ConversacionesVista conversacionVista = new ConversacionesVista(usuario, ID_Vendedor, ID_Comprador);
+                conversacionVista.setVisible(true);
+                dispose();
+            }
+        });
 
 
     }
@@ -98,76 +111,82 @@ public class CuentaUsuario extends javax.swing.JFrame {
     }
 
     private void initmyComponents() {
-        jLabel1 = new javax.swing.JLabel();
-        EditarCuenta = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        eliminarCuentaButton = new javax.swing.JButton();
-        jButtonProductosVendidos = new javax.swing.JButton();
-        jButtonPedidosHechos = new javax.swing.JButton();
+    jLabel1 = new javax.swing.JLabel();
+    EditarCuenta = new javax.swing.JButton();
+    jButton1 = new javax.swing.JButton();
+    jButton2 = new javax.swing.JButton();
+    eliminarCuentaButton = new javax.swing.JButton();
+    jButtonProductosVendidos = new javax.swing.JButton();
+    jButtonPedidosHechos = new javax.swing.JButton();
+    jButtonConversaciones = new javax.swing.JButton(); 
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nombre del Usuario");
+    jLabel1.setText("Nombre del Usuario");
 
-        EditarCuenta.setText("EDITAR CUENTA");
+    EditarCuenta.setText("EDITAR CUENTA");
 
-        jButton1.setText("PUBLICACIONES");
+    jButton1.setText("PUBLICACIONES");
 
-        jButton2.setText("METER DINERO");
+    jButton2.setText("METER DINERO");
 
-        eliminarCuentaButton.setText("Eliminar Cuenta");
+    eliminarCuentaButton.setText("Eliminar Cuenta");
 
-        jButtonProductosVendidos.setText("Productos Vendidos");
+    jButtonProductosVendidos.setText("Productos Vendidos");
 
-        jButtonPedidosHechos.setText("Pedidos Hechos");
+    jButtonPedidosHechos.setText("Pedidos Hechos");
+    
+    jButtonConversaciones.setText("Conversaciones"); 
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(EditarCuenta)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButtonProductosVendidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonPedidosHechos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(132, 132, 132)
-                        .addComponent(eliminarCuentaButton)))
-                .addContainerGap(97, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(EditarCuenta)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonProductosVendidos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonPedidosHechos)
-                .addGap(18, 18, 18)
-                .addComponent(eliminarCuentaButton)
-                .addContainerGap(44, Short.MAX_VALUE))
-        );
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(150, 150, 150)
+                    .addComponent(jLabel1))
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(98, 98, 98)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(EditarCuenta)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonProductosVendidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonPedidosHechos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonConversaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))) // Agregando el botón jButtonConversaciones
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(132, 132, 132)
+                    .addComponent(eliminarCuentaButton)))
+            .addContainerGap(97, Short.MAX_VALUE))
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addGap(65, 65, 65)
+            .addComponent(jLabel1)
+            .addGap(18, 18, 18)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(EditarCuenta)
+                .addComponent(jButton2))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(jButton1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(jButtonProductosVendidos)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(jButtonPedidosHechos)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addComponent(jButtonConversaciones) 
+            .addGap(18, 18, 18)
+            .addComponent(eliminarCuentaButton)
+            .addContainerGap(44, Short.MAX_VALUE))
+    );
 
-        pack();
-    }
+    pack();
+}
 
 
     private void mostrarNombre() {
@@ -241,7 +260,8 @@ public class CuentaUsuario extends javax.swing.JFrame {
         
     }//GEN-LAST:event_EditarCuentaActionPerformed
     
-    
+        private javax.swing.JButton jButtonConversaciones;
+
     private javax.swing.JButton jButtonPedidosHechos;
     private javax.swing.JButton jButtonProductosVendidos;
     private javax.swing.JButton eliminarCuentaButton;

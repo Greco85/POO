@@ -73,8 +73,6 @@ public class ConversacionesVista extends javax.swing.JFrame {
 
         Dimension panelSize = jPanel1.getSize();
 
-        Color[] colores = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.ORANGE};
-
         int posY = 0;
 
         int i = 0; 
@@ -91,7 +89,20 @@ public class ConversacionesVista extends javax.swing.JFrame {
             panel.add(labelMensaje);
 
             // Configuramos el color del panel
-            panel.setBackground(colores[i % colores.length]); // seleccionamos un color de la paleta
+            
+            System.out.println(conversacion.getID_Conversacion());
+            
+            Mensaje ultimoMensaje = controladorConversacion.obtenerUltimoMensaje(conversacion.getID_Conversacion());
+            
+            if (ultimoMensaje != null) {
+            if (!ultimoMensaje.isLeido()) {
+                panel.setBackground(Color.RED);
+            } else {
+                panel.setBackground(Color.BLUE);
+            }
+        } else {
+            panel.setBackground(Color.GRAY); // Por ejemplo, puedes establecer el color del panel como gris
+        }
 
             panel.setPreferredSize(new Dimension(panelSize.width, 70)); // 70 es una altura arbitraria, puedes ajustarla
 
@@ -99,18 +110,22 @@ public class ConversacionesVista extends javax.swing.JFrame {
 
             posY += 70; // 70 es la altura del panel
 
-            panel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    // Aquí obtienes los datos de ID_Comprador e ID_Vendedor de la conversación
-                    int ID_Comprador = conversacion.getID_Comprador();
-                    int ID_Vendedor = conversacion.getID_Vendedor();
-
-                    ConversacionesVista conversacionesVista = new ConversacionesVista(usuario, ID_Vendedor , ID_Comprador);
-                    conversacionesVista.setVisible(true);
-                    dispose();
+           panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (ultimoMensaje != null) {
+                    controladorConversacion.marcarComoVisto(ultimoMensaje.getID_Mensaje());
                 }
-            });
+
+                int ID_Comprador = conversacion.getID_Comprador();
+                int ID_Vendedor = conversacion.getID_Vendedor();
+
+                ConversacionesVista conversacionesVista = new ConversacionesVista(usuario, ID_Vendedor , ID_Comprador);
+                conversacionesVista.setVisible(true);
+                dispose();
+            }
+        });
+
 
             jPanel1.add(panel);
 
