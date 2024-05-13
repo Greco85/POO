@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.border.Border;
 
 
 public class Publicaciones extends javax.swing.JFrame {
@@ -42,9 +43,14 @@ public class Publicaciones extends javax.swing.JFrame {
     getContentPane().add(panelPrincipal);
     
     // Título
-    JLabel jLabel1 = new JLabel("MIS PUBLICACIONES");
+    jLabel1 = new JLabel("MIS PUBLICACIONES");
     jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-    jLabel1.setFont(new Font("Arial", Font.BOLD, 24));
+    jLabel1.setFont(new Font("Arial", Font.BOLD, 20));
+    jLabel1.setForeground(Color.WHITE); 
+    jLabel1.setBackground(Color.DARK_GRAY); 
+    jLabel1.setOpaque(true);
+    jLabel1.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
+
     panelPrincipal.add(jLabel1, BorderLayout.NORTH);
     
     // Panel para mostrar productos
@@ -100,7 +106,6 @@ public class Publicaciones extends javax.swing.JFrame {
             }
         });
 
-        // Ajuste del color al pasar el mouse para el botón REGISTRARSE
         jButtonRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jButtonRegresar.setBackground(new Color(82, 82, 82)); 
@@ -111,7 +116,6 @@ public class Publicaciones extends javax.swing.JFrame {
             }
         });
 
-    // Agregar panel de botones al panel principal
     panelPrincipal.add(panelBotones, BorderLayout.WEST);
 }
 
@@ -143,23 +147,113 @@ public class Publicaciones extends javax.swing.JFrame {
     }
 
 private JPanel crearPanelProducto(Producto producto) {
+    int alturaPanel = 270; 
+    int espacioPanel = 10;
+    int espacioLateral = 20; 
+    
+    
+    String ImagenRuta = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg";
+    
+    double anchoPantalla = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+
+    // Restar 10 (espacio lateral izquierdo), 10 (espacio lateral derecho), 260 (ancho del panel de imagen), 10 (espacio entre la imagen y el texto)
+    double anchoRestado = anchoPantalla - 70 - 270 - 70 - 45;
     
     JPanel panel = new JPanel();
-    panel.setPreferredSize(new Dimension(600, 150)); // Establecer el tamaño prefijado del panel de producto
+    panel.setPreferredSize(new Dimension(600, 270));
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     panel.setLayout(new BorderLayout());
-    JPanel panelImagen = new JPanel();
-    JLabel labelImagen = new JLabel(new ImageIcon(producto.getImagenURL())); // Suponiendo que la URL es para una imagen
-    panelImagen.add(labelImagen);
-
+    
+   
     // Panel para la información
-    JPanel panelInfo = new JPanel(new GridLayout(2, 1));
-    JLabel labelNombre = new JLabel(producto.getNombre());
-    labelNombre.setFont(new Font("Arial", Font.BOLD, 18));
-    JLabel labelPrecio = new JLabel("Precio: $" + producto.getPrecio());
-    labelPrecio.setFont(new Font("Arial", Font.PLAIN, 16));
-    panelInfo.add(labelNombre);
-    panelInfo.add(labelPrecio);
+    JPanel panelProducto = new JPanel();
+    panelProducto.setLayout(null);
+    panelProducto.setPreferredSize(new Dimension(getContentPane().getWidth() - (2 * espacioLateral), alturaPanel));
+    panelProducto.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+       
+    
+    // Crear el panel rojo
+        JPanel panelImagen = new JPanel();
+        panelImagen.setBackground(Color.WHITE);
+        panelImagen.setBounds(10, 10, 200, 200);
+        panelProducto.add(panelImagen);
+        
+        JLabel labelImagen = new JLabel();
+        ImageIcon icono = new ImageIcon(ImagenRuta);
+        Image imagen = icono.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        ImageIcon iconoEscalado = new ImageIcon(imagen);
+        labelImagen.setIcon(iconoEscalado);
+        labelImagen.setBounds(0, 0, 200, 200);
+        panelImagen.add(labelImagen);
+
+       
+        // Crear JPanel para el nombre
+        JPanel panelNombre = new JPanel();
+        panelNombre.setBackground(Color.BLUE);
+        panelNombre.setBounds(230, 10, (int)anchoRestado, 30);
+        panelNombre.setLayout(new BorderLayout()); 
+        panelProducto.add(panelNombre);
+
+        // Crear JLabel para el nombre
+        JLabel nombreLabel = new JLabel(producto.getNombre());
+        nombreLabel.setForeground(Color.WHITE);
+        nombreLabel.setFont(new Font("Arial", Font.BOLD, 14)); 
+        nombreLabel.setHorizontalAlignment(JLabel.CENTER);
+        panelNombre.add(nombreLabel, BorderLayout.CENTER); 
+
+        panelNombre.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); 
+
+
+        JTextArea descripcionTextArea = new JTextArea("Descripción: " + producto.getDescripcion());
+        descripcionTextArea.setBounds(230, 50, (int)anchoRestado, 140); 
+        descripcionTextArea.setLineWrap(true); 
+        descripcionTextArea.setWrapStyleWord(true); 
+        descripcionTextArea.setEditable(false); 
+        descripcionTextArea.setBackground(Color.WHITE);
+        descripcionTextArea.setForeground(Color.BLACK); 
+        descripcionTextArea.setFont(new Font("Arial", Font.PLAIN, 14)); 
+
+        // Agregar un borde al JTextArea
+        descripcionTextArea.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.GRAY),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5) 
+        ));
+
+        panelProducto.add(descripcionTextArea);
+
+        int cantidadLabels = 3; 
+        double espacioDisponible = anchoRestado / cantidadLabels;
+        int posicionHorizontal = 230;
+
+        // Crear JLabels para precio, cantidad y categoría
+        JLabel precioLabel = new JLabel("Precio: $" + producto.getPrecio());
+        JLabel cantidadLabel = new JLabel("Cantidad Disponible: " + producto.getCantidad_Disponible());
+        JLabel categoriaLabel = new JLabel("Categoría: " + producto.getID_CategoriaProducto());
+
+        Font font = new Font("Arial", Font.PLAIN, 14);
+        Color textColor = Color.BLACK;
+        Color backgroundColor = new Color(240, 240, 240);
+        Border border = BorderFactory.createLineBorder(Color.GRAY); 
+
+        JLabel[] labels = {precioLabel, cantidadLabel, categoriaLabel};
+        for (JLabel label : labels) {
+            label.setFont(font);
+            label.setForeground(textColor);
+            label.setBounds(posicionHorizontal, 200, (int)espacioDisponible, 20);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+
+            label.setBorder(border);
+            label.setOpaque(true);
+            label.setBackground(backgroundColor);
+
+            panelProducto.add(label);
+
+            posicionHorizontal += espacioDisponible;
+        }
+    
+    
+    
+    
 
     JPanel panelBotones = new JPanel(new GridLayout(1, 2));
     JButton botonEditar = new JButton("EDITAR");
@@ -174,33 +268,32 @@ private JPanel crearPanelProducto(Producto producto) {
     botonBorrar.setForeground(Color.BLACK);
     botonBorrar.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
-        BorderFactory.createEmptyBorder(10, 20, 10, 20) // Espacio interno
+        BorderFactory.createEmptyBorder(10, 20, 10, 20) 
     ));
     
    botonEditar.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseEntered(java.awt.event.MouseEvent evt) {
-            botonEditar.setBackground(new Color(255, 204, 0)); // Amarillo oscuro
+            botonEditar.setBackground(new Color(255, 204, 0)); 
         }
 
         public void mouseExited(java.awt.event.MouseEvent evt) {
-            botonEditar.setBackground(new Color(255, 255, 0)); // Amarillo normal
+            botonEditar.setBackground(new Color(255, 255, 0));   
         }
     });
 
     botonBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseEntered(java.awt.event.MouseEvent evt) {
-            botonBorrar.setBackground(new Color(128, 0, 0)); // Rojo oscuro
+            botonBorrar.setBackground(new Color(128, 0, 0)); 
         }
 
         public void mouseExited(java.awt.event.MouseEvent evt) {
-            botonBorrar.setBackground(new Color(255, 0, 0)); // Rojo normal
+            botonBorrar.setBackground(new Color(255, 0, 0)); 
         }
     });
     
     panelBotones.add(botonEditar);
     panelBotones.add(botonBorrar);
-    panel.add(panelImagen, BorderLayout.WEST);
-    panel.add(panelInfo, BorderLayout.CENTER);
+    panel.add(panelProducto, BorderLayout.CENTER);
     panel.add(panelBotones, BorderLayout.SOUTH);
 
     botonEditar.addActionListener(evt -> {

@@ -26,6 +26,68 @@ public class ControladorProducto {
 
     }
     
+     public String obtenerNombrePorIDUsuario(int ID_Usuario) {
+    String nombreUsuario = null;
+    
+    String query = "SELECT Nombre FROM Usuario WHERE ID_Usuario = ?";
+    
+    try (PreparedStatement statement = conexion.prepareStatement(query)) {
+        statement.setInt(1, ID_Usuario);
+        
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                nombreUsuario = resultSet.getString("Nombre");
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace(); 
+    }
+    
+    return nombreUsuario;
+}
+     
+     public String ObtenerEstadoPedidoporID(int ID_EstadoPedido) {
+    String estadoPedido = null;
+    
+    String query = "SELECT EstadoPedido FROM EstadoPedido WHERE ID_EstadoPedido = ?";
+    
+    try (PreparedStatement statement = conexion.prepareStatement(query)) {
+        statement.setInt(1, ID_EstadoPedido);
+        
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                estadoPedido = resultSet.getString("EstadoPedido");
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace(); 
+    }
+    
+    return estadoPedido;
+}
+     
+     public String obtenerMetodoEnvioPorID(int ID_MetodoEnvio) {
+    String metodoEnvio = null;
+    
+    String query = "SELECT MetodoEnvio FROM MetodoEnvio WHERE ID_MetodoEnvio = ?";
+    
+    try (PreparedStatement statement = conexion.prepareStatement(query)) {
+        statement.setInt(1, ID_MetodoEnvio);
+        
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                metodoEnvio = resultSet.getString("MetodoEnvio");
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    
+    return metodoEnvio;
+}
+
+
+    
     public List<Producto> obtenerTodosLosProductos() {
     List<Producto> productos = new ArrayList<>();
     PreparedStatement statement = null;

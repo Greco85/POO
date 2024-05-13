@@ -36,6 +36,9 @@ public class ControladorUsuario {
         return ID_Usuario;
     }
     
+   
+
+    
     
 public Usuario obtenerUsuarioPorId(int id) {
     Usuario usuario = null;

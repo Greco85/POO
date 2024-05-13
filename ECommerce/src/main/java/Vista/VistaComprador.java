@@ -4,20 +4,31 @@ package Vista;
 import Controladores.ControladorPedido;
 import Controladores.ControladorProducto;
 import Modelo.Pedido;
+import Modelo.Producto;
 import Modelo.SesionActiva;
 import Modelo.Usuario;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 
 public class VistaComprador extends javax.swing.JFrame {
@@ -45,52 +56,142 @@ public class VistaComprador extends javax.swing.JFrame {
     
     private void initmyComponents() {
         
+    int alturaPanel = 270; 
+    int espacioLateral = 20; 
+        
     int ID_Usuario = SesionActiva.getID_Usuario();
 
     System.out.println("Productos del Usuario:");
 
     JPanel bienvenidaPanel = new JPanel(new BorderLayout());
-    JLabel bienvenidaLabel = new JLabel("VISTA DE TUS PRODUCTOS COMPRADOS");
+    bienvenidaPanel.setBackground(new Color(240, 240, 240)); 
+    JLabel bienvenidaLabel = new JLabel("Vista de tus productos Comprados");
+    bienvenidaLabel.setFont(new Font("Arial", Font.BOLD, 24)); 
+    bienvenidaLabel.setForeground(new Color(50, 50, 50));
     bienvenidaPanel.add(bienvenidaLabel, BorderLayout.CENTER);
+    bienvenidaPanel.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0)); 
+    bienvenidaPanel.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180), 2)); // Borde delgado y gris
+    bienvenidaLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    bienvenidaPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    bienvenidaPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+
 
     JPanel contenidoPanel = new JPanel();
     contenidoPanel.setLayout(new BoxLayout(contenidoPanel, BoxLayout.Y_AXIS)); 
+    contenidoPanel.setBorder(BorderFactory.createEmptyBorder(10, espacioLateral, 10, espacioLateral)); // Borde con espaciado
 
 
     List<Pedido> pedidos = controladorPedido.obtenerPedidosPorIDUsuario(ID_Usuario);
+    
+    String ImagenRuta = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg";
+    
+    double anchoPantalla = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+
+    // Restar 10 (espacio lateral izquierdo), 10 (espacio lateral derecho), 260 (ancho del panel de imagen), 10 (espacio entre la imagen y el texto)
+    double anchoRestado = anchoPantalla - 70 - 270;
 
     for (Pedido pedido : pedidos) {
-            JPanel panelPedido = new JPanel();
-            panelPedido.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            panelPedido.setPreferredSize(new Dimension(400, 250)); 
-
-            JLabel idPedidoLabel = new JLabel("ID del Pedido: " + pedido.getID_Pedido());
-            panelPedido.add(idPedidoLabel);
-
-            JLabel idUsuarioLabel = new JLabel("ID del Usuario: " + pedido.getID_Usuario());
-            panelPedido.add(idUsuarioLabel);
-
-            JLabel idEstadoPedidoLabel = new JLabel("ID del Estado del Pedido: " + pedido.getID_EstadoPedido());
-            panelPedido.add(idEstadoPedidoLabel);
-
-            JLabel idMetodoEnvioLabel = new JLabel("ID del Método de Envío: " + pedido.getID_MetodoEnvio());
-            panelPedido.add(idMetodoEnvioLabel);
-
-            JLabel direccionLabel = new JLabel("Dirección: " + pedido.getDireccion());
-            panelPedido.add(direccionLabel);
-
-            JLabel idProductoLabel = new JLabel("ID del Producto: " + pedido.getID_Producto());
-            panelPedido.add(idProductoLabel);
-
-            JLabel cantidadLabel = new JLabel("Cantidad: " + pedido.getCantidad());
-            panelPedido.add(cantidadLabel);
-
-            JLabel totalLabel = new JLabel("Total: " + pedido.getTotal());
-            panelPedido.add(totalLabel);
-
-            JLabel fechaPedidoLabel = new JLabel("Fecha del Pedido: " + pedido.getFechaPedido());
-            panelPedido.add(fechaPedidoLabel);
+        
+            Producto productoPedido = controladorProducto.obtenerProductosporID(pedido.getID_Producto());
             
+            
+            JPanel panelPedido = new JPanel();
+            panelPedido.setLayout(null);
+            panelPedido.setPreferredSize(new Dimension(getContentPane().getWidth() - (2 * espacioLateral), alturaPanel));
+            panelPedido.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            
+            
+        // Crear el panel rojo
+        JPanel panelImagen = new JPanel();
+        panelImagen.setBackground(Color.WHITE);
+        panelImagen.setBounds(10, 10, 250, 250);
+        panelPedido.add(panelImagen);
+        
+        JLabel labelImagen = new JLabel();
+        ImageIcon icono = new ImageIcon(ImagenRuta);
+        Image imagen = icono.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+        ImageIcon iconoEscalado = new ImageIcon(imagen);
+        labelImagen.setIcon(iconoEscalado);
+        labelImagen.setBounds(0, 0, 250, 250);
+        panelImagen.add(labelImagen);
+        
+        // Crear JPanel para el nombre
+        JPanel panelNombre = new JPanel();
+        panelNombre.setBackground(Color.BLUE);
+        panelNombre.setBounds(270, 10, (int)anchoRestado, 30);
+        panelNombre.setLayout(new BorderLayout()); 
+        panelPedido.add(panelNombre);
+
+        // Crear JLabel para el nombre
+        JLabel nombreLabel = new JLabel(productoPedido.getNombre());
+        nombreLabel.setForeground(Color.WHITE);
+        nombreLabel.setFont(new Font("Arial", Font.BOLD, 14)); 
+        nombreLabel.setHorizontalAlignment(JLabel.CENTER);
+        panelNombre.add(nombreLabel, BorderLayout.CENTER); 
+
+        panelNombre.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Establecer un relleno en los bordes del JPanel
+        int ID_UsuarioPEDIDO = pedido.getID_Usuario();
+        String NombreUsuarioPedido = controladorProducto.obtenerNombrePorIDUsuario(ID_UsuarioPEDIDO);
+        String EstadoPedido = controladorProducto.ObtenerEstadoPedidoporID(pedido.getID_EstadoPedido() );
+        String MetododeEnvio = controladorProducto.obtenerMetodoEnvioPorID(pedido.getID_MetodoEnvio() );
+
+        JTextArea descripcionTextArea = new JTextArea(
+            "ID del Pedido: " + pedido.getID_Pedido() + "\n" +
+            "Nombre del Usuario del Pedido: " + NombreUsuarioPedido + "\n" +
+            "Estado del Pedido: " + EstadoPedido +  "\n" +
+            "Método de Envío: " + MetododeEnvio + "\n" +
+            "Dirección: " + pedido.getDireccion() + "\n" +
+            "Fecha del Pedido: " + pedido.getFechaPedido()
+        );
+        descripcionTextArea.setBounds(270, 50, (int)anchoRestado, 140); 
+        descripcionTextArea.setLineWrap(true); 
+        descripcionTextArea.setWrapStyleWord(true); 
+        descripcionTextArea.setEditable(false); 
+        descripcionTextArea.setBackground(Color.WHITE);
+        descripcionTextArea.setForeground(Color.BLACK); 
+        descripcionTextArea.setFont(new Font("Arial", Font.PLAIN, 14)); 
+
+        // Agregar un borde al JTextArea
+        descripcionTextArea.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.GRAY),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5) 
+        ));
+
+        panelPedido.add(descripcionTextArea);
+
+        int cantidadLabels = 3; 
+        double espacioDisponible = anchoRestado / cantidadLabels;
+        int posicionHorizontal = 270;
+
+        // Crear JLabels para precio, cantidad y categoría
+        JLabel precioLabel = new JLabel("Total: $" + pedido.getTotal());
+        JLabel cantidadLabel = new JLabel("Cantidad En El Pedido: " + pedido.getCantidad());
+        JLabel categoriaLabel = new JLabel("Categoría: " + productoPedido.getID_CategoriaProducto());
+
+        Font font = new Font("Arial", Font.PLAIN, 14);
+        Color textColor = Color.BLACK;
+        Color backgroundColor = new Color(240, 240, 240);
+        Border border = BorderFactory.createLineBorder(Color.GRAY); 
+
+        JLabel[] labels = {precioLabel, cantidadLabel, categoriaLabel};
+        for (JLabel label : labels) {
+            label.setFont(font);
+            label.setForeground(textColor);
+            label.setBounds(posicionHorizontal, 200, (int)espacioDisponible, 20);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+
+            label.setBorder(border);
+            label.setOpaque(true);
+            label.setBackground(backgroundColor);
+
+            panelPedido.add(label);
+
+            posicionHorizontal += espacioDisponible;
+        }
+            
+            
+            
+           
             String estadoEnvio = "Entregado";
             int nuevoID_EstadoPedido = controladorPedido.obtenerIdEstadoPedido(estadoEnvio);
 
@@ -98,6 +199,29 @@ public class VistaComprador extends javax.swing.JFrame {
             if (nuevoID_EstadoPedido == pedido.getID_EstadoPedido()){
                 
                  JButton entregadoButton = new JButton("¿Deseas Borrarlo?");
+              // Botón Eliminar
+        entregadoButton.setBounds(270, 230, (int)anchoRestado, 30);
+        entregadoButton.setBackground(Color.PINK); 
+        entregadoButton.setForeground(Color.BLACK);
+        entregadoButton.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+            BorderFactory.createEmptyBorder(10, 20, 10, 20) // Espacio interno
+                ));
+
+                 entregadoButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    entregadoButton.setBackground(new Color(128, 0, 64)); 
+                    entregadoButton.setForeground(Color.WHITE);
+
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                entregadoButton.setBackground(Color.PINK); 
+                entregadoButton.setForeground(Color.BLACK);
+
+                }
+            });
+        
+        
             entregadoButton.addActionListener(e -> {
                 int confirmacion = JOptionPane.showConfirmDialog(null, "¿Deseas borrar esta informacion de esta pantalla?", "Confirmación", JOptionPane.YES_NO_OPTION);
                 if (confirmacion == JOptionPane.YES_OPTION) {
@@ -116,27 +240,88 @@ public class VistaComprador extends javax.swing.JFrame {
             panelPedido.add(entregadoButton);
             
             }
-            
-            
-           
-
+            Color color;
         switch (pedido.getID_EstadoPedido()) {
             case 1:
                 panelPedido.setBackground(Color.RED);
+                 color = Color.RED;
                 break;
             case 2:
                 panelPedido.setBackground(Color.BLUE);
+                                 color = Color.BLUE;
+
                 break;
             case 3:
                 panelPedido.setBackground(Color.ORANGE);
+                                 color = Color.ORANGE;
+
                 break;
             case 4:
                 panelPedido.setBackground(Color.GREEN);
+                                 color = Color.GREEN;
+
                 break;
             default:
                 panelPedido.setBackground(Color.WHITE);
+                                 color = Color.WHITE;
+
                 break;
         }
+        
+           
+        
+        
+        
+       descripcionTextArea.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            panelPedido.setBackground(Color.LIGHT_GRAY); 
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            panelPedido.setBackground(color);
+        }
+    });
+       
+        descripcionTextArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Guardar el ID del producto en la sesión activa
+                SesionActiva.setID_Producto(pedido.getID_Producto());
+                System.out.println("El id es: " + SesionActiva.getID_Producto());
+
+                // Abrir la vista "VerProducto"
+                VerProducto verProducto = new VerProducto(usuario);
+                verProducto.setVisible(true);
+                dispose();
+            }
+        });
+
+    panelPedido.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            panelPedido.setBackground(Color.LIGHT_GRAY); 
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            panelPedido.setBackground(color); 
+        }
+
+        @Override
+       
+        public void mouseClicked(MouseEvent e) {
+            // Guardar el ID del producto en la sesión activa
+            SesionActiva.setID_Producto(pedido.getID_Producto());
+            System.out.println("El id es: " + SesionActiva.getID_Producto());
+
+            // Abrir la vista "VerProducto"
+            VerProducto verProducto = new VerProducto(usuario);
+            verProducto.setVisible(true);
+            dispose();
+        }
+    });
 
             contenidoPanel.add(panelPedido);
         
