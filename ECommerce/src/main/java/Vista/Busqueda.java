@@ -34,6 +34,7 @@ public class Busqueda extends javax.swing.JFrame {
    public Busqueda(String busqueda, int categoriaId, Usuario usuario) {
         super("Búsqueda de Productos");
         initComponents();
+        Menubar menubar = new Menubar();
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
         controladorProducto = new ControladorProducto();
         this.usuario = usuario;

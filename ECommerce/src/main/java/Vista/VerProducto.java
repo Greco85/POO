@@ -45,8 +45,8 @@ public class VerProducto extends javax.swing.JFrame {
         this.usuario = usuario;
         obtenerDatosProducto();
         initmyComponents();
-        menubar.initMenuBar(this, usuario, busqueda, categoriaId);
-        initComponents();
+        Menubar menubar = new Menubar();
+        menubar.initMenuBar(this, usuario, busqueda, categoriaId);        initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     

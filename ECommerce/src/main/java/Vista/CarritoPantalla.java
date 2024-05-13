@@ -38,7 +38,8 @@ public class CarritoPantalla extends javax.swing.JFrame {
 public CarritoPantalla(Usuario usuario) {
     this.usuario = usuario;
         initmyComponents();
-        menubar.initMenuBar(this, usuario, busqueda, categoriaId);
+        Menubar menubar = new Menubar();
+        menubar.initMenuBar(this, usuario, busqueda, categoriaId);  
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 }
 

@@ -3,6 +3,8 @@ package Vista;
 
 import Controladores.ControladorPedido;
 import Controladores.ControladorProducto;
+import Controladores.ControladorNotificacion;
+
 import Modelo.Pedido;
 import Modelo.Producto;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.sql.Connection;
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,6 +31,8 @@ public class VistaVendedor extends javax.swing.JFrame {
     
     private ControladorProducto controladorProducto;
     private ControladorPedido controladorPedido;
+    private ControladorNotificacion controladorNotificacion;
+
 
     private Usuario usuario;
     private String busqueda;
@@ -34,10 +40,12 @@ public class VistaVendedor extends javax.swing.JFrame {
     
     public VistaVendedor(Usuario usuario) {
         this.usuario = usuario;
+        Menubar menubar = new Menubar();
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
-
         controladorProducto = new ControladorProducto(); 
         controladorPedido = new ControladorPedido();
+        controladorNotificacion = new ControladorNotificacion();
+
         initmyComponents();
     
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -106,6 +114,22 @@ public class VistaVendedor extends javax.swing.JFrame {
                     boolean actualizacionExitosa = controladorPedido.actualizarEstadoPedido(pedido.getID_Pedido(), nuevoID_EstadoPedido);
 
                     if (actualizacionExitosa) {
+                        
+                int ID_TipoNoti = 5; //LUEGO BUSCARLA CON UNA CONSULTA "Producto en paqueteria"
+
+                String mensajee = "El usuario con ID : " + SesionActiva.getID_Usuario() + " ha entregado el producto con ID: " + pedido.getID_Producto() + "a la paqueteria";
+                
+                // Obtener la fecha y hora actual
+                Date fechaActual = new Date();
+
+                Timestamp fechaYHoraActual = new Timestamp(fechaActual.getTime());
+                
+                int ID_UsuarioNoti = pedido.getID_Usuario();
+               
+                // Llamada a la función crearNotificacion
+                controladorNotificacion.crearNotificacion(ID_UsuarioNoti, ID_TipoNoti, mensajee, fechaYHoraActual);
+
+            
                         dispose(); 
                         VistaVendedor vistaVendedor = new VistaVendedor(usuario);
                         vistaVendedor.setVisible(true);

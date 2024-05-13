@@ -1,19 +1,22 @@
 
 package Vista;
 
-import javax.swing.JButton;
-import javax.swing.GroupLayout;
 import Controladores.ControladorInicioSesion;
+import java.awt.Color;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import javax.swing.JFrame;
+import javax.swing.*;
 
 
 public class GUI_MENU_P extends javax.swing.JFrame {
     
-    private JButton jButtonRegistrarse; // Nuevo botón
-    
+     private int anchopanel3;
+
     public GUI_MENU_P() {
-        initMyComponentss();
-        initMyComponents(); // Inicializar los nuevos componentes
+        Componentes();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
@@ -24,10 +27,6 @@ public class GUI_MENU_P extends javax.swing.JFrame {
 
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -35,236 +34,238 @@ public class GUI_MENU_P extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setBackground(new java.awt.Color(204, 255, 204));
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("FIME ECOMMERCE");
-        jLabel1.setAlignmentX(0.5F);
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        jTextField1.setText("Introduce tu correo");
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jPasswordField1.setText("Contraseña");
-        jPasswordField1.setBorder(new javax.swing.border.MatteBorder(null));
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("Ingresar");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(202, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(jPasswordField1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
-                .addGap(201, 201, 201))
+            .addGap(0, 653, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(jButton1)
-                .addGap(76, 76, 76))
+            .addGap(0, 383, Short.MAX_VALUE)
         );
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 20)); // Cambia la fuente y el tamaño del texto según tus preferencias
-        jLabel1.setForeground(new java.awt.Color(51, 102, 204)); // Cambia el color del texto según tus preferencias
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER); // Centra el texto horizontalmente
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2)); // Agrega un borde alrededor del JLabel
-        jLabel1.setOpaque(true); // Hace que el JLabel sea opaco para que el color de fondo sea visible
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255)); // Cambia el color de fondo del JLabel según tus preferencias
-        jTextField1.setForeground(new java.awt.Color(128, 128, 128)); // Cambia el color del texto predeterminado
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 204))); // Cambia el color del borde del JTextField
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+    
+    private void Componentes() {
+        jPanel2 = new ImagePanel();
+        jPanel1 = new ImagePanel(); 
+        jPanel3 = new JPanel();
+        jLabel1P = new JLabel();
+        jLabel2 = new JLabel();
+        jLabel3 = new JLabel();
+        jTextField1P = new JTextField();
+        jTextField2 = new JTextField();
+        jButton1P = new JButton();
+        jButton2 = new JButton();
         
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String correo = jTextField1.getText();
-        String contraseña = new String(jPasswordField1.getPassword());
-        ControladorInicioSesion.validarCredenciales(this, correo, contraseña); // Pasar el objeto Usuario
-    }//GEN-LAST:event_jButton1ActionPerformed
-    
-    private void jButtonRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {                                         
-    Registrarse registroFrame = new Registrarse();
-    
-    // Hacer visible el frame de registro
-    registroFrame.setVisible(true);
-    
-    // Cerrar el frame actual si es necesario
-    this.dispose(); // Opcionalmente puedes cerrar el frame actual
-
-    } 
-    
-    
-    private void initMyComponentss() {
         
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-
-        jMenuItem1.setText("jMenuItem1");
-
-        jMenuItem2.setText("jMenuItem2");
+        jPanel3.addComponentListener(new ComponentAdapter() {
+                @Override
+            public void componentResized(ComponentEvent e) {
+                int anchopanel3 = jPanel3.getWidth();
+                System.out.println(anchopanel3);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setBackground(new java.awt.Color(204, 255, 204));
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("FIME ECOMMERCE");
-        jLabel1.setAlignmentX(0.5F);
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel1.setBackground(Color.WHITE);
+        jPanel2.add(jPanel1, java.awt.BorderLayout.WEST);
 
-        jTextField1.setText("Introduce tu correo");
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+        jPanel3.setBackground(Color.WHITE);
+        jPanel3.setLayout(null); 
+
+        
+        jLabel1P.setFont(new java.awt.Font("Lucida Sans Unicode", 0, 40));
+        jLabel1P.setForeground(Color.BLACK); 
+        jLabel1P.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1P.setText("INICIO DE SESIÓN");
+        jLabel1P.setOpaque(true); 
+        jLabel1P.setBackground(Color.WHITE);
+        jLabel1P.setBounds(0, 80, 640, 50); 
+        jPanel3.add(jLabel1P);
+        
+
+        jLabel2.setFont(new java.awt.Font("Quicksand Medium", java.awt.Font.BOLD, 14)); 
+        jLabel2.setForeground(Color.WHITE);
+        jLabel2.setText("  Correo Electrónico");
+        jLabel2.setOpaque(true); 
+        jLabel2.setBackground(new Color(30, 144, 255)); 
+        jLabel2.setBounds(20, 150, 600, 40); 
+        jPanel3.add(jLabel2);
+
+        
+        
+        jTextField2.setText("Introduce tu Correo Electrónico");
+        jTextField2.setForeground(new Color(64, 64, 64));
+        jTextField2.setBackground(new Color(240, 240, 240)); 
+        jTextField2.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(200, 200, 200)), // Borde con sombra
+                BorderFactory.createEmptyBorder(10, 10, 10, 10) 
+        ));
+        jTextField2.setBounds(20, 190, 600, 70); 
+        
+        
+        jTextField2.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (jTextField2.getText().equals("Introduce tu Correo Electrónico")) {
+                    jTextField2.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (jTextField2.getText().isEmpty()) {
+                    jTextField2.setText("Introduce tu Correo Electrónico");
+                }
+            }
+        });
+        
+        jPanel3.add(jTextField2);
+        
+
+
+        jLabel3.setFont(new java.awt.Font("Quicksand Medium", java.awt.Font.BOLD, 14)); // Aumentar el tamaño y hacerlo en negrita
+        jLabel3.setForeground(Color.WHITE); 
+        jLabel3.setText("  Contraseña");
+        jLabel3.setOpaque(true); 
+        jLabel3.setBackground(new Color(30, 144, 255));
+        jLabel3.setBounds(20, 280, 600, 40); 
+        jPanel3.add(jLabel3);
+        
+        Color ColorTF = new Color(240, 240, 240);
+
+        jTextField2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTextField2.setBackground(ColorTF);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jTextField2.setBackground(Color.WHITE);
             }
         });
 
-        jPasswordField1.setText("Contraseña");
-        jPasswordField1.setBorder(new javax.swing.border.MatteBorder(null));
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
+        jTextField1P.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTextField1P.setBackground(ColorTF);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jTextField1P.setBackground(Color.WHITE);
+            }
+        });
+        
+
+        jTextField1P.setText("Introduce tu Contraseña");
+        jTextField1P.setForeground(new Color(64, 64, 64)); 
+        jTextField1P.setBackground(new Color(240, 240, 240)); 
+        jTextField1P.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(200, 200, 200)), 
+                BorderFactory.createEmptyBorder(10, 10, 10, 10) 
+        ));
+        jTextField1P.setBounds(20, 320, 600, 70); 
+        jPanel3.add(jTextField1P);
+
+        
+        jTextField1P.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (jTextField1P.getText().equals("Introduce tu Contraseña")) {
+                    jTextField1P.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (jTextField1P.getText().isEmpty()) {
+                    jTextField1P.setText("Introduce tu Contraseña");
+                }
+            }
+        });
+        jPanel3.add(jTextField1P);
+        
+        
+        
+        jButton1P.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16)); 
+        jButton1P.setText("INGRESAR");
+        jButton1P.setBackground(new Color(51, 102, 255));
+        jButton1P.setForeground(Color.WHITE); 
+        jButton1P.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), 
+                BorderFactory.createEmptyBorder(15, 50, 15, 50)
+        ));
+        jButton1P.setBounds(20, 460, 600, 70); 
+        jButton1P.setFocusPainted(false); 
+        jPanel3.add(jButton1P);
+
+
+        jButton2.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16)); 
+        jButton2.setText("REGISTRARSE");
+        jButton2.setBackground(new Color(102, 102, 102)); 
+        jButton2.setForeground(Color.WHITE); 
+        jButton2.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), 
+                BorderFactory.createEmptyBorder(15, 50, 15, 50)
+        ));
+        jButton2.setBounds(20, 550, 600, 70); 
+        jButton2.setFocusPainted(false); 
+        jPanel3.add(jButton2);
+        
+        jButton1P.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton1P.setBackground(new Color(41, 81, 204)); 
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton1P.setBackground(new Color(51, 102, 255)); 
             }
         });
 
-        jButton1.setText("Ingresar");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        // Ajuste del color al pasar el mouse para el botón REGISTRARSE
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton2.setBackground(new Color(82, 82, 82)); 
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton2.setBackground(new Color(102, 102, 102)); 
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(202, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(jPasswordField1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
-                .addGap(201, 201, 201))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(jButton1)
-                .addGap(76, 76, 76))
-        );
+        jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 20));
-        jLabel1.setForeground(new java.awt.Color(51, 102, 204)); 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER); 
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jLabel1.setOpaque(true); 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jTextField1.setForeground(new java.awt.Color(128, 128, 128)); 
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 204))); 
+        getContentPane().add(jPanel2);
+        
+        jButton1P.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1PActionPerformed(evt);
+            }
+        });
+
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         pack();
-        
-   
     }
     
-   
-    private void initMyComponents() {
-        
-        jButtonRegistrarse = new JButton("Registrarse");
-        jButtonRegistrarse.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jButtonRegistrarse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRegistrarseActionPerformed(evt);
-            }
-        });
-        
-        // Obtener el GroupLayout del contenedor principal
-        GroupLayout layout = (GroupLayout) getContentPane().getLayout();
-        
-        // Agregar el botón al layout
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(202, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(jPasswordField1)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonRegistrarse, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)) // Añadir el nuevo botón al diseño
-                .addGap(201, 201, 201))
-        );
-        
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonRegistrarse) // Añadir el nuevo botón al diseño
-                .addGap(58, 58, 58))
-        );
-    }
+    private void jButton1PActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        String correo = jTextField2.getText();
+        String contraseña = jTextField1P.getText();
+        ControladorInicioSesion.validarCredenciales(this, correo, contraseña); // Pasar el objeto Usuario
+    }                                        
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+       Registrarse registroFrame = new Registrarse();
+       registroFrame.setVisible(true);
+       this.dispose();
+    }  
     
+   
      public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -272,13 +273,22 @@ public class GUI_MENU_P extends javax.swing.JFrame {
             }
         });
     }
+     
+    
+    private javax.swing.JButton jButton1P;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1P;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField jTextField1P;
+    private javax.swing.JTextField jTextField2;
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

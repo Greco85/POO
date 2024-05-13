@@ -3,6 +3,7 @@ package Vista;
 
 import Controladores.ControladorCarrito;
 import Controladores.ControladorEnvio;
+import Controladores.ControladorNotificacion;
 
 import Controladores.ControladorPedido;
 import Controladores.ControladorProducto;
@@ -11,12 +12,16 @@ import Modelo.Carrito;
 import Modelo.Direccion;
 import Modelo.SesionActiva;
 import Modelo.Usuario;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -65,21 +70,28 @@ public class PantallaDeCompra extends javax.swing.JFrame {
     private JComboBox<String> cbTipoEnvio;
 
     private JButton btnRealizarCompra;
+        private JButton btnRegresar;
+
     
     private Usuario usuario;
     private Connection conexion;
     private ControladorUsuario controladorUsuario;
+    
+    private ControladorNotificacion controladorNotificacion;
+
 
   
     public PantallaDeCompra(Usuario usuario, Connection conexion) {
         this.usuario = usuario;
         this.conexion = conexion;
         this.controladorUsuario = new ControladorUsuario(conexion);
-         cargarDatosUsuario();
+        this.controladorNotificacion = new ControladorNotificacion();
+
+        cargarDatosUsuario();
         initmyComponents();
         setTitle("Realizar Compra");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 500);
+        setSize(600, 700);
         setLocationRelativeTo(null);
     }
     
@@ -100,6 +112,22 @@ private void initmyComponents() {
     lblNumeroTarjeta = new JLabel("Número de Tarjeta:");
     lblFechaVencimiento = new JLabel("Fecha de Vencimiento:");
     lblCVV = new JLabel("CVV:");
+    
+    Font labelFont = new Font("Quicksand Medium", Font.BOLD, 14);
+    Color labelForeground = Color.BLACK;
+    
+    
+    JLabel[] labels = {lblNombre, lblApellido, lblCorreoElectronico, lblTelefono, lblCalle, lblNumeroCasa,
+                       lblColonia, lblCodigoPostal, lblCiudad, lblPais, lblMetodoPago, lblTipoEnvio, lblTotal,
+                       lblNumeroTarjeta, lblFechaVencimiento, lblCVV};
+
+    for (JLabel label : labels) {
+        label.setFont(labelFont);
+        label.setForeground(labelForeground);
+        label.setOpaque(true);
+    }
+    
+   
 
     txtNombre = new JTextField(20);
     txtNombre.setText(usuario.getNombre());
@@ -150,6 +178,29 @@ private void initmyComponents() {
     txtNumeroTarjeta = new JTextField(20);
     txtFechaVencimiento = new JTextField(20);
     txtCVV = new JTextField(20);
+    
+     Font textFieldFont = new Font("Arial", Font.PLAIN, 14);
+Color textFieldForeground = Color.BLACK;
+Color textFieldBackground = Color.WHITE;
+Color disabledColor = Color.LIGHT_GRAY;
+
+JTextField[] textFields = {txtNombre, txtApellido, txtCorreoElectronico, txtTelefono, txtCalle, txtNumeroCasa,
+                           txtColonia, txtCodigoPostal, txtCiudad, txtPais, txtTotal, txtNumeroTarjeta,
+                           txtFechaVencimiento, txtCVV};
+
+for (JTextField textField : textFields) {
+    textField.setFont(textFieldFont);
+    textField.setForeground(textFieldForeground);
+    textField.setBackground(textFieldBackground);
+    textField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
+    textField.setDisabledTextColor(disabledColor); 
+}
+    
+    
+    
 
     lblNumeroTarjeta.setVisible(false);
     txtNumeroTarjeta.setVisible(false);
@@ -157,6 +208,54 @@ private void initmyComponents() {
     txtFechaVencimiento.setVisible(false);
     lblCVV.setVisible(false);
     txtCVV.setVisible(false);
+    
+    // Diseño para los JLabels
+    labelFont = new Font("Arial", Font.BOLD, 14);
+    labelForeground = Color.BLACK;
+
+    lblNumeroTarjeta.setFont(labelFont);
+    lblNumeroTarjeta.setForeground(labelForeground);
+
+    lblFechaVencimiento.setFont(labelFont);
+    lblFechaVencimiento.setForeground(labelForeground);
+
+    lblCVV.setFont(labelFont);
+    lblCVV.setForeground(labelForeground);
+
+    // Diseño para los JTextFields
+    textFieldFont = new Font("Arial", Font.PLAIN, 14);
+    textFieldForeground = Color.BLACK;
+    disabledColor = Color.LIGHT_GRAY;
+
+    txtNumeroTarjeta.setFont(textFieldFont);
+    txtNumeroTarjeta.setForeground(textFieldForeground);
+    txtNumeroTarjeta.setBackground(textFieldBackground);
+    txtNumeroTarjeta.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
+    txtNumeroTarjeta.setEditable(false); 
+    txtNumeroTarjeta.setDisabledTextColor(disabledColor); 
+
+    txtFechaVencimiento.setFont(textFieldFont);
+    txtFechaVencimiento.setForeground(textFieldForeground);
+    txtFechaVencimiento.setBackground(textFieldBackground);
+    txtFechaVencimiento.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
+    txtFechaVencimiento.setEditable(false); 
+    txtFechaVencimiento.setDisabledTextColor(disabledColor);
+
+    txtCVV.setFont(textFieldFont);
+    txtCVV.setForeground(textFieldForeground);
+    txtCVV.setBackground(textFieldBackground);
+    txtCVV.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
+    txtCVV.setEditable(false); 
+    txtCVV.setDisabledTextColor(disabledColor);
 
     cbMetodoPago = new JComboBox<>(new String[]{"Efectivo", "Tarjeta de Crédito", "Tarjeta de Débito"});
     cbMetodoPago.setEditable(false);
@@ -171,14 +270,69 @@ private void initmyComponents() {
     cbTipoEnvio.setEditable(false);
     
     
-    btnRealizarCompra = new JButton("Realizar Compra");
+    Font comboBoxFont = new Font("Arial", Font.PLAIN, 14);
+    Color comboBoxForeground = Color.BLACK;
+    Color comboBoxBackground = Color.WHITE;
 
+    cbMetodoPago.setFont(comboBoxFont);
+    cbMetodoPago.setForeground(comboBoxForeground);
+    cbMetodoPago.setBackground(comboBoxBackground);
+    cbMetodoPago.setPreferredSize(new Dimension(300, 20)); // Ancho y alto
+
+    cbTipoEnvio.setFont(comboBoxFont);
+    cbTipoEnvio.setForeground(comboBoxForeground);
+    cbTipoEnvio.setBackground(comboBoxBackground);
+    cbTipoEnvio.setPreferredSize(new Dimension(300, 20)); // Ancho y alto
+    
+    btnRealizarCompra = new JButton("Realizar Compra");
+btnRealizarCompra.setFont(new Font("Arial", Font.PLAIN, 18));
+    btnRealizarCompra.setBackground(new Color(41, 81, 204)); 
+        btnRealizarCompra.setForeground(Color.WHITE);
+        btnRealizarCompra.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+            BorderFactory.createEmptyBorder(10, 20, 10, 20) 
+        ));
     btnRealizarCompra.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             realizarCompra();
         }
     });
+    
+     btnRegresar = new JButton("Regresar");
+        btnRegresar.setFont(new Font("Arial", Font.PLAIN, 18));
+        btnRegresar.setBackground(new Color(102, 102, 102)); 
+            btnRegresar.setForeground(Color.WHITE);
+            btnRegresar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+                BorderFactory.createEmptyBorder(10, 20, 10, 20) 
+            ));
+    btnRegresar.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+        }
+    });
+    
+    btnRealizarCompra.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRealizarCompra.setBackground(new Color(41, 81, 204));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRealizarCompra.setBackground(new Color(51, 102, 255)); 
+            }
+        });
+
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRegresar.setBackground(new Color(82, 82, 82));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRegresar.setBackground(new Color(102, 102, 102));
+            }
+        });
     
     cbMetodoPago.addActionListener(new ActionListener() {
         @Override
@@ -208,94 +362,98 @@ private void initmyComponents() {
     layout.setAutoCreateContainerGaps(true);
 
     layout.setHorizontalGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNombre)
-                    .addComponent(lblApellido)
-                    .addComponent(lblCorreoElectronico)
-                    .addComponent(lblTelefono)
-                    .addComponent(lblCalle)
-                    .addComponent(lblNumeroCasa)
-                    .addComponent(lblColonia)
-                    .addComponent(lblCodigoPostal)
-                    .addComponent(lblCiudad)
-                    .addComponent(lblPais)
-                    .addComponent(lblMetodoPago)
-                    .addComponent(lblTipoEnvio)
-                    .addComponent(lblTotal)
-                    .addComponent(lblNumeroTarjeta)
-                    .addComponent(lblFechaVencimiento)
-                    .addComponent(lblCVV))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombre)
-                    .addComponent(txtApellido)
-                    .addComponent(txtCorreoElectronico)
-                    .addComponent(txtTelefono)
-                    .addComponent(txtCalle)
-                    .addComponent(txtNumeroCasa)
-                    .addComponent(txtColonia)
-                    .addComponent(txtCodigoPostal)
-                    .addComponent(txtCiudad)
-                    .addComponent(txtPais)
-                    .addComponent(cbMetodoPago)
-                    .addComponent(cbTipoEnvio)
-                    .addComponent(txtTotal)
-                    .addComponent(txtNumeroTarjeta)
-                    .addComponent(txtFechaVencimiento)
-                    .addComponent(txtCVV)
-                    .addComponent(btnRealizarCompra))
-    );
+    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        .addComponent(lblNombre)
+        .addComponent(lblApellido)
+        .addComponent(lblCorreoElectronico)
+        .addComponent(lblTelefono)
+        .addComponent(lblCalle)
+        .addComponent(lblNumeroCasa)
+        .addComponent(lblColonia)
+        .addComponent(lblCodigoPostal)
+        .addComponent(lblCiudad)
+        .addComponent(lblPais)
+        .addComponent(lblMetodoPago)
+        .addComponent(lblTipoEnvio)
+        .addComponent(lblTotal)
+        .addComponent(lblNumeroTarjeta)
+        .addComponent(lblFechaVencimiento)
+        .addComponent(lblCVV)
+        .addComponent(btnRegresar)) // Agregamos el botón btnRegresar al grupo
+    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        .addComponent(txtNombre)
+        .addComponent(txtApellido)
+        .addComponent(txtCorreoElectronico)
+        .addComponent(txtTelefono)
+        .addComponent(txtCalle)
+        .addComponent(txtNumeroCasa)
+        .addComponent(txtColonia)
+        .addComponent(txtCodigoPostal)
+        .addComponent(txtCiudad)
+        .addComponent(txtPais)
+        .addComponent(cbMetodoPago)
+        .addComponent(cbTipoEnvio)
+        .addComponent(txtTotal)
+        .addComponent(txtNumeroTarjeta)
+        .addComponent(txtFechaVencimiento)
+        .addComponent(txtCVV)
+        .addComponent(btnRealizarCompra)
+        .addComponent(btnRegresar)
+    )
+);
 
-    layout.setVerticalGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNombre)
-                    .addComponent(txtNombre))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblApellido)
-                    .addComponent(txtApellido))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCorreoElectronico)
-                    .addComponent(txtCorreoElectronico))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTelefono)
-                    .addComponent(txtTelefono))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCalle)
-                    .addComponent(txtCalle))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNumeroCasa)
-                    .addComponent(txtNumeroCasa))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblColonia)
-                    .addComponent(txtColonia))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCodigoPostal)
-                    .addComponent(txtCodigoPostal))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCiudad)
-                    .addComponent(txtCiudad))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPais)
-                    .addComponent(txtPais))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblMetodoPago)
-                    .addComponent(cbMetodoPago))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTipoEnvio)
-                    .addComponent(cbTipoEnvio))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTotal)
-                    .addComponent(txtTotal))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNumeroTarjeta)
-                    .addComponent(txtNumeroTarjeta))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFechaVencimiento)
-                    .addComponent(txtFechaVencimiento))
-            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCVV)
-                    .addComponent(txtCVV))
-            .addComponent(btnRealizarCompra)
-    );
+   layout.setVerticalGroup(layout.createSequentialGroup()
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblNombre)
+                .addComponent(txtNombre))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblApellido)
+                .addComponent(txtApellido))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblCorreoElectronico)
+                .addComponent(txtCorreoElectronico))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblTelefono)
+                .addComponent(txtTelefono))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblCalle)
+                .addComponent(txtCalle))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblNumeroCasa)
+                .addComponent(txtNumeroCasa))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblColonia)
+                .addComponent(txtColonia))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblCodigoPostal)
+                .addComponent(txtCodigoPostal))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblCiudad)
+                .addComponent(txtCiudad))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblPais)
+                .addComponent(txtPais))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblMetodoPago)
+                .addComponent(cbMetodoPago))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblTipoEnvio)
+                .addComponent(cbTipoEnvio))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblTotal)
+                .addComponent(txtTotal))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblNumeroTarjeta)
+                .addComponent(txtNumeroTarjeta))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblFechaVencimiento)
+                .addComponent(txtFechaVencimiento))
+        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(lblCVV)
+                .addComponent(txtCVV))
+        .addComponent(btnRealizarCompra)
+        .addComponent(btnRegresar) // Agregamos el botón btnRegresar al layout
+);
 }
 
     private void realizarCompra() {
@@ -414,8 +572,17 @@ private void initmyComponents() {
         
         System.out.println("hola papu");
         
-        //Sale varias veces lo d abajo quitarlo o moverlo para q solo salga 1 vez
+        //NOTIFICACION
         
+        
+        int ID_TipoNoti = 2; //LUEGO BUSCARLA CON UNA CONSULTA
+
+        String mensaje = "Te compraron un producto, prepáralo para la entrega a paquetería";
+
+        // Llamada a la función crearNotificacion
+        controladorNotificacion.crearNotificacion(ID_UsuarioVendedor, ID_TipoNoti, mensaje, fechaYHoraActual);
+
+
         JOptionPane.showMessageDialog(this, "Compra realizada con éxito", "Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
 
 
@@ -427,10 +594,6 @@ private void initmyComponents() {
         }
 
      
-        
-        // HACER LO MISMO PERO COMPRAR SOLO CON UN PRODUCTO
-        
-        
     }
 
     

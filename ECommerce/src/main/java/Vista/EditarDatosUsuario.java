@@ -7,12 +7,16 @@ import Controladores.ControladorUsuario;
 import Modelo.SesionActiva;
 import SQL.Conexion;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -60,70 +64,177 @@ public class EditarDatosUsuario extends javax.swing.JFrame {
         this.usuario = usuario;
         this.conexion = conexion;
         this.controladorUsuario = new ControladorUsuario(conexion);
-         cargarDatosUsuario();
-        initComponents();
+        cargarDatosUsuario();
         initMyComponents();
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     private void cargarDatosUsuario() {
         int ID_Usuario = SesionActiva.getID_Usuario();
         usuario = controladorUsuario.obtenerUsuarioPorId(ID_Usuario);
     }
+    
+    
 
 private void initMyComponents() {
         setTitle("Editar Datos de Usuario");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     lblNombre = new JLabel("Nombre:");
+    lblNombre.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblNombre.setForeground(Color.BLACK);
+    lblNombre.setOpaque(true);
+    
     lblApellido = new JLabel("Apellido:");
+    lblApellido.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblApellido.setForeground(Color.BLACK);
+    lblApellido.setOpaque(true);
+
     lblCorreoElectronico = new JLabel("Correo Electrónico:");
+    lblCorreoElectronico.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblCorreoElectronico.setForeground(Color.BLACK);
+    lblCorreoElectronico.setOpaque(true);
+
     lblContraseña = new JLabel("Contraseña:");
+    lblContraseña.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblContraseña.setForeground(Color.BLACK);
+    lblContraseña.setOpaque(true);
+
     lblTelefono = new JLabel("Teléfono:");
+    lblTelefono.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblTelefono.setForeground(Color.BLACK);
+    lblTelefono.setOpaque(true);
+
     lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
+    lblFechaNacimiento.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblFechaNacimiento.setForeground(Color.BLACK);
+    lblFechaNacimiento.setOpaque(true);
+
     lblCalle = new JLabel("Calle:");
+    lblCalle.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblCalle.setForeground(Color.BLACK);
+    lblCalle.setOpaque(true);
+
     lblNumeroCasa = new JLabel("Número de Casa:");
+    lblNumeroCasa.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblNumeroCasa.setForeground(Color.BLACK);
+    lblNumeroCasa.setOpaque(true);
+
     lblColonia = new JLabel("Colonia:");
+    lblColonia.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblColonia.setForeground(Color.BLACK);
+    lblColonia.setOpaque(true);
+
     lblCodigoPostal = new JLabel("Código Postal:");
+    lblCodigoPostal.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblCodigoPostal.setForeground(Color.BLACK);
+    lblCodigoPostal.setOpaque(true);
+
     lblCiudad = new JLabel("Ciudad:");
+    lblCiudad.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblCiudad.setForeground(Color.BLACK);
+    lblCiudad.setOpaque(true);
+
     lblPais = new JLabel("País:");
+    lblPais.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblPais.setForeground(Color.BLACK);
+    lblPais.setOpaque(true);
+
 
     txtNombre = new JTextField(20);
     txtNombre.setText(usuario.getNombre());
 
+    txtNombre.setPreferredSize(new Dimension(300, 40));
+    txtNombre.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
+
     txtApellido = new JTextField(20);
     txtApellido.setText(usuario.getApellido());
 
+    txtApellido.setPreferredSize(new Dimension(300, 40));
+    txtApellido.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
+
     txtCorreoElectronico = new JTextField(20);
     txtCorreoElectronico.setText(usuario.getCorreo_Electronico());
+    txtCorreoElectronico.setPreferredSize(new Dimension(300, 40));
+    txtCorreoElectronico.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
 
     txtContraseña = new JTextField(20);
     txtContraseña.setText(usuario.getContraseña());
+    txtContraseña.setPreferredSize(new Dimension(300, 40));
+    txtContraseña.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
 
     txtTelefono = new JTextField(20);
     txtTelefono.setText(usuario.getTelefono());
+    txtTelefono.setPreferredSize(new Dimension(300, 40));
+    txtTelefono.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
     
     Direccion direccion = usuario.getDireccion();
     
-        txtCalle = new JTextField(20);
-        txtCalle.setText(direccion.getCalle());
+    txtCalle = new JTextField(20);
+    txtCalle.setText(direccion.getCalle());
+    txtCalle.setPreferredSize(new Dimension(300, 40));
+    txtCalle.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
 
-        txtNumeroCasa = new JTextField(20);
-        txtNumeroCasa.setText(direccion.getNumeroCasa());
+    txtNumeroCasa = new JTextField(20);
+    txtNumeroCasa.setText(direccion.getNumeroCasa());
+    txtNumeroCasa.setPreferredSize(new Dimension(300, 40));
+    txtNumeroCasa.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
 
-        txtColonia = new JTextField(20);
-        txtColonia.setText(direccion.getColonia());
+    txtColonia = new JTextField(20);
+    txtColonia.setText(direccion.getColonia());
+    txtColonia.setPreferredSize(new Dimension(300, 40));
+    txtColonia.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
 
-        txtCodigoPostal = new JTextField(20);
-        txtCodigoPostal.setText(direccion.getCodigoPostal());
+    txtCodigoPostal = new JTextField(20);        
+    txtCodigoPostal.setText(direccion.getCodigoPostal());
+    txtCodigoPostal.setPreferredSize(new Dimension(300, 40));
+    txtCodigoPostal.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
 
-        txtCiudad = new JTextField(20);
-        txtCiudad.setText(direccion.getCiudad());
+    txtCiudad = new JTextField(20);       
+    txtCiudad.setText(direccion.getCiudad());
+    txtCiudad.setPreferredSize(new Dimension(300, 40));
+    txtCiudad.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
 
-        txtPais = new JTextField(20);
-        txtPais.setText(direccion.getPais());
+    txtPais = new JTextField(20);
+    txtPais.setText(direccion.getPais());
+
+    txtPais.setPreferredSize(new Dimension(300, 40));
+    txtPais.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+    ));
 
     dateChooser = new JDateChooser();
     dateChooser.setDateFormatString("yyyy-MM-dd");
+    
 
     Date FechaNacimiento = usuario.getFecha_Nacimiento();
 
@@ -141,6 +252,22 @@ private void initMyComponents() {
 
     btnActualizar = new JButton("Actualizar");
     btnCancelar = new JButton("Cancelar");
+    
+    btnActualizar.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        btnActualizar.setBackground(new Color(41, 81, 204));
+        btnActualizar.setForeground(Color.WHITE);
+        btnActualizar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)),
+                BorderFactory.createEmptyBorder(15, 50, 15, 50)
+        ));
+        
+    btnCancelar.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        btnCancelar.setBackground(new Color(102, 102, 102));
+        btnCancelar.setForeground(Color.WHITE);
+        btnCancelar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)),
+                BorderFactory.createEmptyBorder(15, 50, 15, 50)
+        ));    
 
     btnCancelar.addActionListener(e -> {
         dispose();
@@ -154,6 +281,29 @@ private void initMyComponents() {
             btnActualizarActionPerformed(e);
         }
     });
+    
+    
+     btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnActualizar.setBackground(new Color(41, 81, 204));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnActualizar.setBackground(new Color(51, 102, 255)); 
+            }
+        });
+
+        btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnCancelar.setBackground(new Color(82, 82, 82));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnCancelar.setBackground(new Color(102, 102, 102));
+            }
+        });
+        
+        
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -252,6 +402,7 @@ private void initMyComponents() {
         );
 
         pack();
+        setSize(600, 650);
         setLocationRelativeTo(null);
     }
 

@@ -6,12 +6,18 @@ import Controladores.ControladorUsuario;
 import Modelo.SesionActiva;
 import Modelo.Usuario;
 import SQL.Conexion;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
 public class CuentaUsuario extends javax.swing.JFrame {
@@ -23,10 +29,9 @@ public class CuentaUsuario extends javax.swing.JFrame {
     public CuentaUsuario(Usuario usuario) {
         this.usuario = usuario;
         initmyComponents();
-        menubar.initMenuBar(this, usuario, busqueda, categoriaId);
-        mostrarNombre(); 
+        Menubar menubar = new Menubar();
+        menubar.initMenuBar(this, usuario, busqueda, categoriaId);        mostrarNombre(); 
         configurarEventos();
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void configurarEventos() {
@@ -110,7 +115,8 @@ public class CuentaUsuario extends javax.swing.JFrame {
         dispose();
     }
 
-    private void initmyComponents() {
+   private void initmyComponents() {
+    // Crear componentes
     jLabel1 = new javax.swing.JLabel();
     EditarCuenta = new javax.swing.JButton();
     jButton1 = new javax.swing.JButton();
@@ -122,71 +128,62 @@ public class CuentaUsuario extends javax.swing.JFrame {
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-    jLabel1.setText("Nombre del Usuario");
-
+    // Texto de los botones
     EditarCuenta.setText("EDITAR CUENTA");
-
     jButton1.setText("PUBLICACIONES");
-
     jButton2.setText("METER DINERO");
-
     eliminarCuentaButton.setText("Eliminar Cuenta");
-
     jButtonProductosVendidos.setText("Productos Vendidos");
-
     jButtonPedidosHechos.setText("Pedidos Hechos");
-    
-    jButtonConversaciones.setText("Conversaciones"); 
+    jButtonConversaciones.setText("Conversaciones");
 
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(150, 150, 150)
-                    .addComponent(jLabel1))
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(98, 98, 98)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(EditarCuenta)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jButtonProductosVendidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonPedidosHechos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonConversaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))) // Agregando el botón jButtonConversaciones
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(132, 132, 132)
-                    .addComponent(eliminarCuentaButton)))
-            .addContainerGap(97, Short.MAX_VALUE))
-    );
-    layout.setVerticalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addGap(65, 65, 65)
-            .addComponent(jLabel1)
-            .addGap(18, 18, 18)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(EditarCuenta)
-                .addComponent(jButton2))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(jButton1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(jButtonProductosVendidos)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(jButtonPedidosHechos)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(jButtonConversaciones) 
-            .addGap(18, 18, 18)
-            .addComponent(eliminarCuentaButton)
-            .addContainerGap(44, Short.MAX_VALUE))
-    );
+    // Estilo de los botones
+    estilizarBoton(EditarCuenta);
+    estilizarBoton(jButton1);
+    estilizarBoton(jButton2);
+    estilizarBoton(jButtonProductosVendidos);
+    estilizarBoton(jButtonPedidosHechos);
+    estilizarBoton(jButtonConversaciones);
+        
+    eliminarCuentaButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    eliminarCuentaButton.setBackground(Color.RED); 
+    eliminarCuentaButton.setForeground(Color.WHITE);
+    eliminarCuentaButton.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+        BorderFactory.createEmptyBorder(15, 50, 15, 50) 
+    ));
+    
+    // Crear panel y agregar botones al panel
+    JPanel panel = new JPanel(new GridLayout(7, 1, 10, 10)); // GridLayout de 7 filas y 1 columna
+    panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Espacio alrededor del panel
+    panel.add(EditarCuenta);
+    panel.add(jButton1);
+    panel.add(jButton2);
+    panel.add(jButtonProductosVendidos);
+    panel.add(jButtonPedidosHechos);
+    panel.add(jButtonConversaciones);
+    panel.add(eliminarCuentaButton);
+
+
+    // Agregar panel al centro del frame
+    getContentPane().add(panel, BorderLayout.CENTER);
 
     pack();
+    setSize(800, 650);
+    setLocationRelativeTo(null);
 }
+
+// Método para aplicar estilos a los botones
+private void estilizarBoton(JButton boton) {
+    boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    boton.setBackground(new Color(41, 81, 204)); // Azul
+    boton.setForeground(Color.WHITE);
+    boton.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+        BorderFactory.createEmptyBorder(15, 50, 15, 50) // Espacio interno
+    ));
+}
+
 
 
     private void mostrarNombre() {

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,10 +16,14 @@ import java.util.List;
 public class ControladorProducto {
     
     private Connection conexion;
+    
+    private ControladorNotificacion controladorNotificacion;
+
 
     public ControladorProducto() {
         this.conexion = Conexion.getInstance().getConexion();
-        
+        this.controladorNotificacion = new ControladorNotificacion();
+
     }
     
     public List<Producto> obtenerTodosLosProductos() {
@@ -185,6 +190,22 @@ public class ControladorProducto {
                 statement.setInt(1, 2); // LUEGO CAMBIAR AUN NO LO TENEMOS "Agotado"
                 statement.setInt(2, ID_Producto);
                 statement.executeUpdate();
+                
+                int ID_TipoNoti = 3; //LUEGO BUSCARLA CON UNA CONSULTA "Producto Agotado"
+
+                String mensaje = "Se te agotaron los productos disponibles de tu producto con ID: " + ID_Producto ;
+
+                // Obtener la fecha y hora actual
+                Date fechaActual = new Date();
+
+                // Convertir la fecha actual a un objeto Timestamp (necesario para almacenar en la base de datos)
+                Timestamp fechaYHoraActual = new Timestamp(fechaActual.getTime());
+                int ID_Usuario = buscarID_UsuarioporID_Producto(ID_Producto);
+               
+                // Llamada a la función crearNotificacion
+                controladorNotificacion.crearNotificacion(ID_Usuario, ID_TipoNoti, mensaje, fechaYHoraActual);
+
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -198,6 +219,31 @@ public class ControladorProducto {
             }
         }
     }
+   
+   public int buscarID_UsuarioporID_Producto(int ID_Producto) {
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+    int ID_Usuario = -1; // Valor predeterminado si no se encuentra ningún usuario
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT ID_Usuario FROM Producto WHERE ID_Producto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_Producto);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            ID_Usuario = resultSet.getInt("ID_Usuario");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al buscar el ID del usuario por ID del producto: " + e.getMessage());
+    } finally {
+        // Cerrar recursos
+    }
+
+    return ID_Usuario;
+}
 
     private int CantidadDisponible(int ID_Producto) throws SQLException {
         String consultaCantidadDisponible = "SELECT Cantidad_Disponible FROM Producto WHERE ID_Producto = ?";
@@ -499,11 +545,6 @@ public class ControladorProducto {
             }
         }
         if (conexion != null) {
-            try {
-                conexion.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
     

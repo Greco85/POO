@@ -2,13 +2,22 @@
 package Vista;
 
 import Controladores.ControladorComentario;
+import Controladores.ControladorNotificacion;
+import Controladores.ControladorProducto;
+import Controladores.ControladorUsuario;
+import Modelo.Producto;
 import Modelo.SesionActiva;
+import Modelo.Usuario;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,8 +31,18 @@ import javax.swing.text.PlainDocument;
 public class HacerComentario extends javax.swing.JFrame {
 
     private JTextArea comentarioTextArea;
+    private Connection conexion;
+
+    private ControladorNotificacion controladorNotificacion;
+    private ControladorProducto controladorProducto;
+    private ControladorUsuario controladorUsuario;
+
+
 
     public HacerComentario() {
+        this.controladorNotificacion = new ControladorNotificacion();
+        this.controladorProducto = new ControladorProducto();
+        this.controladorUsuario = new ControladorUsuario(conexion);
         initmyComponents();
     }
     
@@ -39,10 +58,25 @@ public class HacerComentario extends javax.swing.JFrame {
     JPanel idPanel = new JPanel(new GridLayout(2, 1));
     
     int ID_Usuario = SesionActiva.getID_Usuario();
+    
+    Usuario usuarioP = controladorUsuario.obtenerUsuarioPorId(ID_Usuario) ;
+    
     int ID_Producto = SesionActiva.getID_Producto();
     
-    JLabel idUsuarioLabel = new JLabel("ID del Usuario: " + ID_Usuario);
-    JLabel idProductoLabel = new JLabel("ID del Producto: " + ID_Producto);
+    Producto productoP = controladorProducto.obtenerProductosporID(ID_Producto) ;
+
+    
+    JLabel idUsuarioLabel = new JLabel("Nombre de Usuario: " + usuarioP.getNombre());
+    JLabel idProductoLabel = new JLabel("Producto: " + productoP.getNombre());
+    
+    idUsuarioLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16)); 
+    idUsuarioLabel.setForeground(new Color(0, 0,0)); 
+    idUsuarioLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    idProductoLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16)); 
+    idProductoLabel.setForeground(new Color(0, 0,0));
+    idProductoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
     
     idPanel.add(idUsuarioLabel);
     idPanel.add(idProductoLabel);
@@ -59,8 +93,29 @@ public class HacerComentario extends javax.swing.JFrame {
     // Panel para los botones
     JPanel botonesPanel = new JPanel(new FlowLayout());
     JButton hacerComentarioButton = new JButton("Hacer Comentario");
+    hacerComentarioButton.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16)); 
+    hacerComentarioButton.setText("Hacer Comentario");
+    hacerComentarioButton.setBackground(new Color(51, 102, 255)); 
+    hacerComentarioButton.setForeground(Color.WHITE); 
+    hacerComentarioButton.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), 
+        BorderFactory.createEmptyBorder(15, 50, 15, 50)
+    ));
+    hacerComentarioButton.setFocusPainted(false);
+    
+    hacerComentarioButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            hacerComentarioButton.setBackground(new Color(41, 81, 204)); 
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            hacerComentarioButton.setBackground(new Color(51, 102, 255)); 
+        }
+    });
+    
     hacerComentarioButton.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
+    
+        public void actionPerformed(ActionEvent e) {
         // Lógica para hacer un comentario
         String comentario = comentarioTextArea.getText();
         int ID_Usuario = SesionActiva.getID_Usuario();
@@ -72,6 +127,21 @@ public class HacerComentario extends javax.swing.JFrame {
         
         if(comentarioHecho) {
             System.out.println("Comentario hecho correctamente");
+            
+            int ID_TipoNoti = 4; //LUEGO BUSCARLA CON UNA CONSULTA "Comentario"
+
+                String mensajee = "El usuario con ID : " + SesionActiva.getID_Usuario() + " ha puesto un mensaje en el producto con ID: " + ID_Producto;
+                // Obtener la fecha y hora actual
+                Date fechaActual = new Date();
+
+                Timestamp fechaYHoraActual = new Timestamp(fechaActual.getTime());
+                
+                int ID_UsuarioNoti = controladorProducto.buscarID_UsuarioporID_Producto(ID_Producto);
+               
+                // Llamada a la función crearNotificacion
+                controladorNotificacion.crearNotificacion(ID_UsuarioNoti, ID_TipoNoti, mensajee, fechaYHoraActual);
+
+            
         } else {
             System.out.println("Error al hacer el comentario");
         }
@@ -80,19 +150,41 @@ public class HacerComentario extends javax.swing.JFrame {
 });
     
     JButton regresarButton = new JButton("Regresar");
+    regresarButton.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16)); 
+    regresarButton.setText("Regresar");
+    regresarButton.setBackground(new Color(102, 102, 102)); 
+    regresarButton.setForeground(Color.WHITE); 
+    regresarButton.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), 
+        BorderFactory.createEmptyBorder(15, 50, 15, 50)
+    ));
+    regresarButton.setFocusPainted(false);
+    
+    regresarButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        regresarButton.setBackground(new Color(82, 82, 82));
+    }
+
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+        regresarButton.setBackground(new Color(102, 102, 102));
+    }
+});
+
     regresarButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             dispose();
         }
     });
+    
     botonesPanel.add(hacerComentarioButton);
     botonesPanel.add(regresarButton);
     add(botonesPanel, BorderLayout.SOUTH);
 
-    setSize(300, 300); 
+    setSize(600, 600); 
     setLocationRelativeTo(null); 
     setVisible(true);
 }
+    
 
     class JTextFieldLimit extends PlainDocument {
         private int limit;

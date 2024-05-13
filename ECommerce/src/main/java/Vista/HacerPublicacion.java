@@ -15,6 +15,14 @@ public class HacerPublicacion extends javax.swing.JFrame {
 
       private Usuario usuario;
       
+    int ID_Producto;
+    JTextField txtNombre;
+    JTextField txtDescripcion;
+    JTextField txtPrecio;
+    JTextField txtCantidad;
+    JComboBox<String> cmbCategoria;
+    JTextField txtImagenURL;
+      
     public HacerPublicacion(Usuario usuario) {
         this.usuario = usuario;
         initmyComponents();
@@ -24,7 +32,7 @@ public class HacerPublicacion extends javax.swing.JFrame {
      private void initmyComponents() {
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setTitle("Hacer Publicación");
-    setSize(400, 300); // Reducimos un poco el tamaño para acomodar los cambios
+    setSize(600, 600); // Reducimos un poco el tamaño para acomodar los cambios
     setLocationRelativeTo(null);
 
     JPanel panel = new JPanel();
@@ -36,47 +44,85 @@ public class HacerPublicacion extends javax.swing.JFrame {
     
     // Nombre
     JLabel lblNombre = new JLabel("Nombre:");
+    lblNombre.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblNombre.setForeground(Color.BLACK);
+    lblNombre.setOpaque(true);
     gbc.gridx = 0;
     gbc.gridy = 0;
     panel.add(lblNombre, gbc);
-    JTextField txtNombre = new JTextField(20);
+    txtNombre = new JTextField(20);
+    txtNombre.setPreferredSize(new Dimension(300, 40)); // Ajustar el tamaño del JTextField
+    txtNombre.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Borde externo
+                BorderFactory.createEmptyBorder(5, 10, 5, 10) // Espacio interno
+        ));
     gbc.gridx = 1;
     panel.add(txtNombre, gbc);
 
     // Descripción
     JLabel lblDescripcion = new JLabel("Descripción:");
+    lblDescripcion.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblDescripcion.setForeground(Color.BLACK);
+    lblNombre.setOpaque(true);
     gbc.gridx = 0;
     gbc.gridy = 1;
     panel.add(lblDescripcion, gbc);
-    JTextField txtDescripcion = new JTextField(20);
+    txtDescripcion = new JTextField(20);
+    txtDescripcion.setPreferredSize(new Dimension(300, 40)); // Ajustar el tamaño del JTextField
+    txtDescripcion.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Borde externo
+                BorderFactory.createEmptyBorder(5, 10, 5, 10) // Espacio interno
+        ));
     gbc.gridx = 1;
     panel.add(txtDescripcion, gbc);
 
     // Precio
     JLabel lblPrecio = new JLabel("Precio:");
+    lblPrecio.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblPrecio.setForeground(Color.BLACK);
+    lblPrecio.setOpaque(true);
     gbc.gridx = 0;
     gbc.gridy = 2;
     panel.add(lblPrecio, gbc);
-    JTextField txtPrecio = new JTextField(20);
+    txtPrecio = new JTextField(20);
+    txtPrecio.setPreferredSize(new Dimension(300, 40)); // Ajustar el tamaño del JTextField
+    txtPrecio.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Borde externo
+                BorderFactory.createEmptyBorder(5, 10, 5, 10) // Espacio interno
+        ));
     gbc.gridx = 1;
     panel.add(txtPrecio, gbc);
 
     // Cantidad Disponible
     JLabel lblCantidad = new JLabel("Cantidad Disponible:");
+    lblCantidad.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblCantidad.setForeground(Color.BLACK);
+    lblCantidad.setOpaque(true);
+    
     gbc.gridx = 0;
     gbc.gridy = 3;
     panel.add(lblCantidad, gbc);
-    JTextField txtCantidad = new JTextField(20);
+    txtCantidad = new JTextField(20);
+    txtCantidad.setPreferredSize(new Dimension(300, 40)); // Ajustar el tamaño del JTextField
+    txtCantidad.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Borde externo
+                BorderFactory.createEmptyBorder(5, 10, 5, 10) // Espacio interno
+        ));
     gbc.gridx = 1;
     panel.add(txtCantidad, gbc);
 
     // Categoría
     JLabel lblCategoria = new JLabel("Categoría:");
+    lblCategoria.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblCategoria.setForeground(Color.BLACK);
+    lblCategoria.setOpaque(true);
     gbc.gridx = 0;
     gbc.gridy = 4;
     panel.add(lblCategoria, gbc);
 
-    JComboBox<String> cmbCategoria = new JComboBox<>();
+    cmbCategoria = new JComboBox<>();
+    cmbCategoria.setPreferredSize(new Dimension(245, 40)); // Establecer el ancho y alto del JComboBox
+
     gbc.gridx = 1;
     panel.add(cmbCategoria, gbc);
 
@@ -89,15 +135,31 @@ public class HacerPublicacion extends javax.swing.JFrame {
 
     // URL de la Imagen
     JLabel lblImagenURL = new JLabel("URL de la Imagen:");
+    lblImagenURL.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblImagenURL.setForeground(Color.BLACK);
+    lblImagenURL.setOpaque(true);
     gbc.gridx = 0;
     gbc.gridy = 5;
     panel.add(lblImagenURL, gbc);
-    JTextField txtImagenURL = new JTextField(20);
+    txtImagenURL = new JTextField(20);
+    txtImagenURL.setPreferredSize(new Dimension(300, 40)); // Ajustar el tamaño del JTextField
+    txtImagenURL.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Borde externo
+                BorderFactory.createEmptyBorder(5, 10, 5, 10) // Espacio interno
+        ));
     gbc.gridx = 1;
     panel.add(txtImagenURL, gbc);
 
     // Botón Publicar
     JButton btnPublicar = new JButton("Publicar");
+    btnPublicar.setFont(new Font("Arial", Font.PLAIN, 18));
+    btnPublicar.setBackground(new Color(41, 81, 204)); 
+        btnPublicar.setForeground(Color.WHITE);
+        btnPublicar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+            BorderFactory.createEmptyBorder(10, 20, 10, 20) 
+        ));
+        
     btnPublicar.addActionListener(evt -> {
         btnPublicarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
   txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText());
@@ -105,13 +167,55 @@ public class HacerPublicacion extends javax.swing.JFrame {
         publicaciones.setVisible(true);
         dispose();
     });
+    
     gbc.gridx = 1;
     gbc.gridy = 6;
     gbc.anchor = GridBagConstraints.CENTER;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridwidth = 2;
     panel.add(btnPublicar, gbc);
+    
+    
+    // Botón Regresar
+    JButton btnRegresar = new JButton("Regresar");
+    btnRegresar.setFont(new Font("Arial", Font.PLAIN, 18));
+    btnRegresar.setBackground(new Color(102, 102, 102)); 
+        btnRegresar.setForeground(Color.WHITE);
+        btnRegresar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+            BorderFactory.createEmptyBorder(10, 20, 10, 20) 
+        ));
+        
+    btnRegresar.addActionListener(evt -> {
+        dispose();
+        Publicaciones publicaciones = new Publicaciones(usuario);
+        publicaciones.setVisible(true);
+    });
+    gbc.gridy = 7;
+    panel.add(btnRegresar, gbc);
+    
+     btnPublicar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnPublicar.setBackground(new Color(41, 81, 204));
+            }
 
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnPublicar.setBackground(new Color(51, 102, 255)); 
+            }
+        });
+
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRegresar.setBackground(new Color(82, 82, 82));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRegresar.setBackground(new Color(102, 102, 102));
+            }
+        });
+    
+    
+    
     getContentPane().add(panel);
 }
 

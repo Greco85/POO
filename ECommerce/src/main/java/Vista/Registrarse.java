@@ -10,6 +10,10 @@ import java.util.Date;
 import java.text.ParseException;
 import Controladores.ControladorUsuario;
 import SQL.Conexion;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
 import java.sql.Connection;
 
 
@@ -31,32 +35,212 @@ public class Registrarse extends javax.swing.JFrame {
     private JButton btnRegresar;
 
     public Registrarse() {
-        initComponents();
         initMyComponents();
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void initMyComponents() {
         setTitle("Registrarse");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JLabel iconLabel = new JLabel();
+        ImageIcon icon = new ImageIcon(System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Perfil.png");
+        Image img = icon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(img);
+
+        iconLabel.setIcon(resizedIcon);
+        
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(Color.WHITE); 
+        imagePanel.add(iconLabel);
 
         lblNombre = new JLabel("Nombre:");
+        lblNombre.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+        lblNombre.setForeground(Color.BLACK);
+        lblNombre.setBackground(Color.WHITE); 
+
+        lblNombre.setOpaque(true);
+
         lblApellido = new JLabel("Apellido:");
+        lblApellido.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+        lblApellido.setForeground(Color.BLACK);
+        lblApellido.setBackground(Color.WHITE); 
+
+        lblApellido.setOpaque(true);
+
         lblCorreoElectronico = new JLabel("Correo Electrónico:");
+        lblCorreoElectronico.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+        lblCorreoElectronico.setForeground(Color.BLACK);
+        lblCorreoElectronico.setBackground(Color.WHITE); 
+
+        lblCorreoElectronico.setOpaque(true);
+
         lblContraseña = new JLabel("Contraseña:");
+        lblContraseña.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+        lblContraseña.setForeground(Color.BLACK);
+        lblContraseña.setBackground(Color.WHITE); 
+
+        lblContraseña.setOpaque(true);
+
         lblNumeroTelefono = new JLabel("Teléfono:");
+        lblNumeroTelefono.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+        lblNumeroTelefono.setForeground(Color.BLACK);
+        lblNumeroTelefono.setBackground(Color.WHITE); 
+
+        lblNumeroTelefono.setOpaque(true);
+
         lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
+        lblFechaNacimiento.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+        lblFechaNacimiento.setForeground(Color.BLACK);
+        lblFechaNacimiento.setBackground(Color.WHITE); 
+
+        lblFechaNacimiento.setOpaque(true);
+
 
         txtNombre = new JTextField(20);
+        txtNombre.setPreferredSize(new Dimension(300, 40)); // Ajustar el tamaño del JTextField
+        txtNombre.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Borde externo
+                BorderFactory.createEmptyBorder(5, 10, 5, 10) // Espacio interno
+        ));
+
         txtApellido = new JTextField(20);
+        txtApellido.setPreferredSize(new Dimension(300, 40));
+        txtApellido.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+
         txtCorreoElectronico = new JTextField(20);
-        txtContraseña = new JTextField(20);
+        txtCorreoElectronico.setPreferredSize(new Dimension(300, 40));
+        txtCorreoElectronico.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+
+        txtContraseña = new JPasswordField(20); 
+        txtContraseña.setPreferredSize(new Dimension(300, 40));
+        txtContraseña.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+
         txtNumeroTelefono = new JTextField(20);
+        txtNumeroTelefono.setPreferredSize(new Dimension(300, 40));
+        txtNumeroTelefono.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        
+        // Para el campo de texto txtNombre
+        txtNombre.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtNombre.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY), // Cambiar a gris claro
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                txtNombre.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Cambiar al color gris original
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+        });
+
+        // Para el campo de texto txtApellido
+        txtApellido.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtApellido.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY), // Cambiar a gris claro
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                txtApellido.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Cambiar al color gris original
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+        });
+
+        // Para el campo de texto txtCorreoElectronico
+        txtCorreoElectronico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtCorreoElectronico.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY), // Cambiar a gris claro
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                txtCorreoElectronico.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Cambiar al color gris original
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+        });
+
+        // Para el campo de texto txtContraseña
+        txtContraseña.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtContraseña.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY), // Cambiar a gris claro
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                txtContraseña.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Cambiar al color gris original
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+        });
+
+        // Para el campo de texto txtNumeroTelefono
+        txtNumeroTelefono.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtNumeroTelefono.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.LIGHT_GRAY), // Cambiar a gris claro
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                txtNumeroTelefono.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Cambiar al color gris original
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+        });
+
         dateChooser = new JDateChooser();
         dateChooser.setDateFormatString("yyyy-MM-dd");
-
+        dateChooser.setPreferredSize(new Dimension(300, 40));
+        dateChooser.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
         btnRegistrarse = new JButton("Registrarse");
         btnRegresar = new JButton("Regresar");
+        
+        btnRegistrarse.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        btnRegistrarse.setBackground(new Color(41, 81, 204));
+        btnRegistrarse.setForeground(Color.WHITE);
+        btnRegistrarse.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)),
+                BorderFactory.createEmptyBorder(15, 50, 15, 50)
+        ));
+        
+        btnRegresar.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
+        btnRegresar.setBackground(new Color(102, 102, 102));
+        btnRegresar.setForeground(Color.WHITE);
+        btnRegresar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)),
+                BorderFactory.createEmptyBorder(15, 50, 15, 50)
+        ));
 
         btnRegistrarse.addActionListener(new ActionListener() {
             @Override
@@ -79,36 +263,63 @@ public class Registrarse extends javax.swing.JFrame {
                 menuFrame.setVisible(true);
             }
         });
+        
+         btnRegistrarse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRegistrarse.setBackground(new Color(41, 81, 204));
+            }
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRegistrarse.setBackground(new Color(51, 102, 255)); 
+            }
+        });
+
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRegresar.setBackground(new Color(82, 82, 82));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRegresar.setBackground(new Color(102, 102, 102));
+            }
+        });
+
+        JPanel contentPanel = new JPanel();
+    contentPanel.setBackground(Color.WHITE); 
+    GroupLayout layout = new GroupLayout(contentPanel);
+    contentPanel.setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNombre)
-                    .addComponent(lblApellido)
-                    .addComponent(lblCorreoElectronico)
-                    .addComponent(lblContraseña)
-                    .addComponent(lblNumeroTelefono)
-                    .addComponent(lblFechaNacimiento))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombre)
-                    .addComponent(txtApellido)
-                    .addComponent(txtCorreoElectronico)
-                    .addComponent(txtContraseña)
-                    .addComponent(txtNumeroTelefono)
-                    .addComponent(dateChooser)
+                    .addComponent(imagePanel) 
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNombre)
+                            .addComponent(lblApellido)
+                            .addComponent(lblCorreoElectronico)
+                            .addComponent(lblContraseña)
+                            .addComponent(lblNumeroTelefono)
+                            .addComponent(lblFechaNacimiento))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre)
+                            .addComponent(txtApellido)
+                            .addComponent(txtCorreoElectronico)
+                            .addComponent(txtContraseña)
+                            .addComponent(txtNumeroTelefono)
+                            .addComponent(dateChooser)))
                     .addComponent(btnRegistrarse, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRegresar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(imagePanel)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombre)
                     .addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -137,22 +348,25 @@ public class Registrarse extends javax.swing.JFrame {
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRegresar)
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+    );
+     getContentPane().add(contentPanel);
+        
+     pack();
+        setSize(600, 600);
 
-        pack();
         setLocationRelativeTo(null);
     }
  
     private boolean todosCamposCompletos() {
-    return !txtNombre.getText().isEmpty()
-            && !txtApellido.getText().isEmpty()
-            && !txtCorreoElectronico.getText().isEmpty()
-            && !txtContraseña.getText().isEmpty()
-            && !txtNumeroTelefono.getText().isEmpty()
-            && dateChooser.getDate() != null;
-}
+        return !txtNombre.getText().isEmpty()
+                && !txtApellido.getText().isEmpty()
+                && !txtCorreoElectronico.getText().isEmpty()
+                && !txtContraseña.getText().isEmpty()
+                && !txtNumeroTelefono.getText().isEmpty()
+                && dateChooser.getDate() != null;
+    }
 
-private Usuario obtenerDatosUsuario() {
+    private Usuario obtenerDatosUsuario() {
     String nombre = txtNombre.getText();
     String apellido = txtApellido.getText();
     String correo = txtCorreoElectronico.getText();
@@ -182,7 +396,7 @@ private Usuario obtenerDatosUsuario() {
     }
 
     // Establecer la URL de la imagen por defecto
-    String imagenURL = "img/ejemplo"; //Luego veo q pongo
+    String imagenURL = "\\\\src\\\\main\\\\java\\\\Imagenes\\\\" + 1 + ".jpg"; //Luego veo q pongo
 
     Connection conexion = Conexion.getInstance().getConexion();
     ControladorUsuario controladorUsuario = new ControladorUsuario(conexion);
@@ -214,8 +428,7 @@ private Usuario obtenerDatosUsuario() {
 }
 
 
-
-private void mostrarMensaje(String mensaje) {
+    private void mostrarMensaje(String mensaje) {
     JOptionPane.showMessageDialog(this, mensaje);
 }
 
@@ -246,9 +459,7 @@ private void mostrarMensaje(String mensaje) {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -271,7 +482,6 @@ private void mostrarMensaje(String mensaje) {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Registrarse().setVisible(true);

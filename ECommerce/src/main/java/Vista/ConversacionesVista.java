@@ -2,6 +2,7 @@
 package Vista;
 
 import Controladores.ControladorConversacion;
+import Controladores.ControladorNotificacion;
 import Modelo.Conversacion;
 import Modelo.Mensaje;
 import Modelo.SesionActiva;
@@ -33,6 +34,9 @@ public class ConversacionesVista extends javax.swing.JFrame {
     int ID_Vendedor;
     int ID_Comprador;
     
+     private ControladorNotificacion controladorNotificacion;
+
+    
     private ControladorConversacion controladorConversacion;
     
     public ConversacionesVista(Usuario usuario, int ID_Vendedor ,int ID_Comprador) {
@@ -40,10 +44,11 @@ public class ConversacionesVista extends javax.swing.JFrame {
         this.ID_Vendedor = ID_Vendedor;
         this.ID_Comprador = ID_Comprador;
         controladorConversacion = new ControladorConversacion(); 
+        this.controladorNotificacion = new ControladorNotificacion();
 
         
-        menubar.initMenuBar(this, usuario, busqueda, categoriaId);
-        
+        Menubar menubar = new Menubar();
+        menubar.initMenuBar(this, usuario, busqueda, categoriaId);        
         initmyComponents();
         
         List<Conversacion> conversaciones = controladorConversacion.obtenerTodasLasConversaciones();
@@ -95,11 +100,24 @@ public class ConversacionesVista extends javax.swing.JFrame {
             Mensaje ultimoMensaje = controladorConversacion.obtenerUltimoMensaje(conversacion.getID_Conversacion());
             
             if (ultimoMensaje != null) {
-            if (!ultimoMensaje.isLeido()) {
-                panel.setBackground(Color.RED);
-            } else {
-                panel.setBackground(Color.BLUE);
-            }
+                
+                if (SesionActiva.getID_Usuario() == ultimoMensaje.getID_Usuario_Emisor()){
+                                    panel.setBackground(Color.GREEN);
+                } else { 
+                
+                 if (!ultimoMensaje.isLeido()) {
+                
+                    panel.setBackground(Color.RED);
+
+                    } else {
+
+                    panel.setBackground(Color.BLUE);
+
+
+                    }
+                
+                }
+            
         } else {
             panel.setBackground(Color.GRAY); // Por ejemplo, puedes establecer el color del panel como gris
         }
@@ -113,7 +131,8 @@ public class ConversacionesVista extends javax.swing.JFrame {
            panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (ultimoMensaje != null) {
+                
+                if (ultimoMensaje != null && SesionActiva.getID_Usuario() != ultimoMensaje.getID_Usuario_Emisor()) {
                     controladorConversacion.marcarComoVisto(ultimoMensaje.getID_Mensaje());
                 }
 
@@ -140,29 +159,17 @@ public class ConversacionesVista extends javax.swing.JFrame {
     }
 
     
-
    public void mostrarMensajes(List<Mensaje> mensajes) {
     // Obtener el tamaño de la pantalla
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int ID_Usuario_Activo = SesionActiva.getID_Usuario(); 
 
-    
     Dimension panelSize = jPanel2.getSize();
     Color[] colores = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.ORANGE};
     int posY = 0;
     int i = 0;
     
-    int jPanel2Height = (int) (screenSize.height * 0.85 - 50);
-    jPanel2.setPreferredSize(new Dimension(0, jPanel2Height));
-
-    int panelHeight = mensajes.size() * 70;
-    
     jPanel2.removeAll();
-
-    if (panelHeight > jPanel2Height) {
-        panelHeight = jPanel2Height;
-    }
-
+    
     for (Mensaje mensaje : mensajes) {
         JPanel panel = new javax.swing.JPanel();
         JLabel labelContenido = new javax.swing.JLabel();
@@ -175,27 +182,26 @@ public class ConversacionesVista extends javax.swing.JFrame {
         panel.add(labelFechaEnvio);
         
         if (mensaje.getID_Usuario_Emisor() == ID_Usuario_Activo) {
-          // int x = panel.getWidth() - panelSize.width; 
-                    panel.setBounds(500, posY, panelSize.width, 70);
-
+            panel.setBounds(500, posY, panelSize.width, 70);
         } else {
-                    panel.setBounds(0, posY, panelSize.width, 70);
-
+            panel.setBounds(0, posY, panelSize.width, 70);
         }
         
         panel.setBackground(colores[i % colores.length]);
-        panel.setPreferredSize(new Dimension(panelSize.width, 70));
-                  System.out.println(panel.getWidth());
-
+        panel.setPreferredSize(new Dimension(panelSize.width, 70)); 
+        
         posY += 70; 
         
         jPanel2.add(panel);
         i++;
     }
     
-    
+    int panelHeight = mensajes.size() * 70; 
+    jPanel2.setPreferredSize(new Dimension(panelSize.width, panelHeight));
+
     jPanel2.revalidate();
     jPanel2.repaint();
+    
 }
 
 
@@ -246,9 +252,7 @@ private void initmyComponents() {
             .addContainerGap(162, Short.MAX_VALUE))
     );
     
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-    
     jTextArea1.setColumns(20);
     jTextArea1.setRows(5);
     jScrollPane1.setViewportView(jTextArea1);
@@ -264,41 +268,40 @@ private void initmyComponents() {
     JScrollPane jScrollPane = new JScrollPane(jPanel1);
     jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        int jPanel2Height = (int) ((screenSize.height - 50) * 0.85);
-    jPanel2.setPreferredSize(new Dimension(0, jPanel2Height));
-    
-    //el error de q solo toma 85% el scroll 
-    
+    // Agregamos jPanel2 a un JScrollPane y configuramos el scroll vertical
+    JScrollPane jScrollPane2 = new JScrollPane(jPanel2);
+    jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE) // Cambiado
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE) // Modificado
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(0, 0, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(6, 6, 6)))
-            .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE) // Modificado
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(6, 6, 6)))
+                .addContainerGap())
     );
 
     jButton1.getAccessibleContext().setAccessibleName("Enviar");
@@ -344,6 +347,25 @@ private void initmyComponents() {
                 System.out.println("ID DEL VENDEDOR: " + ID_Vendedor);
                 System.out.println("ID DEL COMPRADOR: " + ID_Comprador);
                 System.out.println("FECHA DEL ULTIMO MENSAJE: " + fecha);
+                
+                
+         int ID_TipoNoti = 1; //LUEGO BUSCARLA CON UNA CONSULTA "Mensaje"
+
+                String mensajee = "El usuario con ID : " + SesionActiva.getID_Usuario() + " te ha enviado un mensaje";
+                
+                int UsuarioIDNoti;
+
+                if (SesionActiva.getID_Usuario() == ID_Vendedor){
+                    UsuarioIDNoti = ID_Comprador;
+                } else {
+                    UsuarioIDNoti = ID_Vendedor;
+                }
+                
+                
+                // Llamada a la función crearNotificacion
+                controladorNotificacion.crearNotificacion(UsuarioIDNoti, ID_TipoNoti, mensajee, fecha);
+
+
                 
         ConversacionesVista conversacionesVista = new ConversacionesVista(usuario, ID_Vendedor , ID_Comprador);
                     conversacionesVista.setVisible(true);

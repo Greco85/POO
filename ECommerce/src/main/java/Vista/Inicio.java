@@ -27,6 +27,7 @@ public class Inicio extends javax.swing.JFrame {
 
     public Inicio(Usuario usuario) {
     initComponents();
+    Menubar menubar = new Menubar();
     menubar.initMenuBar(this, usuario, busqueda, categoriaId);
     this.usuario = usuario;
     controladorProducto = new ControladorProducto();

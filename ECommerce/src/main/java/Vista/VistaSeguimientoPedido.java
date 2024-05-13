@@ -2,6 +2,7 @@
 package Vista;
 
 import Controladores.ControladorCompra;
+import Controladores.ControladorNotificacion;
 import Controladores.ControladorPedido;
 import Controladores.ControladorProducto;
 import Modelo.Pedido;
@@ -9,8 +10,10 @@ import Modelo.SesionActiva;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,6 +30,7 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
     private ControladorProducto controladorProducto;
     private ControladorPedido controladorPedido;
     private ControladorCompra controladorCompra;
+        private ControladorNotificacion controladorNotificacion;
 
     
     public VistaSeguimientoPedido() {
@@ -34,6 +38,7 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
         controladorProducto = new ControladorProducto(); 
         controladorPedido = new ControladorPedido();
         controladorCompra = new ControladorCompra();
+        controladorNotificacion = new ControladorNotificacion();
 
         initmyComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -119,6 +124,26 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
                     dispose(); 
                     VistaSeguimientoPedido vistaSeguimientoPedido = new VistaSeguimientoPedido();
                     vistaSeguimientoPedido.setVisible(true);
+                    
+                    
+                    int ID_TipoNoti = 6; //LUEGO BUSCARLA CON UNA CONSULTA "Producto en paqueteria"
+
+                String mensajee = " El producto con ID: " + pedido.getID_Producto() + " ha sido puesto en camino";
+                
+                // Obtener la fecha y hora actual
+                Date fechaActual = new Date();
+
+                Timestamp fechaYHoraActual = new Timestamp(fechaActual.getTime());
+                
+                int ID_UsuarioNoti = pedido.getID_Usuario();
+               
+                // Llamada a la función crearNotificacion
+                controladorNotificacion.crearNotificacion(ID_UsuarioNoti, ID_TipoNoti, mensajee, fechaYHoraActual);
+
+                    
+                    
+                    
+                    
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al actualizar el estado de envío del pedido.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -136,6 +161,29 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
                     dispose(); 
                     VistaSeguimientoPedido vistaSeguimientoPedido = new VistaSeguimientoPedido();
                     vistaSeguimientoPedido.setVisible(true);
+                    
+                    
+                   int ID_TipoNoti = 7; //LUEGO BUSCARLA CON UNA CONSULTA "Producto en paqueteria"
+
+                String mensajee = " El producto con ID: " + pedido.getID_Producto() + " ha sido entregado";
+                
+                
+                // Obtener la fecha y hora actual
+                Date fechaActual = new Date();
+
+                Timestamp fechaYHoraActual = new Timestamp(fechaActual.getTime());
+                
+                int ID_UsuarioNoti = pedido.getID_Usuario();
+                
+                int ID_UsuarioNotiVendedor = controladorProducto.buscarID_UsuarioporID_Producto(pedido.getID_Producto());
+
+               
+                // Llamada a la función crearNotificacion
+                controladorNotificacion.crearNotificacion(ID_UsuarioNoti, ID_TipoNoti, mensajee, fechaYHoraActual);
+
+                controladorNotificacion.crearNotificacion(ID_UsuarioNotiVendedor, ID_TipoNoti, mensajee, fechaYHoraActual);
+
+                
                 } else {
                     JOptionPane.showMessageDialog(null, "Error al actualizar el estado de envío del pedido.", "Error", JOptionPane.ERROR_MESSAGE);
                 }

@@ -58,6 +58,13 @@ public class Publicaciones extends javax.swing.JFrame {
     // Botón para nueva publicación
     jButtonNuevaPublicacion = new JButton("Nueva Publicación");
     jButtonNuevaPublicacion.setFont(new Font("Arial", Font.PLAIN, 18));
+    jButtonNuevaPublicacion.setBackground(new Color(41, 81, 204)); 
+        jButtonNuevaPublicacion.setForeground(Color.WHITE);
+        jButtonNuevaPublicacion.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+            BorderFactory.createEmptyBorder(10, 20, 10, 20) 
+        ));
+        
     jButtonNuevaPublicacion.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent evt) {
             jButtonNuevaPublicacionActionPerformed(evt);
@@ -69,23 +76,52 @@ public class Publicaciones extends javax.swing.JFrame {
     // Botón para regresar
     JButton jButtonRegresar = new JButton("Regresar");
     jButtonRegresar.setFont(new Font("Arial", Font.PLAIN, 18));
+    jButtonRegresar.setBackground(new Color(102, 102, 102)); 
+        jButtonRegresar.setForeground(Color.WHITE);
+        jButtonRegresar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+            BorderFactory.createEmptyBorder(10, 20, 10, 20) 
+        ));
+        
     jButtonRegresar.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent evt) {
             jButtonRegresarActionPerformed(evt);
         }
     });
     panelBotones.add(jButtonRegresar);
+    
+    jButtonNuevaPublicacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonNuevaPublicacion.setBackground(new Color(41, 81, 204)); 
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonNuevaPublicacion.setBackground(new Color(51, 102, 255)); 
+            }
+        });
+
+        // Ajuste del color al pasar el mouse para el botón REGISTRARSE
+        jButtonRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButtonRegresar.setBackground(new Color(82, 82, 82)); 
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButtonRegresar.setBackground(new Color(102, 102, 102)); 
+            }
+        });
 
     // Agregar panel de botones al panel principal
     panelPrincipal.add(panelBotones, BorderLayout.WEST);
 }
 
-private void jButtonRegresarActionPerformed(ActionEvent evt) {
-    CuentaUsuario cuentaUsuario = new CuentaUsuario(usuario);
-    cuentaUsuario.setVisible(true);
-    dispose();
-}
+    private void jButtonRegresarActionPerformed(ActionEvent evt) {
+        CuentaUsuario cuentaUsuario = new CuentaUsuario(usuario);
+        cuentaUsuario.setVisible(true);
+        dispose();
+    }
 
+    
 
     private void jButtonNuevaPublicacionActionPerformed(ActionEvent evt) {
         HacerPublicacion hacerPublicacionFrame = new HacerPublicacion(usuario);
@@ -107,6 +143,7 @@ private void jButtonRegresarActionPerformed(ActionEvent evt) {
     }
 
 private JPanel crearPanelProducto(Producto producto) {
+    
     JPanel panel = new JPanel();
     panel.setPreferredSize(new Dimension(600, 150)); // Establecer el tamaño prefijado del panel de producto
     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -126,7 +163,40 @@ private JPanel crearPanelProducto(Producto producto) {
 
     JPanel panelBotones = new JPanel(new GridLayout(1, 2));
     JButton botonEditar = new JButton("EDITAR");
+    botonEditar.setBackground(Color.YELLOW); 
+    botonEditar.setForeground(Color.BLACK);
+    botonEditar.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+        BorderFactory.createEmptyBorder(10, 20, 10, 20) // Espacio interno
+    ));
     JButton botonBorrar = new JButton("BORRAR");
+    botonBorrar.setBackground(Color.RED);
+    botonBorrar.setForeground(Color.BLACK);
+    botonBorrar.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
+        BorderFactory.createEmptyBorder(10, 20, 10, 20) // Espacio interno
+    ));
+    
+   botonEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            botonEditar.setBackground(new Color(255, 204, 0)); // Amarillo oscuro
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            botonEditar.setBackground(new Color(255, 255, 0)); // Amarillo normal
+        }
+    });
+
+    botonBorrar.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            botonBorrar.setBackground(new Color(128, 0, 0)); // Rojo oscuro
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            botonBorrar.setBackground(new Color(255, 0, 0)); // Rojo normal
+        }
+    });
+    
     panelBotones.add(botonEditar);
     panelBotones.add(botonBorrar);
     panel.add(panelImagen, BorderLayout.WEST);

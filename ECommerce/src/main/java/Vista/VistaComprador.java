@@ -32,8 +32,8 @@ public class VistaComprador extends javax.swing.JFrame {
     
     public VistaComprador(Usuario usuario) {
         this.usuario = usuario;
+        Menubar menubar = new Menubar();
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);
-
         controladorProducto = new ControladorProducto(); 
         controladorPedido = new ControladorPedido();
         initmyComponents();
