@@ -1,6 +1,8 @@
 
 package Vista;
 
+import Controladores.ControladorInicioSesion;
+import Controladores.ControladorProducto;
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 import java.text.SimpleDateFormat;
@@ -33,8 +35,12 @@ public class Registrarse extends javax.swing.JFrame {
     private JTextField txtNumeroTelefono;
     private JButton btnRegistrarse;
     private JButton btnRegresar;
+    private ControladorInicioSesion controladorInicioSesion;
+
 
     public Registrarse() {
+        controladorInicioSesion = new ControladorInicioSesion(); 
+
         initMyComponents();
     }
     
@@ -248,6 +254,11 @@ public class Registrarse extends javax.swing.JFrame {
                 if (todosCamposCompletos()) {
                     Usuario nuevoUsuario = obtenerDatosUsuario();
                     mostrarMensaje("Registro exitoso");
+                    
+                    int ID_Usuario = controladorInicioSesion.obtenerIDconCorreoUsuario(nuevoUsuario.getCorreo_Electronico());
+                    
+                    controladorInicioSesion.actualizarIMGURL(ID_Usuario);
+                    
                     abrirNuevoFrame();
                 } else {
                     mostrarMensaje("Error: Por favor complete todos los campos");
@@ -396,7 +407,7 @@ public class Registrarse extends javax.swing.JFrame {
     }
 
     // Establecer la URL de la imagen por defecto
-    String imagenURL = "\\\\src\\\\main\\\\java\\\\Imagenes\\\\" + 1 + ".jpg"; //Luego veo q pongo
+    String imagenURL = ""; 
 
     Connection conexion = Conexion.getInstance().getConexion();
     ControladorUsuario controladorUsuario = new ControladorUsuario(conexion);

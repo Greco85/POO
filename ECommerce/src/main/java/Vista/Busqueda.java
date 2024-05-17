@@ -10,11 +10,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -99,14 +99,36 @@ public class Busqueda extends javax.swing.JFrame {
     panelProductos.setBorder(BorderFactory.createEmptyBorder(10, espacioLateral, 10, espacioLateral)); // Borde con espaciado
 
     
-    String ImagenRuta = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg";
     
     double anchoPantalla = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 
     // Restar 10 (espacio lateral izquierdo), 10 (espacio lateral derecho), 260 (ancho del panel de imagen), 10 (espacio entre la imagen y el texto)
     double anchoRestado = anchoPantalla - 70 - 270;
+       
+    String ImagenRuta;
 
+    
     for (Producto producto : productos) {
+        
+
+        if (producto.getID_EstadoProducto() == 1){
+                    
+         // Ruta predeterminada de la imagen de respaldo
+            String imagenPredeterminada = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Sinimagen.jpg";
+
+            // Ruta de la imagen proporcionada por el producto
+            String imagenRutaProducto = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\" + producto.getImagenURL();
+
+            // Verificar si la imagen del producto existe
+            File imagenProducto = new File(imagenRutaProducto);
+            if (imagenProducto.exists()) {
+                // Si la imagen del producto existe, usar esa ruta
+                 ImagenRuta = imagenRutaProducto;
+            } else {
+                // Si no existe, usar la imagen predeterminada
+                ImagenRuta = imagenPredeterminada;
+            }
+
         JPanel panelProducto = new JPanel();
         
         panelProducto.setLayout(null);
@@ -169,7 +191,10 @@ public class Busqueda extends javax.swing.JFrame {
         // Crear JLabels para precio, cantidad y categoría
         JLabel precioLabel = new JLabel("Precio: $" + producto.getPrecio());
         JLabel cantidadLabel = new JLabel("Cantidad Disponible: " + producto.getCantidad_Disponible());
-        JLabel categoriaLabel = new JLabel("Categoría: " + producto.getID_CategoriaProducto());
+        
+        String Categoria = controladorProducto.obtenerCategoriaPorID_Categoria(producto.getID_CategoriaProducto());
+        
+        categoriaLabel = new JLabel("Categoría: " + Categoria);
 
         Font font = new Font("Arial", Font.PLAIN, 14);
         Color textColor = Color.BLACK;
@@ -252,13 +277,17 @@ public class Busqueda extends javax.swing.JFrame {
 
         panelProductos.add(panelProducto);
     }
+                
+         } //FIN IF
+
 
     JScrollPane scrollPane = new JScrollPane(panelProductos);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-
+    
     return scrollPane;
 }
 
+    
 
 
     @SuppressWarnings("unchecked")

@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -79,7 +80,7 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
 
     List<Pedido> pedidos = controladorPedido.obtenertodosPedidos();
     
-    String ImagenRuta = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg";
+    String ImagenRuta; 
     
     double anchoPantalla = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 
@@ -91,6 +92,21 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
             
            Producto productoPedido = controladorProducto.obtenerProductosporID(pedido.getID_Producto());
             
+           // Ruta predeterminada de la imagen de respaldo
+            String imagenPredeterminada = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Sinimagen.jpg";
+
+            // Ruta de la imagen proporcionada por el producto
+            String imagenRutaProducto = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\" + productoPedido.getImagenURL();
+
+            // Verificar si la imagen del producto existe
+            File imagenProducto = new File(imagenRutaProducto);
+            if (imagenProducto.exists()) {
+                // Si la imagen del producto existe, usar esa ruta
+                 ImagenRuta = imagenRutaProducto;
+            } else {
+                // Si no existe, usar la imagen predeterminada
+                ImagenRuta = imagenPredeterminada;
+            }
             
             JPanel panelPedido = new JPanel();
             panelPedido.setLayout(null);
@@ -254,9 +270,10 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
                     vistaSeguimientoPedido.setVisible(true);
                     
                     
-                    int ID_TipoNoti = 6; //LUEGO BUSCARLA CON UNA CONSULTA "Producto en paqueteria"
+                int ID_TipoNoti = 6; //LUEGO BUSCARLA CON UNA CONSULTA "Producto en paqueteria"
+                String NombreProducto = controladorProducto.obtenerNombreProductoporID(pedido.getID_Producto());
 
-                String mensajee = " El producto con ID: " + pedido.getID_Producto() + " ha sido puesto en camino";
+                String mensajee = " El producto: " + NombreProducto + " ha sido puesto en camino";
                 
                 // Obtener la fecha y hora actual
                 Date fechaActual = new Date();
@@ -288,8 +305,9 @@ public class VistaSeguimientoPedido extends javax.swing.JFrame {
                     
                     
                    int ID_TipoNoti = 7; //LUEGO BUSCARLA CON UNA CONSULTA "Producto en paqueteria"
+                String NombreProducto = controladorProducto.obtenerNombreProductoporID(pedido.getID_Producto());
 
-                String mensajee = " El producto con ID: " + pedido.getID_Producto() + " ha sido entregado";
+                String mensajee = " El producto: " + NombreProducto + " ha sido entregado";
                 
                 
                 // Obtener la fecha y hora actual

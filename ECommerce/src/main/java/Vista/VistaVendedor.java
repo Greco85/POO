@@ -16,11 +16,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -101,7 +101,7 @@ public class VistaVendedor extends javax.swing.JFrame {
     List<Pedido> pedidos = controladorPedido.obtenerPedidosPorIDProducto(idProducto);
     
     
-    String ImagenRuta = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg";
+    String ImagenRuta;
     
     double anchoPantalla = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 
@@ -113,6 +113,21 @@ public class VistaVendedor extends javax.swing.JFrame {
             
             Producto productoPedido = controladorProducto.obtenerProductosporID(idProducto);
             
+            // Ruta predeterminada de la imagen de respaldo
+            String imagenPredeterminada = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Sinimagen.jpg";
+
+            // Ruta de la imagen proporcionada por el producto
+            String imagenRutaProducto = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\" + productoPedido.getImagenURL();
+
+            // Verificar si la imagen del producto existe
+            File imagenProducto = new File(imagenRutaProducto);
+            if (imagenProducto.exists()) {
+                // Si la imagen del producto existe, usar esa ruta
+                 ImagenRuta = imagenRutaProducto;
+            } else {
+                // Si no existe, usar la imagen predeterminada
+                ImagenRuta = imagenPredeterminada;
+            }
             
             JPanel panelPedido = new JPanel();
             panelPedido.setLayout(null);
@@ -185,7 +200,10 @@ public class VistaVendedor extends javax.swing.JFrame {
         // Crear JLabels para precio, cantidad y categoría
         JLabel precioLabel = new JLabel("Total: $" + pedido.getTotal());
         JLabel cantidadLabel = new JLabel("Cantidad En El Pedido: " + pedido.getCantidad());
-        JLabel categoriaLabel = new JLabel("Categoría: " + productoPedido.getID_CategoriaProducto());
+            
+        String Categoria = controladorProducto.obtenerCategoriaPorID_Categoria(productoPedido.getID_CategoriaProducto());
+        
+        JLabel categoriaLabel = new JLabel("Categoría: " + Categoria);
 
         Font font = new Font("Arial", Font.PLAIN, 14);
         Color textColor = Color.BLACK;
@@ -230,8 +248,10 @@ public class VistaVendedor extends javax.swing.JFrame {
                     if (actualizacionExitosa) {
                         
                 int ID_TipoNoti = 5; //LUEGO BUSCARLA CON UNA CONSULTA "Producto en paqueteria"
+                String nombreUsuario = controladorUsuario.ObtenerNombreporID(SesionActiva.getID_Usuario());
+                String NombreProducto = controladorProducto.obtenerNombreProductoporID(pedido.getID_Producto());
 
-                String mensajee = "El usuario con ID : " + SesionActiva.getID_Usuario() + " ha entregado el producto con ID: " + pedido.getID_Producto() + "a la paqueteria";
+                String mensajee = "El usuario: " + nombreUsuario + " ha entregado el producto: " + NombreProducto + "a la paqueteria";
                 
                 // Obtener la fecha y hora actual
                 Date fechaActual = new Date();

@@ -234,7 +234,6 @@ for (JTextField textField : textFields) {
             BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
     ));
-    txtNumeroTarjeta.setEditable(false); 
     txtNumeroTarjeta.setDisabledTextColor(disabledColor); 
 
     txtFechaVencimiento.setFont(textFieldFont);
@@ -244,7 +243,6 @@ for (JTextField textField : textFields) {
             BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
     ));
-    txtFechaVencimiento.setEditable(false); 
     txtFechaVencimiento.setDisabledTextColor(disabledColor);
 
     txtCVV.setFont(textFieldFont);
@@ -254,7 +252,6 @@ for (JTextField textField : textFields) {
             BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY),
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
     ));
-    txtCVV.setEditable(false); 
     txtCVV.setDisabledTextColor(disabledColor);
 
     cbMetodoPago = new JComboBox<>(new String[]{"Efectivo", "Tarjeta de Crédito", "Tarjeta de Débito"});
@@ -558,8 +555,10 @@ btnRealizarCompra.setFont(new Font("Arial", Font.PLAIN, 18));
 
     if (insercionExitosa) {
         System.out.println("Pedido insertado correctamente.");
+        String NombreProducto = controladorProducto.obtenerNombreProductoporID(ID_Producto);
         // BAJAR LA CANTIDAD DEL PRODUCTO ORIGINAL CON OTRA CONSULTA A LA DB
-        controladorProducto.ActualizarCantidad(ID_Producto, Cantidad);
+        controladorProducto.ActualizarCantidad(NombreProducto,  ID_Producto, Cantidad);
+        
         
         //Para que se quite del carrito
         controladorCarrito.eliminarDelCarrito(ID_Usuario, ID_Producto);
@@ -576,11 +575,17 @@ btnRealizarCompra.setFont(new Font("Arial", Font.PLAIN, 18));
         
         
         int ID_TipoNoti = 2; //LUEGO BUSCARLA CON UNA CONSULTA
-
-        String mensaje = "Te compraron un producto, prepáralo para la entrega a paquetería";
-
+        
+        ControladorUsuario controladorUsuario = new ControladorUsuario(conexion);
+                
+        String nombreUsuario = controladorUsuario.ObtenerNombreporID(SesionActiva.getID_Usuario());
+                
+                
+         String mensajee = "El usuario: " + nombreUsuario + " Te ha comprado un producto, prepáralo para la entrega a paquetería";
+                
+         
         // Llamada a la función crearNotificacion
-        controladorNotificacion.crearNotificacion(ID_UsuarioVendedor, ID_TipoNoti, mensaje, fechaYHoraActual);
+        controladorNotificacion.crearNotificacion(ID_UsuarioVendedor, ID_TipoNoti, mensajee, fechaYHoraActual);
 
 
         JOptionPane.showMessageDialog(this, "Compra realizada con éxito", "Compra Realizada", JOptionPane.INFORMATION_MESSAGE);

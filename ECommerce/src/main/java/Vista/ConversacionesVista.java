@@ -3,26 +3,30 @@ package Vista;
 
 import Controladores.ControladorConversacion;
 import Controladores.ControladorNotificacion;
+import Controladores.ControladorUsuario;
 import Modelo.Conversacion;
 import Modelo.Mensaje;
 import Modelo.SesionActiva;
 import Modelo.Usuario;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import javax.swing.GroupLayout;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JTextArea;
 
 
 public class ConversacionesVista extends javax.swing.JFrame {
@@ -51,7 +55,7 @@ public class ConversacionesVista extends javax.swing.JFrame {
         menubar.initMenuBar(this, usuario, busqueda, categoriaId);        
         initmyComponents();
         
-        List<Conversacion> conversaciones = controladorConversacion.obtenerTodasLasConversaciones();
+        List<Conversacion> conversaciones = controladorConversacion.obtenerTodasLasConversacionesDelUsuario(SesionActiva.getID_Usuario());
         
         mostrarConversaciones(conversaciones);
         
@@ -66,7 +70,13 @@ public class ConversacionesVista extends javax.swing.JFrame {
         
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enviarMensajeActionPerformed(evt);
+              
+                if (ID_Vendedor == 0 && ID_Comprador == 0) {
+                    JOptionPane.showMessageDialog(null, "Seleccione una conversación a la cual enviar el mensaje.", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                     enviarMensajeActionPerformed(evt);
+                }
+                
             }
         });
         
@@ -81,37 +91,122 @@ public class ConversacionesVista extends javax.swing.JFrame {
         int posY = 0;
 
         int i = 0; 
+        
+       
+        String ImagenRuta;
+
         for (Conversacion conversacion : conversaciones) {
-            // Creamos un nuevo panel para esta conversación
-            JPanel panel = new javax.swing.JPanel();
-            JLabel labelNombre = new javax.swing.JLabel();
-            JLabel labelMensaje = new javax.swing.JLabel();
+            
+            
+        int ID_UsuarioPanelConversacion;
+        if (SesionActiva.getID_Usuario() == conversacion.getID_Vendedor()){
+           ID_UsuarioPanelConversacion = conversacion.getID_Comprador();
+        } else {
+           ID_UsuarioPanelConversacion = conversacion.getID_Vendedor();
+        }
+            
+        JPanel panel = new javax.swing.JPanel();
+        panel.setLayout(null);
+        panel.setPreferredSize(new Dimension(panelSize.width, 120));
+        panel.setBounds(0, posY, panelSize.width, 120);
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        
+   
+        JLabel labelNombre = new javax.swing.JLabel();
+        
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            
+        String ImgURL = controladorConversacion.obtenerImagenURLPorID(ID_UsuarioPanelConversacion);
+        // Ruta predeterminada de la imagen de respaldo
+            String imagenPredeterminada = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Sinimagen.jpg";
 
-            labelNombre.setText("Nombre: ");
-            labelMensaje.setText("Último mensaje: " );
+            // Ruta de la imagen proporcionada por el producto
+            String imagenRutaProducto = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\" + ImgURL;
+            System.out.println(ImgURL);
+            // Verificar si la imagen del producto existe
+            File imagenProducto = new File(imagenRutaProducto);
+            if (imagenProducto.exists()) {
+                // Si la imagen del producto existe, usar esa ruta
+                 ImagenRuta = imagenRutaProducto;
+            } else {
+                // Si no existe, usar la imagen predeterminada
+                ImagenRuta = imagenPredeterminada;
+            }
+            
+        // Crear el panel rojo
+        JPanel panelImagen = new JPanel();
+        panelImagen.setBackground(Color.WHITE);
+        panelImagen.setBounds(10, 10, 50, 50);
+        panel.add(panelImagen);
 
-            panel.add(labelNombre);
-            panel.add(labelMensaje);
+        JLabel labelImagen = new JLabel();
+        ImageIcon icono = new ImageIcon(ImagenRuta);
+        Image imagen = icono.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon iconoEscalado = new ImageIcon(imagen);
+        labelImagen.setIcon(iconoEscalado);
+        labelImagen.setBounds(10, 10, 50, 50);
+        panelImagen.add(labelImagen);
+
+
+        
+        
+        
+        String NombreUsuario = controladorConversacion.obtenerNombrePorIDUsuario(ID_UsuarioPanelConversacion);
+        String UltimoMensaje = controladorConversacion.obtenerMensajeDeConversacion(conversacion.getID_Conversacion());
+        int idUsuarioMensaje = controladorConversacion.obtenerIDUsuarioEmisorUltimoMensaje(conversacion.getID_Conversacion());
+
+        
+        labelNombre.setText(NombreUsuario);
+        labelNombre.setFont(new Font("Arial", Font.BOLD, 14));
+        labelNombre.setForeground(Color.BLACK); 
+        labelNombre.setBounds(70, 25, 90, 20); 
+        panel.add(labelNombre);
+        
+        
+        JTextArea descripcionTextArea = new JTextArea();
+        descripcionTextArea.setLineWrap(true); 
+        descripcionTextArea.setWrapStyleWord(true);
+        descripcionTextArea.setEditable(false); 
+        descripcionTextArea.setBackground(Color.WHITE);
+        descripcionTextArea.setForeground(Color.BLACK); 
+        descripcionTextArea.setFont(new Font("Arial", Font.PLAIN, 12));
+        descripcionTextArea.setBounds(10, 65, 240, 40); 
+
+        descripcionTextArea.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.GRAY),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5) 
+        ));
+
+        if (SesionActiva.getID_Usuario() == idUsuarioMensaje) {
+            descripcionTextArea.setText("Tú: " + UltimoMensaje);
+        } else {
+            descripcionTextArea.setText(UltimoMensaje);
+        }
+
+        panel.add(descripcionTextArea);
+        panel.setBackground(Color.WHITE);
 
             // Configuramos el color del panel
-            
             System.out.println(conversacion.getID_Conversacion());
-            
             Mensaje ultimoMensaje = controladorConversacion.obtenerUltimoMensaje(conversacion.getID_Conversacion());
             
             if (ultimoMensaje != null) {
                 
                 if (SesionActiva.getID_Usuario() == ultimoMensaje.getID_Usuario_Emisor()){
-                                    panel.setBackground(Color.GREEN);
+
+
                 } else { 
                 
-                 if (!ultimoMensaje.isLeido()) {
+                 if (!ultimoMensaje.isLeido()) { //Si no se ha leido el mensaje
                 
-                    panel.setBackground(Color.RED);
+                    descripcionTextArea.setForeground(Color.WHITE); 
+                    descripcionTextArea.setBackground(Color.BLACK); 
 
-                    } else {
+                    labelNombre.setForeground(Color.WHITE); 
+                    panel.setBackground(Color.BLACK);
 
-                    panel.setBackground(Color.BLUE);
+
+                    } else { //Si ya se ha leido el mensaje
 
 
                     }
@@ -122,11 +217,7 @@ public class ConversacionesVista extends javax.swing.JFrame {
             panel.setBackground(Color.GRAY); // Por ejemplo, puedes establecer el color del panel como gris
         }
 
-            panel.setPreferredSize(new Dimension(panelSize.width, 70)); // 70 es una altura arbitraria, puedes ajustarla
-
-            panel.setBounds(0, posY, panelSize.width, 70);
-
-            posY += 70; // 70 es la altura del panel
+            posY += 120;
 
            panel.addMouseListener(new MouseAdapter() {
             @Override
@@ -145,13 +236,12 @@ public class ConversacionesVista extends javax.swing.JFrame {
             }
         });
 
-
             jPanel1.add(panel);
 
             i++;
         }
 
-        int panelHeight = conversaciones.size() * 70; // 70 es la altura de cada panel de conversación
+        int panelHeight = conversaciones.size() * 120;
         jPanel1.setPreferredSize(new Dimension(panelSize.width, panelHeight));
 
         jPanel1.revalidate();
@@ -164,39 +254,49 @@ public class ConversacionesVista extends javax.swing.JFrame {
     int ID_Usuario_Activo = SesionActiva.getID_Usuario(); 
 
     Dimension panelSize = jPanel2.getSize();
-    Color[] colores = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.ORANGE};
     int posY = 0;
-    int i = 0;
     
     jPanel2.removeAll();
     
     for (Mensaje mensaje : mensajes) {
         JPanel panel = new javax.swing.JPanel();
-        JLabel labelContenido = new javax.swing.JLabel();
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
         JLabel labelFechaEnvio = new javax.swing.JLabel();
         
-        labelContenido.setText("Contenido: " + mensaje.getMensaje());
-        labelFechaEnvio.setText("Fecha de Envío: " + mensaje.getFecha_Envio().toString());
+        JTextArea textAreaContenido = new JTextArea(mensaje.getMensaje());
+        textAreaContenido.setLineWrap(true); 
+        textAreaContenido.setWrapStyleWord(true);
+        textAreaContenido.setEditable(false); 
+        textAreaContenido.setBackground(Color.WHITE);
+        textAreaContenido.setForeground(Color.BLACK); 
+        textAreaContenido.setFont(new Font("Arial", Font.PLAIN, 12));
         
-        panel.add(labelContenido);
+        textAreaContenido.setBounds(0, 15, panelSize.width-70, 40); 
+
+        panel.add(textAreaContenido); 
+
+
+        labelFechaEnvio.setText("Fecha: " + mensaje.getFecha_Envio().toString());
+        labelFechaEnvio.setBounds(10, 70, panelSize.width, 20);
         panel.add(labelFechaEnvio);
+
         
         if (mensaje.getID_Usuario_Emisor() == ID_Usuario_Activo) {
-            panel.setBounds(500, posY, panelSize.width, 70);
+            panel.setBounds(500, posY, panelSize.width, 95);
         } else {
-            panel.setBounds(0, posY, panelSize.width, 70);
+            panel.setBounds(0, posY, panelSize.width, 95);
         }
         
-        panel.setBackground(colores[i % colores.length]);
+        panel.setBackground(Color.WHITE);
         panel.setPreferredSize(new Dimension(panelSize.width, 70)); 
         
-        posY += 70; 
-        
+        posY += 100; 
+
         jPanel2.add(panel);
-        i++;
     }
     
-    int panelHeight = mensajes.size() * 70; 
+    int panelHeight = mensajes.size() * 100; 
     jPanel2.setPreferredSize(new Dimension(panelSize.width, panelHeight));
 
     jPanel2.revalidate();
@@ -258,11 +358,7 @@ private void initmyComponents() {
     jScrollPane1.setViewportView(jTextArea1);
 
     jButton1.setText("Enviar");
-    jButton1.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jButton1ActionPerformed(evt);
-        }
-    });
+
 
     // Agregamos jPanel1 a un JScrollPane y configuramos el scroll vertical
     JScrollPane jScrollPane = new JScrollPane(jPanel1);
@@ -351,8 +447,6 @@ private void initmyComponents() {
                 
          int ID_TipoNoti = 1; //LUEGO BUSCARLA CON UNA CONSULTA "Mensaje"
 
-                String mensajee = "El usuario con ID : " + SesionActiva.getID_Usuario() + " te ha enviado un mensaje";
-                
                 int UsuarioIDNoti;
 
                 if (SesionActiva.getID_Usuario() == ID_Vendedor){
@@ -361,9 +455,16 @@ private void initmyComponents() {
                     UsuarioIDNoti = ID_Vendedor;
                 }
                 
+         ControladorUsuario controladorUsuario = new ControladorUsuario(conexion);
                 
-                // Llamada a la función crearNotificacion
-                controladorNotificacion.crearNotificacion(UsuarioIDNoti, ID_TipoNoti, mensajee, fecha);
+         String nombreUsuario = controladorUsuario.ObtenerNombreporID(UsuarioIDNoti);
+                
+                
+         String mensajee = "El usuario: " + nombreUsuario + " te ha enviado un mensaje";
+                
+         
+        // Llamada a la función crearNotificacion
+        controladorNotificacion.crearNotificacion(UsuarioIDNoti, ID_TipoNoti, mensajee, fecha);
 
 
                 
@@ -472,7 +573,6 @@ private void initmyComponents() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     

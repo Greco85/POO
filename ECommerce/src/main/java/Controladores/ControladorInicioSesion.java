@@ -33,6 +33,52 @@ public class ControladorInicioSesion { //Actualizacion para obtener el ID del us
         return null; 
     }
 }
+    
+     public int obtenerIDconCorreoUsuario(String correo) {
+    int ID_Usuario = -1;
+    
+    String query = "SELECT ID_Usuario FROM Usuario WHERE Correo_Electronico = ?";
+    Connection conexion = Conexion.getInstance().getConexion();
+
+    try {
+        PreparedStatement statement = conexion.prepareStatement(query);
+        statement.setString(1, correo);
+        
+        ResultSet resultSet = statement.executeQuery();
+        
+        if (resultSet.next()) {
+            ID_Usuario = resultSet.getInt("ID_Usuario");
+        }
+        
+        resultSet.close();
+        statement.close();
+    } catch (SQLException e) {
+        System.err.println("Error al obtener ID de usuario por correo: " + e.getMessage());
+    }
+    
+    return ID_Usuario;
+}
+    
+    
+     public void actualizarIMGURL(int id) {
+    try {
+        Connection conexion = Conexion.getInstance().getConexion();
+        String imgURL = "Usuario_" + id + ".jpg";
+        String consulta = "UPDATE Usuario SET ImagenURL = ? WHERE ID_Usuario = ?";
+        PreparedStatement statement = conexion.prepareStatement(consulta);
+        statement.setString(1, imgURL);
+        statement.setInt(2, id);
+        int filasActualizadas = statement.executeUpdate();
+
+        if (filasActualizadas > 0) {
+            System.out.println("La IMGURL se actualizó correctamente.");
+        } else {
+            System.out.println("No se pudo actualizar la IMGURL.");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al actualizar la IMGURL por ID_Usuario: " + e.getMessage());
+    }
+}
 
     
     

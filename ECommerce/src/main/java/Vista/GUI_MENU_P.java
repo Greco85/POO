@@ -13,8 +13,6 @@ import javax.swing.*;
 
 public class GUI_MENU_P extends javax.swing.JFrame {
     
-     private int anchopanel3;
-
     public GUI_MENU_P() {
         Componentes();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -127,6 +125,7 @@ public class GUI_MENU_P extends javax.swing.JFrame {
         
         jPanel3.add(jTextField2);
         
+      
 
 
         jLabel3.setFont(new java.awt.Font("Quicksand Medium", java.awt.Font.BOLD, 14)); // Aumentar el tamaño y hacerlo en negrita

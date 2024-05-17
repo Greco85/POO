@@ -102,14 +102,44 @@ public class NotificacionesVista extends javax.swing.JFrame {
         panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
         panelContainer.setBorder(BorderFactory.createEmptyBorder(10, espacioLateral, 10, espacioLateral)); // Borde con espaciado
         
-        String ImagenRuta = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg";
-    
+        
         double anchoPantalla = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 
         // Restar 10 (espacio lateral izquierdo), 10 (espacio lateral derecho), 260 (ancho del panel de imagen), 10 (espacio entre la imagen y el texto)
         double anchoRestado = anchoPantalla - 70 - 270;
     
         for (Notificacion notificacion : notificaciones) {
+            
+        String rutaImagen = "";
+    
+        switch (notificacion.getID_TipoNoti()) {
+            case 1:
+                rutaImagen = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Mensaje.jpg";
+                break;
+            case 2:
+                rutaImagen = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Compra.jpg";
+                break;
+            case 3:
+                rutaImagen = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Agotado.jpg";
+                break;
+            case 4:
+                rutaImagen = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Comentario.jpg";
+                break;
+            case 5:
+                rutaImagen = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Paqueteria.jpg";
+                break;
+            case 6:
+                rutaImagen = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Encamino.jpg";
+                break;
+            case 7:
+                rutaImagen = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\ProductoEntregado.jpg";
+                break;
+            default:
+                rutaImagen = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Sinimagen.jpg";
+                break;
+        }
+    
+
         
             JPanel panel = new javax.swing.JPanel();
         panel.setLayout(null);
@@ -118,12 +148,12 @@ public class NotificacionesVista extends javax.swing.JFrame {
             
             // Crear el panel rojo
         JPanel panelImagen = new JPanel();
-        panelImagen.setBackground(Color.RED);
+        panelImagen.setBackground(Color.WHITE);
         panelImagen.setBounds(10, 10, 80, 80);
         panel.add(panelImagen);
         
         JLabel labelImagen = new JLabel();
-        ImageIcon icono = new ImageIcon(ImagenRuta);
+        ImageIcon icono = new ImageIcon(rutaImagen);
         Image imagen = icono.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
         ImageIcon iconoEscalado = new ImageIcon(imagen);
         labelImagen.setIcon(iconoEscalado);

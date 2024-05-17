@@ -16,6 +16,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -83,10 +84,10 @@ public class VistaComprador extends javax.swing.JFrame {
 
     List<Pedido> pedidos = controladorPedido.obtenerPedidosPorIDUsuario(ID_Usuario);
     
-    String ImagenRuta = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg";
     
     double anchoPantalla = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-
+    
+    String ImagenRuta;
     // Restar 10 (espacio lateral izquierdo), 10 (espacio lateral derecho), 260 (ancho del panel de imagen), 10 (espacio entre la imagen y el texto)
     double anchoRestado = anchoPantalla - 70 - 270;
 
@@ -94,6 +95,21 @@ public class VistaComprador extends javax.swing.JFrame {
         
             Producto productoPedido = controladorProducto.obtenerProductosporID(pedido.getID_Producto());
             
+            // Ruta predeterminada de la imagen de respaldo
+            String imagenPredeterminada = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Sinimagen.jpg";
+
+            // Ruta de la imagen proporcionada por el producto
+            String imagenRutaProducto = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\" + productoPedido.getImagenURL();
+
+            // Verificar si la imagen del producto existe
+            File imagenProducto = new File(imagenRutaProducto);
+            if (imagenProducto.exists()) {
+                // Si la imagen del producto existe, usar esa ruta
+                 ImagenRuta = imagenRutaProducto;
+            } else {
+                // Si no existe, usar la imagen predeterminada
+                ImagenRuta = imagenPredeterminada;
+            }
             
             JPanel panelPedido = new JPanel();
             panelPedido.setLayout(null);
@@ -166,7 +182,10 @@ public class VistaComprador extends javax.swing.JFrame {
         // Crear JLabels para precio, cantidad y categoría
         JLabel precioLabel = new JLabel("Total: $" + pedido.getTotal());
         JLabel cantidadLabel = new JLabel("Cantidad En El Pedido: " + pedido.getCantidad());
-        JLabel categoriaLabel = new JLabel("Categoría: " + productoPedido.getID_CategoriaProducto());
+        
+        String Categoria = controladorProducto.obtenerCategoriaPorID_Categoria(productoPedido.getID_CategoriaProducto());
+        
+        JLabel categoriaLabel = new JLabel("Categoría: " + Categoria);
 
         Font font = new Font("Arial", Font.PLAIN, 14);
         Color textColor = Color.BLACK;

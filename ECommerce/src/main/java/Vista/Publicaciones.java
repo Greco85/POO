@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.List;
 import javax.swing.border.Border;
 
@@ -115,7 +118,8 @@ public class Publicaciones extends javax.swing.JFrame {
                 jButtonRegresar.setBackground(new Color(102, 102, 102)); 
             }
         });
-
+        
+        
     panelPrincipal.add(panelBotones, BorderLayout.WEST);
 }
 
@@ -151,8 +155,25 @@ private JPanel crearPanelProducto(Producto producto) {
     int espacioPanel = 10;
     int espacioLateral = 20; 
     
-    
-    String ImagenRuta = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\bmo.jpg";
+        String ImagenRuta;
+
+        
+        // Ruta predeterminada de la imagen de respaldo
+            String imagenPredeterminada = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\Sinimagen.jpg";
+
+            // Ruta de la imagen proporcionada por el producto
+            String imagenRutaProducto = System.getProperty("user.dir") + "\\src\\main\\java\\Imagenes\\" + producto.getImagenURL();
+            
+            System.out.println(imagenRutaProducto);
+            // Verificar si la imagen del producto existe
+            File imagenProducto = new File(imagenRutaProducto);
+            if (imagenProducto.exists()) {
+                // Si la imagen del producto existe, usar esa ruta
+                 ImagenRuta = imagenRutaProducto;
+            } else {
+                // Si no existe, usar la imagen predeterminada
+                ImagenRuta = imagenPredeterminada;
+            }
     
     double anchoPantalla = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 
@@ -228,7 +249,11 @@ private JPanel crearPanelProducto(Producto producto) {
         // Crear JLabels para precio, cantidad y categoría
         JLabel precioLabel = new JLabel("Precio: $" + producto.getPrecio());
         JLabel cantidadLabel = new JLabel("Cantidad Disponible: " + producto.getCantidad_Disponible());
-        JLabel categoriaLabel = new JLabel("Categoría: " + producto.getID_CategoriaProducto());
+        
+        
+        String Categoria = controladorProducto.obtenerCategoriaPorID_Categoria(producto.getID_CategoriaProducto());
+        
+        JLabel categoriaLabel = new JLabel("Categoría: " + Categoria);
 
         Font font = new Font("Arial", Font.PLAIN, 14);
         Color textColor = Color.BLACK;
@@ -250,6 +275,58 @@ private JPanel crearPanelProducto(Producto producto) {
 
             posicionHorizontal += espacioDisponible;
         }
+        
+        
+         descripcionTextArea.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            panelProducto.setBackground(Color.LIGHT_GRAY); 
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            panelProducto.setBackground(Color.WHITE);
+        }
+    });
+       
+        descripcionTextArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Guardar el ID del producto en la sesión activa
+                SesionActiva.setID_Producto(producto.getID_Producto());
+                System.out.println("El id es: " + SesionActiva.getID_Producto());
+
+                // Abrir la vista "VerProducto"
+                VerProducto verProducto = new VerProducto(usuario);
+                verProducto.setVisible(true);
+                dispose();
+            }
+        });
+
+    panelProducto.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            panelProducto.setBackground(Color.LIGHT_GRAY); 
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            panelProducto.setBackground(Color.WHITE); 
+        }
+
+        @Override
+       
+        public void mouseClicked(MouseEvent e) {
+            // Guardar el ID del producto en la sesión activa
+            SesionActiva.setID_Producto(producto.getID_Producto());
+            System.out.println("El id es: " + SesionActiva.getID_Producto());
+
+            // Abrir la vista "VerProducto"
+            VerProducto verProducto = new VerProducto(usuario);
+            verProducto.setVisible(true);
+            dispose();
+        }
+    }); 
     
     
     

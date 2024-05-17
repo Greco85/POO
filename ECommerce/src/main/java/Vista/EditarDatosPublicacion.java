@@ -22,12 +22,19 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
     JTextField txtPrecio;
     JTextField txtCantidad;
     JComboBox<String> cmbCategoria;
+    ControladorProducto controladorCategoria = new ControladorProducto();
+
     JTextField txtImagenURL;
     private Usuario usuario;
+    
+    private JComboBox cmbEstadoProducto;
+    
+    String ImagenRuta;
     
     public EditarDatosPublicacion(int ID_Producto, Usuario usuario) {
         this.ID_Producto = ID_Producto;
         this.usuario = usuario;
+
         initmyComponents();
         obtenerDatosProducto();
     }
@@ -136,22 +143,26 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         cmbCategoria.addItem(categoria);
     }
 
-    // URL de la Imagen
-    JLabel lblImagenURL = new JLabel("URL de la Imagen:");
-    lblImagenURL.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
-    lblImagenURL.setForeground(Color.BLACK);
-    lblImagenURL.setOpaque(true);
+    // Estado del Producto
+    JLabel lblEstadoProducto = new JLabel("Estado del Producto:");
+    lblEstadoProducto.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblEstadoProducto.setForeground(Color.BLACK);
+    lblEstadoProducto.setOpaque(true);
     gbc.gridx = 0;
-    gbc.gridy = 5;
-    panel.add(lblImagenURL, gbc);
-    txtImagenURL = new JTextField(20);
-    txtImagenURL.setPreferredSize(new Dimension(300, 40)); // Ajustar el tamaño del JTextField
-    txtImagenURL.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Borde externo
-                BorderFactory.createEmptyBorder(5, 10, 5, 10) // Espacio interno
-        ));
+    gbc.gridy = 5; // Cambia el índice según la disposición de tu panel
+    panel.add(lblEstadoProducto, gbc);
+
+    cmbEstadoProducto = new JComboBox<>();
+    cmbEstadoProducto.setPreferredSize(new Dimension(245, 40)); // Establecer el ancho y alto del JComboBox
+
     gbc.gridx = 1;
-    panel.add(txtImagenURL, gbc);
+    panel.add(cmbEstadoProducto, gbc);
+
+    // Agregar los estados del producto al JComboBox
+    List<String> estados = controladorCategoria.obtenerEstadosProducto();
+    for (String estado : estados) {
+        cmbEstadoProducto.addItem(estado);
+    }
 
     // Botón Actualizar
     JButton btnActualizar = new JButton("Actualizar");
@@ -162,9 +173,14 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
             BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(255, 255, 255)), // Borde blanco
             BorderFactory.createEmptyBorder(10, 20, 10, 20) 
         ));
+       String hola =  txtNombre.getText();
+       System.out.println(hola);
+
     btnActualizar.addActionListener(evt -> {
+
         btnActualizarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
-                txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText());
+                txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, cmbCategoria.getSelectedIndex()+ 1 , txtNombre.getText() + "_" + SesionActiva.getID_Usuario() + ".jpg" );
+        
         dispose();
         Publicaciones publicaciones = new Publicaciones(usuario);
         publicaciones.setVisible(true);
@@ -229,18 +245,28 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
         txtDescripcion.setText(producto.getDescripcion());
         txtPrecio.setText(String.valueOf(producto.getPrecio()));
         txtCantidad.setText(String.valueOf(producto.getCantidad_Disponible()));
-        txtImagenURL.setText(producto.getImagenURL());
 
         int ID_CategoriaProducto = producto.getID_CategoriaProducto();
         String nombreCategoria = controladorProducto.obtenerCategoriaPorID(ID_CategoriaProducto);
         if (nombreCategoria != null) {
             cmbCategoria.setSelectedItem(nombreCategoria);
         }
+        
+        int ID_EstadoProducto = producto.getID_EstadoProducto();
+        String estadoProducto = controladorProducto.ObtenerEstadoProductoporID(ID_EstadoProducto);
+        if (estadoProducto != null) {
+            cmbEstadoProducto.setSelectedItem(estadoProducto);
+            System.out.println(estadoProducto);
+        }
+        
+        
+        
+        
     }
 
 
- private void btnActualizarActionPerformed(String nombre, String descripcion,
-                                           String precio, String cantidad, int categoria, String imagenURL) {
+private void btnActualizarActionPerformed(String nombre, String descripcion,
+                                           String precio, String cantidad, int categoria, int IDestadoproducto, String imagenURL) {
     int ID_Usuario = SesionActiva.getID_Usuario();
     System.out.println("ID_Usuario: " + ID_Usuario);
     System.out.println("Nombre: " + nombre);
@@ -252,14 +278,21 @@ public class EditarDatosPublicacion extends javax.swing.JFrame {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String fechaCreacion = dateFormat.format(new Date());
     System.out.println("Fecha_Creacion: " + fechaCreacion);
-
-    System.out.println("ID_EstadoProducto: " + 1);
+    String estadoSeleccionado = (String) cmbEstadoProducto.getSelectedItem();
+    IDestadoproducto = controladorCategoria.obtenerIDporNombreEstadoProducto(estadoSeleccionado);
+    System.out.println("ID_EstadoProducto: " +  IDestadoproducto);
     System.out.println("URL de la Imagen: " + imagenURL);
+    
+    // Verificar si el estado seleccionado es "Activo" y la cantidad es cero
+    if (estadoSeleccionado.equals("Activo") && cantidad.equals("0")) {
+        JOptionPane.showMessageDialog(this, "El producto no puede estar activo si la cantidad es cero.", "Error", JOptionPane.ERROR_MESSAGE);
+        return; // Detener el proceso de actualización del producto
+    }
 
     ControladorProducto controladorProducto = new ControladorProducto();
     controladorProducto.actualizarProducto(ID_Producto, nombre, descripcion,
                                             Double.parseDouble(precio), Integer.parseInt(cantidad),
-                                            categoria, imagenURL);
+                                            categoria, IDestadoproducto, imagenURL);
 }
 
     

@@ -52,6 +52,115 @@ public class ControladorConversacion {
     }
     
     
+    public String obtenerImagenURLPorID(int idUsuario) {
+    String imagenURL = null;
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT ImagenURL FROM Usuario WHERE ID_Usuario = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, idUsuario);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            imagenURL = resultSet.getString("ImagenURL");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener la ImagenURL por ID de usuario: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return imagenURL;
+}
+
+    
+    
+    public String obtenerNombrePorIDUsuario(int ID_Usuario) {
+    conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+    String nombre = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT Nombre FROM Usuario WHERE ID_Usuario = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_Usuario);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            nombre = resultSet.getString("Nombre");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener el nombre del usuario: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return nombre;
+}
+    
+    
+    public String obtenerMensajeDeConversacion(int ID_Conversacion) {
+    conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+    String mensaje = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT TOP 1 Mensaje FROM Mensaje WHERE ID_Conversacion = ? ORDER BY Fecha_Envio DESC";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_Conversacion);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            mensaje = resultSet.getString("Mensaje");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener el mensaje de la conversación: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return mensaje;
+}
+
+
+    
+    
     public Mensaje obtenerUltimoMensaje(int ID_Conversacion) {
     Connection conexion = null;
     PreparedStatement statement = null;
@@ -95,6 +204,33 @@ public class ControladorConversacion {
 
     return ultimoMensaje;
 }
+    
+    
+    public int obtenerIDUsuarioEmisorUltimoMensaje(int ID_Conversacion) {
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+    int ID_Usuario_Emisor = -1;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT TOP 1 ID_Usuario_Emisor FROM Mensaje WHERE ID_Conversacion = ? ORDER BY Fecha_Envio DESC";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_Conversacion);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            ID_Usuario_Emisor = resultSet.getInt("ID_Usuario_Emisor");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener el ID del usuario emisor del último mensaje de la conversación: " + e.getMessage());
+    } finally {
+        // Cerrar recursos
+    }
+
+    return ID_Usuario_Emisor;
+}
+
 
     
     
@@ -197,6 +333,7 @@ public class ControladorConversacion {
         }
     }
     
+    
     public int obtenerIDConversacion(int ID_Vendedor, int ID_Comprador) {
         Connection conexion = null;
         PreparedStatement statement = null;
@@ -268,14 +405,16 @@ public class ControladorConversacion {
     }
     
     
-    public List<Conversacion> obtenerTodasLasConversaciones() {
+    public List<Conversacion> obtenerTodasLasConversacionesDelUsuario(int ID_Usuario) {
         List<Conversacion> conversaciones = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            String query = "SELECT * FROM Conversacion";
+            String query = "SELECT * FROM Conversacion WHERE ID_Vendedor = ? OR ID_Comprador = ?";
             statement = conexion.prepareStatement(query);
+            statement.setInt(1, ID_Usuario);
+            statement.setInt(2, ID_Usuario);
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -283,7 +422,8 @@ public class ControladorConversacion {
                 int ID_Vendedor = resultSet.getInt("ID_Vendedor");
                 int ID_Comprador = resultSet.getInt("ID_Comprador");
                 Timestamp fechaUltimoMensaje = resultSet.getTimestamp("Fecha_Ultimo_Mensaje");
-
+                
+                
                 Conversacion conversacion = new Conversacion(ID_Conversacion, ID_Vendedor, ID_Comprador, fechaUltimoMensaje);
                 conversaciones.add(conversacion);
             }

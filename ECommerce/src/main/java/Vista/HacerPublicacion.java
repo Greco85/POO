@@ -133,22 +133,27 @@ public class HacerPublicacion extends javax.swing.JFrame {
         cmbCategoria.addItem(categoria);
     }
 
-    // URL de la Imagen
-    JLabel lblImagenURL = new JLabel("URL de la Imagen:");
-    lblImagenURL.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
-    lblImagenURL.setForeground(Color.BLACK);
-    lblImagenURL.setOpaque(true);
+    // Estado del Producto
+    JLabel lblEstadoProducto = new JLabel("Estado del Producto:");
+    lblEstadoProducto.setFont(new Font("Quicksand Medium", Font.BOLD, 14));
+    lblEstadoProducto.setForeground(Color.BLACK);
+    lblEstadoProducto.setOpaque(true);
     gbc.gridx = 0;
-    gbc.gridy = 5;
-    panel.add(lblImagenURL, gbc);
-    txtImagenURL = new JTextField(20);
-    txtImagenURL.setPreferredSize(new Dimension(300, 40)); // Ajustar el tamaño del JTextField
-    txtImagenURL.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(2, 2, 2, 2, Color.GRAY), // Borde externo
-                BorderFactory.createEmptyBorder(5, 10, 5, 10) // Espacio interno
-        ));
+    gbc.gridy = 5; // Cambia el índice según la disposición de tu panel
+    panel.add(lblEstadoProducto, gbc);
+
+    JComboBox cmbEstadoProducto = new JComboBox<>();
+    cmbEstadoProducto.setPreferredSize(new Dimension(245, 40)); // Establecer el ancho y alto del JComboBox
+
     gbc.gridx = 1;
-    panel.add(txtImagenURL, gbc);
+    panel.add(cmbEstadoProducto, gbc);
+
+    // Agregar los estados del producto al JComboBox
+    List<String> estados = controladorCategoria.obtenerEstadosProducto();
+    for (String estado : estados) {
+        cmbEstadoProducto.addItem(estado);
+    }
+
 
     // Botón Publicar
     JButton btnPublicar = new JButton("Publicar");
@@ -162,7 +167,7 @@ public class HacerPublicacion extends javax.swing.JFrame {
         
     btnPublicar.addActionListener(evt -> {
         btnPublicarActionPerformed(txtNombre.getText(), txtDescripcion.getText(),
-  txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, txtImagenURL.getText());
+  txtPrecio.getText(), txtCantidad.getText(), cmbCategoria.getSelectedIndex() + 1, cmbEstadoProducto.getSelectedIndex() + 1,  txtNombre.getText() + "_" + SesionActiva.getID_Usuario() + ".jpg");
         Publicaciones publicaciones = new Publicaciones(usuario);
         publicaciones.setVisible(true);
         dispose();
@@ -221,7 +226,7 @@ public class HacerPublicacion extends javax.swing.JFrame {
 
 
     private void btnPublicarActionPerformed(String nombre, String descripcion,
-                                         String precio, String cantidad, int categoria, String imagenURL) {
+                                         String precio, String cantidad, int categoria, int IDestadoproducto, String imagenURL) {
     int ID_Usuario = SesionActiva.getID_Usuario(); 
     System.out.println("ID_Usuario: " + ID_Usuario);
     System.out.println("Nombre: " + nombre);
@@ -234,11 +239,10 @@ public class HacerPublicacion extends javax.swing.JFrame {
     String fechaCreacion = dateFormat.format(new Date());
     System.out.println("Fecha_Creacion: " + fechaCreacion);
     
-    System.out.println("ID_EstadoProducto: " + 1);
-    System.out.println("URL de la Imagen: " + imagenURL);
+    System.out.println("ID_EstadoProducto: " + IDestadoproducto);
 
     ControladorProducto controladorProducto = new ControladorProducto();
-    controladorProducto.agregarProducto(ID_Usuario, nombre, descripcion, precio, cantidad,categoria, fechaCreacion, imagenURL);
+    controladorProducto.agregarProducto(ID_Usuario, nombre, descripcion, precio, cantidad,categoria, fechaCreacion, IDestadoproducto, imagenURL);
 }
 
     

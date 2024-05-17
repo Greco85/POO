@@ -173,6 +173,83 @@ public class ControladorProducto {
 
     return ID_Usuario;
 }
+    
+    
+    public String obtenerNombreProductoporID(int ID_Producto) {
+    String nombreProducto = null;
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT Nombre FROM Producto WHERE ID_Producto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_Producto);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            nombreProducto = resultSet.getString("Nombre");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener el nombre del producto por ID: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return nombreProducto;
+}
+    
+    
+    public String obtenerCategoriaPorID_Categoria(int ID_CategoriaProducto) {
+    String categoria = null;
+
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        String query = "SELECT Categoria FROM CategoriaProducto WHERE ID_CategoriaProducto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_CategoriaProducto);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            categoria = resultSet.getString("Categoria");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener la categoría por ID_CategoriaProducto: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    return categoria;
+}
 
 
     //Producto 
@@ -235,7 +312,7 @@ public class ControladorProducto {
 }
    
    
-   public void ActualizarCantidad(int ID_Producto, int Cantidad) {
+   public void ActualizarCantidad(String NombreProducto , int ID_Producto, int Cantidad) {
         PreparedStatement statement = null;
 
         try {
@@ -255,7 +332,7 @@ public class ControladorProducto {
                 
                 int ID_TipoNoti = 3; //LUEGO BUSCARLA CON UNA CONSULTA "Producto Agotado"
 
-                String mensaje = "Se te agotaron los productos disponibles de tu producto con ID: " + ID_Producto ;
+                String mensaje = "Se te agotaron los productos disponibles de tu producto: " + NombreProducto ;
 
                 // Obtener la fecha y hora actual
                 Date fechaActual = new Date();
@@ -425,7 +502,7 @@ public class ControladorProducto {
     
     //Crear Producto 
     public void agregarProducto(int ID_Usuario, String nombre, String descripcion,
-                                 String precio, String cantidad, int categoria, String fechaCreacion, String imagenURL) {
+                                 String precio, String cantidad, int categoria, String fechaCreacion, int idEstadoproducto , String imagenURL) {
         Connection conexion = null;
         PreparedStatement statement = null;
 
@@ -442,7 +519,7 @@ public class ControladorProducto {
             statement.setString(5, cantidad);
             statement.setInt(6, categoria);
             statement.setString(7, fechaCreacion);
-            statement.setInt(8, 1); // ID_EstadoProducto fijo en 1 por ahora
+            statement.setInt(8, idEstadoproducto); // ID_EstadoProducto fijo en 1 por ahora
             statement.setString(9, imagenURL);
             statement.executeUpdate();
             System.out.println("Producto agregado correctamente");
@@ -461,21 +538,22 @@ public class ControladorProducto {
     
     //Actualizar Producto 
     
-     public void actualizarProducto(int ID_Producto, String nombre, String descripcion, double precio, int cantidad, int categoria, String imagenURL) {
+     public void actualizarProducto(int ID_Producto, String nombre, String descripcion, double precio, int cantidad, int categoria, int  IDestadoproducto,String imagenURL) {
         Connection conexion = null;
         PreparedStatement statement = null;
 
         try {
             conexion = Conexion.getInstance().getConexion();
-            String query = "UPDATE Producto SET Nombre = ?, Descripcion = ?, Precio = ?, Cantidad_Disponible = ?, ID_CategoriaProducto = ?, ImagenURL = ? WHERE ID_Producto = ?";
+            String query = "UPDATE Producto SET Nombre = ?, Descripcion = ?, Precio = ?, Cantidad_Disponible = ?, ID_CategoriaProducto = ?,ID_EstadoProducto = ?, ImagenURL = ? WHERE ID_Producto = ?";
             statement = conexion.prepareStatement(query);
             statement.setString(1, nombre);
             statement.setString(2, descripcion);
             statement.setDouble(3, precio);
             statement.setInt(4, cantidad);
             statement.setInt(5, categoria);
-            statement.setString(6, imagenURL);
-            statement.setInt(7, ID_Producto);
+            statement.setInt(6, IDestadoproducto);
+            statement.setString(7, imagenURL);
+            statement.setInt(8, ID_Producto);
 
             int filasActualizadas = statement.executeUpdate();
             if (filasActualizadas > 0) {
@@ -702,6 +780,7 @@ public class ControladorProducto {
         return categorias;
     }
         
+        
     //Obtener la categoria por ID
         
     public String obtenerCategoriaPorID(int ID_CategoriaProducto) {
@@ -742,6 +821,7 @@ public class ControladorProducto {
     return nombreCategoria;
 }
     
+    
     public int obtenerIDporNombreCategoria(String nombreCategoria) {
     int idCategoria = -1;
     Connection conexion = null;
@@ -778,6 +858,119 @@ public class ControladorProducto {
     }
     return idCategoria;
 }
+    
+    public int obtenerIDporNombreEstadoProducto(String nombreEstadoProducto) {
+    int idEstadoProducto = -1;
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT ID_EstadoProducto FROM EstadoProducto WHERE EstadoProducto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setString(1, nombreEstadoProducto);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            idEstadoProducto = resultSet.getInt("ID_EstadoProducto");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener ID por nombre de estado del producto: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return idEstadoProducto;
+}
+
+    
+    public List<String> obtenerEstadosProducto() {
+    List<String> estadosProducto = new ArrayList<>();
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT EstadoProducto FROM EstadoProducto";
+        statement = conexion.prepareStatement(query);
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            String estadoProducto = resultSet.getString("EstadoProducto");
+            estadosProducto.add(estadoProducto);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener estados de producto: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return estadosProducto;
+}
+
+
+    public String ObtenerEstadoProductoporID(int ID_EstadoProducto) {
+    String estadoProducto = null;
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT EstadoProducto FROM EstadoProducto WHERE ID_EstadoProducto = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, ID_EstadoProducto);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            estadoProducto = resultSet.getString("EstadoProducto");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener estado de producto por ID: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return estadoProducto;
+}
 
 
     
@@ -790,7 +983,43 @@ public class ControladorProducto {
     
     
     
-    
+    public String obtenerNombreUsuarioporID(int idUsuario) {
+    String nombreUsuario = null;
+    Connection conexion = null;
+    PreparedStatement statement = null;
+    ResultSet resultSet = null;
+
+    try {
+        conexion = Conexion.getInstance().getConexion();
+        String query = "SELECT Nombre FROM Usuario WHERE ID_Usuario = ?";
+        statement = conexion.prepareStatement(query);
+        statement.setInt(1, idUsuario);
+        resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            nombreUsuario = resultSet.getString("Nombre");
+        }
+    } catch (SQLException e) {
+        System.err.println("Error al obtener el nombre de usuario por ID: " + e.getMessage());
+    } finally {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    return nombreUsuario;
+}
+
     
     
     

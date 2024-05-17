@@ -36,6 +36,10 @@ public class ControladorUsuario {
         return ID_Usuario;
     }
     
+    
+   
+
+    
    
 
     
@@ -106,6 +110,29 @@ public Usuario obtenerUsuarioPorId(int id) {
     }
     return usuario;
 }
+
+
+    public String ObtenerNombreporID(int id) {
+        String nombreUsuario = null;
+        String consulta = "SELECT Nombre FROM Usuario WHERE ID_Usuario = ?";
+        try {
+            Connection conexion = Conexion.getInstance().getConexion();
+            PreparedStatement statement = conexion.prepareStatement(consulta);
+            statement.setInt(1, id);
+            ResultSet resultado = statement.executeQuery();
+
+            if (resultado.next()) {
+                nombreUsuario = resultado.getString("Nombre");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener el nombre del usuario por ID: " + e.getMessage());
+        }
+        return nombreUsuario;
+    }
+    
+    
+   
+
 
 
 public void RegistrarUsuario(Usuario usuario) {
@@ -182,7 +209,11 @@ public void actualizarUsuario(Usuario usuario) {
         statement.setString(6, usuario.getTelefono());
         statement.setDate(7, new java.sql.Date(usuario.getFecha_Registro().getTime()));
         statement.setDate(8, new java.sql.Date(usuario.getFecha_Nacimiento().getTime()));
-        statement.setString(9, usuario.getImagenURL());
+        
+        String ImagenURL = "Usuario_" + usuario.getID_Usuario() + ".jpg";
+ 
+        
+        statement.setString(9, ImagenURL);
         statement.setInt(10, usuario.getID_Usuario());
         
         

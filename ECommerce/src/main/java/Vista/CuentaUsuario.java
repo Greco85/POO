@@ -129,9 +129,9 @@ public class CuentaUsuario extends javax.swing.JFrame {
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     // Texto de los botones
-    EditarCuenta.setText("EDITAR CUENTA");
-    jButton1.setText("PUBLICACIONES");
-    jButton2.setText("METER DINERO");
+    EditarCuenta.setText("Editar Mi Cuenta");
+    jButton1.setText("Mis Publicaciones");
+    jButton2.setText("Ingresar Dinero");
     eliminarCuentaButton.setText("Eliminar Cuenta");
     jButtonProductosVendidos.setText("Productos Vendidos");
     jButtonPedidosHechos.setText("Pedidos Hechos");
@@ -167,10 +167,84 @@ public class CuentaUsuario extends javax.swing.JFrame {
 
     // Agregar panel al centro del frame
     getContentPane().add(panel, BorderLayout.CENTER);
+    
+    // Cambiar color al pasar el ratón por encima
+EditarCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        EditarCuenta.setBackground(new java.awt.Color(0, 0, 139)); // Azul oscuro
+    }
+
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+        EditarCuenta.setBackground(new Color(41, 81, 204)); // Azul
+    }
+});
+
+jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        jButton1.setBackground(new java.awt.Color(0, 0, 139)); // Azul oscuro
+    }
+
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+        jButton1.setBackground(new Color(41, 81, 204)); // Azul
+    }
+});
+
+jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        jButton2.setBackground(new java.awt.Color(0, 0, 139)); // Azul oscuro
+    }
+
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+        jButton2.setBackground(new Color(41, 81, 204)); // Azul
+    }
+});
+
+eliminarCuentaButton.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        eliminarCuentaButton.setBackground(new java.awt.Color(139, 0, 0)); // Rojo oscuro
+    }
+
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+         eliminarCuentaButton.setBackground(Color.RED); 
+    }
+});
+
+jButtonProductosVendidos.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        jButtonProductosVendidos.setBackground(new java.awt.Color(0, 0, 139)); // Azul oscuro
+    }
+
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+        jButtonProductosVendidos.setBackground(new Color(41, 81, 204)); // Azul
+    }
+});
+
+jButtonPedidosHechos.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        jButtonPedidosHechos.setBackground(new java.awt.Color(0, 0, 139)); // Azul oscuro
+    }
+
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+        jButtonPedidosHechos.setBackground(new Color(41, 81, 204)); // Azul
+    }
+});
+
+jButtonConversaciones.addMouseListener(new java.awt.event.MouseAdapter() {
+    public void mouseEntered(java.awt.event.MouseEvent evt) {
+        jButtonConversaciones.setBackground(new java.awt.Color(0, 0, 139)); // Azul oscuro
+    }
+
+    public void mouseExited(java.awt.event.MouseEvent evt) {
+        jButtonConversaciones.setBackground(new Color(41, 81, 204)); // Azul
+    }
+});
+
 
     pack();
     setSize(800, 650);
     setLocationRelativeTo(null);
+    
+    
 }
 
 // Método para aplicar estilos a los botones

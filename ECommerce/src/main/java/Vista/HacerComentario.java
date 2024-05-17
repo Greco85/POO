@@ -128,9 +128,14 @@ public class HacerComentario extends javax.swing.JFrame {
         if(comentarioHecho) {
             System.out.println("Comentario hecho correctamente");
             
+                 
+                
+            String nombreUsuario = controladorUsuario.ObtenerNombreporID(SesionActiva.getID_Usuario());
+            String NombreProducto = controladorProducto.obtenerNombreProductoporID(ID_Producto);
+
             int ID_TipoNoti = 4; //LUEGO BUSCARLA CON UNA CONSULTA "Comentario"
 
-                String mensajee = "El usuario con ID : " + SesionActiva.getID_Usuario() + " ha puesto un mensaje en el producto con ID: " + ID_Producto;
+                String mensajee = "El usuario: " + nombreUsuario + " ha puesto un mensaje en el producto: " + NombreProducto;
                 // Obtener la fecha y hora actual
                 Date fechaActual = new Date();
 
